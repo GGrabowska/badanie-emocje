@@ -1,0 +1,372 @@
+<!DOCTYPE html>
+<html lang="pl">
+<head>
+  <meta charset="UTF-8">
+  <title>Badanie: Emocje i pamięć</title>
+  <script src="https://unpkg.com/jspsych@7.3.0"></script>
+  <script src="https://unpkg.com/@jspsych/plugin-html-button-response"></script>
+  <script src="https://unpkg.com/@jspsych/plugin-survey-likert"></script>
+  <script src="https://unpkg.com/@jspsych/plugin-survey-html-form"></script>
+  <script src="https://unpkg.com/@jspsych/plugin-html-keyboard-response"></script>
+  <link href="https://unpkg.com/jspsych@7.3.0/css/jspsych.css" rel="stylesheet" />
+
+  <style>
+    .emoji-btn {
+      font-size: 48px;
+      cursor: move;
+      user-select: none;
+      padding: 10px;
+      border: 1px solid #ccc;
+      margin: 5px;
+      display: inline-block;
+    }
+    .drop-slot {
+      width: 60px;
+      height: 60px;
+      font-size: 40px;
+      border: 2px dashed #aaa;
+      display: inline-flex;
+      justify-content: center;
+      align-items: center;
+      margin: 5px;
+    }
+    .correct-place { border: 3px solid green; }
+    .wrong-place { border: 3px solid red; }
+    .correct-emoji-wrong-place { border: 3px solid orange; }
+    #grid, #slots {
+      margin-top: 20px;
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: center;
+    }
+    #result {
+      text-align: center;
+      font-weight: bold;
+      margin-top: 20px;
+    }
+  </style>
+</head>
+<body></body>
+
+<script>
+const jsPsych = initJsPsych({
+  on_finish: () => {
+    jsPsych.data.displayData();
+  }
+});
+
+// ---- TIMELINE ----
+const timeline = [];
+
+// 🔹 1. ZAPROSZENIE
+timeline.push({
+  type: jsPsychHtmlButtonResponse,
+  stimulus: `
+    <h2>Zaproszenie do badania</h2>
+    <p>Cześć! Nazywam się Gabriela Grabowska i zapraszam Cię do udziału w badaniu pt.
+    <strong>„Wpływ emocji na pamięć krótkotrwałą”.</strong></p>
+    <p>Badanie potrwa około <strong>20 minut</strong> i jest całkowicie anonimowe.</p>
+    <p>Na kolejnych stronach znajdują się zgoda, metryczka oraz zadania eksperymentalne.</p>
+  `,
+  choices: ["Dalej"]
+});
+
+// 🔹 2. ZGODA
+timeline.push({
+  type: jsPsychSurveyHtmlForm,
+  preamble: `<h3>Zgoda na udział w badaniu</h3>`,
+  html: `
+    <p>Szanowna Pani / Szanowny Panie,</p>
+    <p>Nazywam się Gabriela Grabowska, jestem studentką psychologii i informatyki na Uniwersytecie SWPS w Warszawie. 
+    Badanie realizuję w ramach pracy licencjackiej pod opieką dr Joanny Gutral‑Sutherland.</p>
+    <p>Celem badania jest sprawdzenie wpływu emocjonalnego charakteru bodźców wizualnych na pamięć krótkotrwałą.</p>
+    <p>Udział jest dobrowolny. Można się wycofać na każdym etapie bez podania przyczyny.</p>
+    <p>Dane są w pełni anonimowe i posłużą wyłącznie do celów naukowych.</p>
+    <br>
+    <label><input type="checkbox" name="zgoda" required> Wyrażam zgodę na udział w badaniu</label>
+  `,
+  button_label: "Dalej",
+  data: { phase: "zgoda" }
+});
+
+// 🔹 3. METRYCZKA
+timeline.push({
+  type: jsPsychSurveyHtmlForm,
+  preamble: `<h3>Metryczka</h3><p>Odpowiedz proszę na kilka pytań dotyczących Ciebie.</p>`,
+  html: `
+    <div style="display: flex; flex-direction: column; gap: 20px;">
+
+      <label>Wiek:
+        <input name="wiek" type="number" min="10" max="100" required style="width:80px; margin-left:10px;">
+      </label>
+
+      <div>
+        <p style="margin-bottom:5px;">Płeć:</p>
+        <label><input type="radio" name="plec" value="Kobieta" required> Kobieta</label><br>
+        <label><input type="radio" name="plec" value="Mężczyzna"> Mężczyzna</label><br>
+        <label><input type="radio" name="plec" value="Inna"> Inna</label><br>
+        <label><input type="radio" name="plec" value="Nie podano"> Wolę nie podawać</label>
+      </div>
+
+      <div>
+        <p style="margin-bottom:5px;">Wykształcenie:</p>
+        <label><input type="radio" name="wyksztalcenie" value="Podstawowe" required> Podstawowe</label><br>
+        <label><input type="radio" name="wyksztalcenie" value="Średnie"> Średnie</label><br>
+        <label><input type="radio" name="wyksztalcenie" value="Wyższe licencjat"> Wyższe (licencjat/inżynier)</label><br>
+        <label><input type="radio" name="wyksztalcenie" value="Wyższe magister"> Wyższe (magister lub wyższe)</label>
+      </div>
+
+      <div>
+        <p style="margin-bottom:5px;">Czy bierzesz udział w terapii psychologicznej lub psychiatrycznej?</p>
+        <label><input type="radio" name="terapia" value="Tak" required> Tak</label><br>
+        <label><input type="radio" name="terapia" value="Nie"> Nie</label><br>
+        <label><input type="radio" name="terapia" value="Nie podano"> Wolę nie podawać</label>
+      </div>
+
+    </div>
+
+    <div style="height: 80px;"></div> <!-- 🔽 Dodatkowy odstęp przed przyciskiem Dalej -->
+  `,
+  button_label: "Dalej",
+  data: { phase: "metryczka" }
+});
+
+// 🔹 4. PANAS
+timeline.push({
+  type: jsPsychSurveyLikert,
+  preamble: `
+    <h3>Kwestionariusz PANAS</h3>
+    <p>Oceń, w jakim stopniu aktualnie odczuwasz każdą z podanych emocji<br>
+    (1 = bardzo słabo, 5 = bardzo silnie):</p>
+  `,
+  questions: [
+    { prompt: "Uważny/a", labels: ["1","2","3","4","5"], required: true },
+    { prompt: "Entuzjastyczny/a", labels: ["1","2","3","4","5"], required: true },
+    { prompt: "Przestraszony/a", labels: ["1","2","3","4","5"], required: true },
+    { prompt: "Zawstydzony/a", labels: ["1","2","3","4","5"], required: true },
+    { prompt: "Drażliwy/a", labels: ["1","2","3","4","5"], required: true },
+    { prompt: "Zaniepokojony/a", labels: ["1","2","3","4","5"], required: true },
+    { prompt: "Zlękniony/a", labels: ["1","2","3","4","5"], required: true },
+    { prompt: "Nerwowy/a", labels: ["1","2","3","4","5"], required: true },
+  ],
+  button_label: "Dalej",
+  data: { phase: "panas" }
+});
+
+// 🔹 5. KWESTIONARIUSZ ZMĘCZENIA – FAS
+timeline.push({
+  type: jsPsychSurveyLikert,
+  preamble: `
+    <h3>Kwestionariusz Zmęczenia (FAS)</h3>
+    <p>Przeczytaj każde zdanie i zaznacz, w jakim stopniu się z nim zgadzasz.</p>
+    <p>(1 = zdecydowanie się nie zgadzam — 5 = zdecydowanie się zgadzam)</p>
+  `,
+  questions: [
+    { prompt: "Czuję się zmęczony/a", labels: ["1","2","3","4","5"], required: true },
+    { prompt: "Mam problemy z koncentracją", labels: ["1","2","3","4","5"], required: true },
+    { prompt: "Wstanie rano przychodzi mi z trudem", labels: ["1","2","3","4","5"], required: true },
+    { prompt: "Czuję się osłabiony/a", labels: ["1","2","3","4","5"], required: true },
+    { prompt: "Codzienne obowiązki są dla mnie męczące", labels: ["1","2","3","4","5"], required: true },
+    { prompt: "Brakuje mi energii", labels: ["1","2","3","4","5"], required: true },
+    { prompt: "Czuję się wypalony/a", labels: ["1","2","3","4","5"], required: true },
+    { prompt: "Trudno mi rozpocząć nowe zajęcia", labels: ["1","2","3","4","5"], required: true },
+    { prompt: "Czuję się wyczerpany/a", labels: ["1","2","3","4","5"], required: true },
+    { prompt: "Wszystko przychodzi mi z wysiłkiem", labels: ["1","2","3","4","5"], required: true }
+  ],
+  button_label: "Dalej",
+  data: { phase: "FAS_zmeczenie" }
+});
+
+
+// 🔹 NASTRÓJ PO PANAS
+timeline.push({
+  type: jsPsychSurveyLikert,
+  preamble: `
+    <p><strong>Jak aktualnie oceniasz swój nastrój?</strong></p>
+    <p>(1 = bardzo źle, 2 = źle, 3 = średnio, 4 = dobrze, 5 = bardzo dobrze)</p>
+  `,
+  questions: [{
+    prompt: "Nastrój ogólny",
+    labels: ["1", "2", "3", "4", "5"],
+    required: true
+  }],
+  button_label: "Dalej",
+  data: { phase: "nastrój_po_panas" }
+});
+
+// 🔹 EKRAN PRZEJŚCIOWY (czyści ekran na chwilę)
+timeline.push({
+  type: jsPsychHtmlKeyboardResponse,
+  stimulus: "",
+  choices: "NO_KEYS",
+  trial_duration: 300
+});
+
+// -------------------- TESTY EMOTEK ---------------------
+const tests = [
+  { type: "pozytywny", label: "pozytywnymi", sequence: ["😄","😊","😂","🥰","😆"], grid: ["😄","😊","😂","🥰","😆","🤗","😋","😍","🙂","😃"] },
+  { type: "neutralny", label: "neutralnymi", sequence: ["😐","🤔","😶","🙄","😑"], grid: ["😐","🤔","😶","🙄","😑","😴","🧐","😬","😕","😒"] },
+  { type: "negatywny", label: "negatywnymi", sequence: ["😢","😠","😭","😩","😡"], grid: ["😢","😠","😭","😩","😡","😖","😤","😞","😣","😔"] }
+];
+
+let przeciagane;
+
+// Pętla po trzech wersjach testu
+tests.forEach(test => {
+  // zapowiedź
+  timeline.push({
+    type: jsPsychHtmlButtonResponse,
+    stimulus: `
+      <h3>Teraz rozpoczniesz test z ${test.label} emotkami.</h3>
+      <p>Zapamiętaj kolejność emotek, a później odtwórz ją przeciągając symbole.</p>
+    `,
+    choices: ["Dalej"]
+  });
+
+  // 🔹 pytanie o nastrój PRZED – tylko dla neutralnych i negatywnych
+  if (test.type !== "pozytywny") {
+    timeline.push({
+      type: jsPsychSurveyLikert,
+      preamble: "<p>Jak oceniasz swój nastrój?</p>",
+      questions: [{ prompt: "Nastrój", labels: ["1","2","3","4","5"], required: true }],
+      button_label: "Dalej",
+      data: { phase: `nastrój_przed_${test.type}` }
+    });
+  }
+
+  // 🔹 rozpocznij test
+  timeline.push({
+    type: jsPsychHtmlButtonResponse,
+    stimulus: "<p>Gdy będziesz gotowy/a, kliknij „Rozpocznij test”.</p>",
+    choices: ["Rozpocznij test"]
+  });
+
+  // 🔹 prezentacja emoji 1 na sekundę
+  timeline.push({
+    timeline: [
+      { type: jsPsychHtmlKeyboardResponse, stimulus: jsPsych.timelineVariable('emoji'), choices: "NO_KEYS", trial_duration: 1000 },
+      { type: jsPsychHtmlKeyboardResponse, stimulus: "", choices: "NO_KEYS", trial_duration: 300 }
+    ],
+    timeline_variables: test.sequence.map(e => ({ emoji: `<div style="font-size:64px;">${e}</div>` })),
+    data: { phase: `prezentacja_${test.type}` }
+  });
+
+  // 🔹 przycisk przejścia do siatki
+  timeline.push({
+    type: jsPsychHtmlButtonResponse,
+    stimulus: "<p>Kliknij, aby przejść do siatki i przeciągania emotek.</p>",
+    choices: ["Pokaż siatkę"]
+  });
+
+  // 🔹 DRAG & DROP – wklej tutaj całą wersję, którą zmodyfikowałaś wcześniej
+  timeline.push({
+    type: jsPsychHtmlButtonResponse,
+    stimulus: () => {
+      let html = `
+        <p>Przeciągnij emotki we właściwej kolejności:</p>
+        <div id="grid">`;
+      test.grid.forEach(e => {
+        html += `<div class="emoji-btn" draggable="true">${e}</div>`;
+      });
+      html += `</div><div id="slots">`;
+      for (let i = 0; i < 5; i++) html += `<div class="drop-slot"></div>`;
+      html += `</div>
+        <button id="finish">Zakończ test</button>
+        <div id="result"></div>
+      `;
+      return html;
+    },
+    choices: [],
+    on_load: () => {
+      let startTime = performance.now();
+
+      document.querySelectorAll('.emoji-btn').forEach(btn =>
+        btn.addEventListener('dragstart', e => przeciagane = e.target.textContent)
+      );
+
+      document.querySelectorAll('.drop-slot').forEach(slot => {
+        slot.addEventListener('dragover', e => e.preventDefault());
+        slot.addEventListener('drop', e => slot.textContent = przeciagane);
+      });
+
+      document.getElementById("finish").addEventListener("click", () => {
+        const endTime = performance.now();
+        const czas = Math.round((endTime - startTime) / 1000);
+
+        const slots = document.querySelectorAll(".drop-slot");
+        let poprawne = 0;
+        let odpowiedzi = [];
+
+        slots.forEach((slot, i) => {
+          const emoji = slot.textContent;
+          odpowiedzi.push(emoji);
+          slot.classList.remove("correct-place", "wrong-place", "correct-emoji-wrong-place");
+
+          if (emoji === test.sequence[i]) {
+            slot.classList.add("correct-place");
+            poprawne++;
+          } else if (test.sequence.includes(emoji)) {
+            slot.classList.add("correct-emoji-wrong-place");
+          } else {
+            slot.classList.add("wrong-place");
+          }
+        });
+
+        document.getElementById("result").innerHTML = `
+          <p>Poprawne emotki na właściwym miejscu: <strong>${poprawne} z 5</strong></p>
+          <p>Czas wykonania testu: <strong>${czas} sekund</strong></p>
+          <button id="next">Dalej</button>
+        `;
+
+        jsPsych.data.write({
+          phase: `test_${test.type}`,
+          odpowiedzi,
+          poprawne,
+          czas
+        });
+
+        document.getElementById("next").addEventListener("click", () => {
+          jsPsych.finishTrial();
+        });
+      });
+    }
+  });
+
+  // 🔹 nastrój PO
+  timeline.push({
+    type: jsPsychSurveyLikert,
+    preamble: "<p>Jak oceniasz swój nastrój po teście?</p>",
+    questions: [{ prompt: "Nastrój", labels: ["1", "2", "3", "4", "5"], required: true }],
+    button_label: "Dalej",
+    data: { phase: `nastrój_po_${test.type}` }
+  });
+});
+
+
+// 🔹 KONIEC
+timeline.push({
+  type: jsPsychHtmlButtonResponse,
+  stimulus: `<h2>Dziękujemy za udział!</h2><p>To już wszystko.</p>`,
+  choices: ["Zakończ"]
+});
+
+// 🔹 PO ZAKOŃCZENIU BADANIA – wyślij dane do Google Sheets
+jsPsych.onFinish(() => {
+  const jsonData = jsPsych.data.get().json();
+
+  fetch("https://script.google.com/macros/s/AKfycbw8ZgeZoanxg5NnTQH86WYmc01odFuhOB-BlrKpg-ucRLqLW3m9iHa3Np0phv9eWRlM/exec", {
+    method: "POST",
+    mode: "no-cors",
+    headers: { "Content-Type": "application/json" },
+    body: jsonData
+  });
+
+  // (opcjonalnie) pokaż dane uczestnikowi
+  // jsPsych.data.displayData();
+});
+
+// 🔹 uruchomienie badania
+jsPsych.run(timeline);
+</script>
+</html>
+
