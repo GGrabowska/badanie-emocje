@@ -4,9 +4,11 @@
   <meta charset="UTF-8">
   <title>Badanie: Emocje i pamięć</title>
 
+  <!-- jsPsych i pluginy -->
   <script src="https://unpkg.com/jspsych@7.3.0"></script>
   <script src="https://unpkg.com/@jspsych/plugin-html-button-response"></script>
   <script src="https://unpkg.com/@jspsych/plugin-survey-html-form"></script>
+  <script src="https://unpkg.com/@jspsych/plugin-survey-likert"></script>
   <link href="https://unpkg.com/jspsych@7.3.0/css/jspsych.css" rel="stylesheet" />
 </head>
 
@@ -37,7 +39,7 @@ timeline.push({
   choices: ["Rozpocznij"]
 });
 
-/* 🔹 2 — Zgoda (osobna strona) */
+/* 🔹 2 — Zgoda */
 timeline.push({
   type: jsPsychSurveyHtmlForm,
   preamble: `<h2>Zgoda na udział w badaniu</h2>`,
@@ -69,7 +71,7 @@ timeline.push({
   data: { phase: "zgoda" }
 });
 
-/* 🔹 3 — Metryczka (osobna strona) */
+/* 🔹 3 — Metryczka */
 timeline.push({
   type: jsPsychSurveyHtmlForm,
   preamble: `<h2>Metryczka</h2>`,
@@ -99,11 +101,44 @@ timeline.push({
   data: { phase: "metryczka" }
 });
 
-/* 🔹 Tymczasowy koniec – test działania */
+/* 🔹 4 — PANAS */
 timeline.push({
-  type: jsPsychHtmlButtonResponse,
-  stimulus: `<h2>🎉 Metryczka działa poprawnie – jesteś sztosem</h2>`,
-  choices: ["Zakończ"]
+  type: jsPsychSurveyLikert,
+  preamble: `<h2>Kwestionariusz PANAS</h2>
+  <p>Oceń, w jakim stopniu odczuwasz poniższe emocje w tej chwili.</p>`,
+  questions: [
+    { prompt: "Uważny/a", labels: ["1","2","3","4","5"], required: true },
+    { prompt: "Entuzjastyczny/a", labels: ["1","2","3","4","5"], required: true },
+    { prompt: "Przestraszony/a", labels: ["1","2","3","4","5"], required: true },
+    { prompt: "Zawstydzony/a", labels: ["1","2","3","4","5"], required: true },
+    { prompt: "Drażliwy/a", labels: ["1","2","3","4","5"], required: true },
+    { prompt: "Zaniepokojony/a", labels: ["1","2","3","4","5"], required: true },
+    { prompt: "Zlękniony/a", labels: ["1","2","3","4","5"], required: true },
+    { prompt: "Nerwowy/a", labels: ["1","2","3","4","5"], required: true }
+  ],
+  button_label: "Dalej",
+  data: { phase: "panas" }
+});
+
+/* 🔹 5 — Kwestionariusz zmęczenia FAS */
+timeline.push({
+  type: jsPsychSurveyLikert,
+  preamble: `<h2>Kwestionariusz zmęczenia (FAS)</h2>
+    <p>Poniższe stwierdzenia odnoszą się do Twojego codziennego samopoczucia. Wybierz, jak często je odczuwasz:</p>`,
+  questions: [
+    { prompt: "1. Cierpię z powodu zmęczenia.", labels: ["Nigdy","Czasami","Regularnie","Często","Zawsze"], required: true },
+    { prompt: "2. Męczę się bardzo szybko.", labels: ["Nigdy","Czasami","Regularnie","Często","Zawsze"], required: true },
+    { prompt: "3. Jestem mało aktywny/a w ciągu dnia.", labels: ["Nigdy","Czasami","Regularnie","Często","Zawsze"], required: true },
+    { prompt: "4. Mam dosyć energii do codziennego życia.", labels: ["Nigdy","Czasami","Regularnie","Często","Zawsze"], required: true },
+    { prompt: "5. Fizycznie, czuję się wyczerpany/a.", labels: ["Nigdy","Czasami","Regularnie","Często","Zawsze"], required: true },
+    { prompt: "6. Mam problemy z rozpoczęciem czynności.", labels: ["Nigdy","Czasami","Regularnie","Często","Zawsze"], required: true },
+    { prompt: "7. Mam problemy z jasnym myśleniem.", labels: ["Nigdy","Czasami","Regularnie","Często","Zawsze"], required: true },
+    { prompt: "8. Brakuje mi chęci do zrobienia czegokolwiek.", labels: ["Nigdy","Czasami","Regularnie","Często","Zawsze"], required: true },
+    { prompt: "9. Psychicznie, jestem wyczerpany/a.", labels: ["Nigdy","Czasami","Regularnie","Często","Zawsze"], required: true },
+    { prompt: "10. W trakcie wykonywania czynności koncentruję się całkiem dobrze.", labels: ["Nigdy","Czasami","Regularnie","Często","Zawsze"], required: true }
+  ],
+  button_label: "Dalej",
+  data: { phase: "zmęczenie_FAS" }
 });
 
 jsPsych.run(timeline);
