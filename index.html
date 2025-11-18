@@ -143,7 +143,122 @@ timeline.push({
   data: { phase: "zmęczenie_FAS" }
 });
 
+timeline.push({ ...mood_question, data: { phase: "nastroj_przed_testami" } });
+
+/* =======================  PYTANIE O NASTRÓJ ======================= */
+const mood_question = {
+  type: jsPsychSurveyLikert,
+  preamble: `<h2>Ocena nastroju</h2><p>Jak oceniasz swój obecny nastrój?</p>`,
+  questions: [
+    { prompt: "Nastrój", labels: ["1 – bardzo zły","2","3","4","5","6","7 – bardzo dobry"], required: true }
+  ],
+  button_label: "Dalej",
+  data: { phase: "ocena_nastroju" }
+};
+
+/* =======================  DANE TESTÓW EMOTEK ======================= */
+const tests = [
+  { type: "pozytywne", msg: "pozytywnymi", seq: ["😄","😊","😂","🥰","😆"], grid: ["😄","😊","😂","🥰","😆","🤗","😋","😍","🙂","😃"] },
+  { type: "neutralne", msg: "neutralnymi", seq: ["😐","🤔","😶","🙄","😑"], grid: ["😐","🤔","😶","🙄","😑","🧐","😬","😕","😒","😴"] },
+  { type: "negatywne", msg: "negatywnymi", seq: ["😢","😠","😭","😩","😡"], grid: ["😢","😠","😭","😩","😡","😖","😞","😣","😤","😔"] }
+];
+
+/* =======================  GENEROWANIE 3 TESTÓW ======================= */
+let startTime;
+
+tests.forEach((test, index) => {
+
+  /* Wprowadzenie przed testem */
+  timeline.push({
+    type: jsPsychHtmlButtonResponse,
+    stimulus: `
+      <h2>Teraz rozpoczniesz test z emotkami ${test.msg}.</h2>
+      <p>Za chwilę zostanie pokazana sekwencja 5 emotek. Spróbuj zapamiętać kolejność.</p>
+    `,
+    choices: ["Rozumiem, zaczynam"]
+  });
+
+  /* Prezentacja emotek */
+  timeline.push({
+    timeline: [
+      { type: jsPsychHtmlKeyboardResponse, stimulus: jsPsych.timelineVariable("e"), choices: "NO_KEYS", trial_duration: 1000 },
+      { type: jsPsychHtmlKeyboardResponse, stimulus: "", choices: "NO_KEYS", trial_duration: 300 }
+    ],
+    timeline_variables: test.seq.map(e => ({ e: `<div style="font-size:70px;">${e}</div>` })),
+    data: { phase: `prezentacja_${test.type}` }
+  });
+
+  /* Drag & drop zadanie */
+  timeline.push({
+    type: jsPsychHtmlButtonResponse,
+    stimulus: () => {
+      let html = `<p>Ułóż emotki we właściwej kolejności:</p><div id="grid">`;
+      test.grid.forEach(e => html += `<div class="emoji-btn" draggable="true">${e}</div>`);
+      html += `</div><div id="slots">`;
+      for (let i = 0; i < 5; i++) html += `<div class="drop-slot"></div>`;
+      html += `</div><button id="finish">Zakończ</button><div id="result"></div>`;
+      return html;
+    },
+    choices: [],
+
+    on_load: () => {
+      let drag;
+      document.querySelectorAll('.emoji-btn').forEach(btn =>
+        btn.addEventListener('dragstart', e => drag = e.target.textContent)
+      );
+
+      document.querySelectorAll('.drop-slot').forEach(slot => {
+        slot.addEventListener('dragover', e => e.preventDefault());
+        slot.addEventListener('drop', e => slot.textContent = drag);
+      });
+
+      /* START TIMER */
+      startTime = performance.now();
+
+      document.getElementById("finish").addEventListener("click", () => {
+        const endTime = performance.now();
+        const reactionTime = ((endTime - startTime) / 1000).toFixed(2);
+
+        const answers = [];
+        let correct = 0;
+        document.querySelectorAll(".drop-slot").forEach((slot, i) => {
+          const e = slot.textContent;
+          answers.push(e);
+          if (e === test.seq[i]) correct++;
+        });
+
+        jsPsych.data.write({
+          phase: `wyniki_${test.type}`,
+          odpowiedzi: answers,
+          poprawne: correct,
+          czas_s: reactionTime
+        });
+
+        document.getElementById("result").innerHTML =
+          `<p>Poprawnych miejsc: <strong>${correct}/5</strong><br>Czas: <strong>${reactionTime} s</strong></p>
+           <button id="next">Dalej</button>`;
+
+        document.getElementById("next").onclick = () => jsPsych.finishTrial();
+      });
+    }
+  });
+
+  /* Pytanie o nastrój PO TEŚCIE */
+  timeline.push({
+    ...mood_question,
+    data: { phase: `nastroj_po_${test.type}` }
+  });
+
+});
+
+timeline.push({
+  type: jsPsychHtmlButtonResponse,
+  stimulus: `<h2>Dziękujemy za udział w badaniu! 💛</h2><p>Twoje odpowiedzi zostały zapisane.</p>`,
+  choices: ["Zakończ"]
+});  
+  
 jsPsych.run(timeline);
 </script>
 </html>
+
 
