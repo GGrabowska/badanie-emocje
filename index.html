@@ -47,6 +47,46 @@ timeline.push({
   choices: ["Zaczynam"]
 });
 
+
+/* 2) Zgoda na udział w badaniu */
+timeline.push({
+  type: jsPsychHtmlButtonResponse,
+  stimulus: `
+    <h2>Zgoda na udział w badaniu</h2>
+
+    <p>Szanowna Pani / Szanowny Panie,</p>
+    <p>Nazywam się Gabriela Grabowska, jestem studentką kierunku psychologii i informatyki 
+    na Wydziale Projektowania Uniwersytetu SWPS w Warszawie. 
+    W ramach mojej pracy licencjackiej pt. <strong>„Wpływ emocji na pamięć krótkotrwałą”</strong>, 
+    realizuję badanie naukowe pod opieką dr Joanny Gutral-Sutherland.</p>
+
+    <p>Celem badania jest sprawdzenie, w jaki sposób emocjonalny charakter bodźców wizualnych 
+    wpływa na funkcjonowanie pamięci krótkotrwałej. Badanie polega na wykonaniu serii zadań poznawczych: 
+    oceny emocji, rozpoznania bodźców oraz odtworzenia ich kolejności.</p>
+
+    <p>Udział w badaniu zajmie około <strong>20 minut</strong>.</p>
+
+    <p>Dane zebrane w trakcie badania są poufne, anonimowe i zostaną wykorzystane wyłącznie do celów naukowych. 
+    Wyniki będą miały charakter zbiorczy, uniemożliwiający identyfikację poszczególnych uczestników.</p>
+
+    <p>Udział w badaniu jest całkowicie dobrowolny. Ma Pan/Pani prawo wycofać się z badania 
+    na każdym jego etapie bez podania przyczyny — bez żadnych konsekwencji.</p>
+
+    <p>W razie pytań proszę o kontakt:<br>
+    <strong>gabcia.grabowska@gmail.com</strong></p>
+
+    <p style="margin-top:25px; font-size:16px;">
+    Klikając przycisk poniżej, potwierdzam, że:<br>
+    • zapoznałem/-am się z powyższymi informacjami,<br>
+    • rozumiem cel i przebieg badania,<br>
+    • wiem, że udział jest dobrowolny i mogę zrezygnować w dowolnym momencie.
+    </p>
+  `,
+  choices: ["Wyrażam zgodę na udział w badaniu"],
+  data: { phase: "zgoda" }
+});
+
+  
 /* Tu będziemy stopniowo dodawać kolejne elementy badania */
 timeline.push({
   type: jsPsychHtmlButtonResponse,
@@ -59,3 +99,4 @@ timeline.push({
 jsPsych.run(timeline);
 </script>
 </html>
+
