@@ -23,7 +23,7 @@
 <body></body>
 
 <script>
-/* Inicjacja jsPsych – TAK MA BYĆ, BEZ onFinish */
+/* Inicjacja jsPsych */
 const jsPsych = initJsPsych({
   on_finish: () => {
     fetch("https://script.google.com/macros/s/AKfycbw8ZgeZoanxg5NnTQH86WYmc01odFuhOB-BlrKpg-ucRLqLW3m9iHa3Np0phv9eWRlM/exec", {
@@ -35,9 +35,9 @@ const jsPsych = initJsPsych({
   }
 });
 
-/* Timeline badania */
 const timeline = [];
 
+/* 1️⃣ Zaproszenie do badania */
 timeline.push({
   type: jsPsychHtmlButtonResponse,
   stimulus: `
@@ -45,13 +45,10 @@ timeline.push({
     <p>Badanie dotyczy emocji i pamięci krótkotrwałej.</p>
     <p>Zajmie około 15–20 minut.</p>
   `,
-  choices: ["Zaczynam"],
-  button_label: "Zaczynam",
-  data: { phase: "intro" }
+  choices: ["Rozpocznij"]
 });
 
-
-/* 2) Zgoda na udział w badaniu */
+/* 2️⃣ Zgoda na udział */
 timeline.push({
   type: jsPsychHtmlButtonResponse,
   stimulus: `
@@ -70,37 +67,59 @@ timeline.push({
     <p>Udział w badaniu zajmie około <strong>20 minut</strong>.</p>
 
     <p>Dane zebrane w trakcie badania są poufne, anonimowe i zostaną wykorzystane wyłącznie do celów naukowych. 
-    Wyniki będą miały charakter zbiorczy, uniemożliwiający identyfikację poszczególnych uczestników.</p>
+    Wyniki będą miały charakter zbiorczy, uniemożliwiający identyfikację uczestników.</p>
 
-    <p>Udział w badaniu jest całkowicie dobrowolny. Ma Pan/Pani prawo wycofać się z badania 
-    na każdym jego etapie bez podania przyczyny — bez żadnych konsekwencji.</p>
+    <p>Udział w badaniu jest dobrowolny. Można wycofać się na każdym etapie — bez konsekwencji.</p>
 
-    <p>W razie pytań proszę o kontakt:<br>
-    <strong>gabcia.grabowska@gmail.com</strong></p>
-
-    <p style="margin-top:25px; font-size:16px;">
-    Klikając przycisk poniżej, potwierdzam, że:<br>
-    • zapoznałem/-am się z powyższymi informacjami,<br>
-    • rozumiem cel i przebieg badania,<br>
-    • wiem, że udział jest dobrowolny i mogę zrezygnować w dowolnym momencie.
+    <p style="margin-top:25px">
+    Klikając przycisk poniżej potwierdzam, że zapoznałem/-am się z informacjami o badaniu, rozumiem jego cel 
+    oraz wiem, że udział jest dobrowolny.
     </p>
   `,
   choices: ["Wyrażam zgodę na udział w badaniu"],
   data: { phase: "zgoda" }
 });
 
-  
-/* Tu będziemy stopniowo dodawać kolejne elementy badania */
+/* 3️⃣ METRYCZKA */
+timeline.push({
+  type: jsPsychSurveyHtmlForm,
+  preamble: `<h2>Metryczka</h2>`,
+  html: `
+    <label>Wiek (wpisz liczbę):<br>
+      <input type="number" name="wiek" min="10" max="100" required>
+    </label><br><br>
+
+    <label>Płeć:</label><br>
+      <input type="radio" name="plec" value="Kobieta" required> Kobieta<br>
+      <input type="radio" name="plec" value="Mężczyzna"> Mężczyzna<br>
+      <input type="radio" name="plec" value="Inna"> Inna<br>
+      <input type="radio" name="plec" value="Wolę nie podawać"> Wolę nie podawać<br><br>
+
+    <label>Wykształcenie:</label><br>
+      <input type="radio" name="wykszt" value="Podstawowe" required> Podstawowe<br>
+      <input type="radio" name="wykszt" value="Średnie"> Średnie<br>
+      <input type="radio" name="wykszt" value="Licencjat/inżynier"> Wyższe (licencjat/inżynier)<br>
+      <input type="radio" name="wykszt" value="Magister / wyżej"> Wyższe (magister lub wyższe)<br><br>
+
+    <label>Czy bierzesz udział w terapii psychologicznej lub psychiatrycznej?</label><br>
+      <input type="radio" name="terapia" value="Tak" required> Tak<br>
+      <input type="radio" name="terapia" value="Nie"> Nie<br>
+      <input type="radio" name="terapia" value="Wolę nie podawać"> Wolę nie podawać<br>
+  `,
+  button_label: "Dalej",
+  data: { phase: "metryczka" }
+});
+
+/* Tymczasowy koniec – dla testów */
 timeline.push({
   type: jsPsychHtmlButtonResponse,
-  stimulus: `<h2>Koniec testowej wersji</h2>
-  <p>Jeśli to okno się wyświetla — badanie działa poprawnie.</p>`,
+  stimulus: `<h2>Jeśli to widzisz — zgoda i metryczka działają poprawnie 🎉</h2>`,
   choices: ["Zakończ"]
 });
 
-/* Start */
 jsPsych.run(timeline);
 </script>
 </html>
+
 
 
