@@ -4,26 +4,15 @@
   <meta charset="UTF-8">
   <title>Badanie: Emocje i pamięć</title>
 
-  <!-- jsPsych -->
   <script src="https://unpkg.com/jspsych@7.3.0"></script>
   <script src="https://unpkg.com/@jspsych/plugin-html-button-response"></script>
-  <script src="https://unpkg.com/@jspsych/plugin-survey-likert"></script>
   <script src="https://unpkg.com/@jspsych/plugin-survey-html-form"></script>
-  <script src="https://unpkg.com/@jspsych/plugin-html-keyboard-response"></script>
   <link href="https://unpkg.com/jspsych@7.3.0/css/jspsych.css" rel="stylesheet" />
-
-  <style>
-    body { background: white; }
-    .emoji-btn { font-size: 48px; cursor: move; user-select: none; padding: 10px; border: 1px solid #ccc; margin: 5px; display: inline-block; }
-    .drop-slot { width: 60px; height: 60px; font-size: 40px; border: 2px dashed #aaa; display: inline-flex; justify-content: center; align-items: center; margin: 5px; }
-    #result { font-weight: bold; text-align: center; margin-top: 20px; }
-  </style>
 </head>
 
 <body></body>
 
 <script>
-/* Inicjacja jsPsych */
 const jsPsych = initJsPsych({
   on_finish: () => {
     fetch("https://script.google.com/macros/s/AKfycbw8ZgeZoanxg5NnTQH86WYmc01odFuhOB-BlrKpg-ucRLqLW3m9iHa3Np0phv9eWRlM/exec", {
@@ -37,7 +26,7 @@ const jsPsych = initJsPsych({
 
 const timeline = [];
 
-/* 1️⃣ Zaproszenie do badania */
+/* 🔹 1 — Zaproszenie */
 timeline.push({
   type: jsPsychHtmlButtonResponse,
   stimulus: `
@@ -48,12 +37,11 @@ timeline.push({
   choices: ["Rozpocznij"]
 });
 
-/* 2️⃣ Zgoda na udział */
+/* 🔹 2 — Zgoda (osobna strona) */
 timeline.push({
-  type: jsPsychHtmlButtonResponse,
-  stimulus: `
-    <h2>Zgoda na udział w badaniu</h2>
-
+  type: jsPsychSurveyHtmlForm,
+  preamble: `<h2>Zgoda na udział w badaniu</h2>`,
+  html: `
     <p>Szanowna Pani / Szanowny Panie,</p>
     <p>Nazywam się Gabriela Grabowska, jestem studentką kierunku psychologii i informatyki 
     na Wydziale Projektowania Uniwersytetu SWPS w Warszawie. 
@@ -71,16 +59,17 @@ timeline.push({
 
     <p>Udział w badaniu jest dobrowolny. Można wycofać się na każdym etapie — bez konsekwencji.</p>
 
-    <p style="margin-top:25px">
-    Klikając przycisk poniżej potwierdzam, że zapoznałem/-am się z informacjami o badaniu, rozumiem jego cel 
-    oraz wiem, że udział jest dobrowolny.
-    </p>
+    <br>
+    <label style="font-size:18px;">
+      <input type="checkbox" name="zgoda" required>
+      ✔ Potwierdzam, że zapoznałem/-am się z informacjami i wyrażam zgodę na udział w badaniu.
+    </label>
   `,
-  choices: ["Wyrażam zgodę na udział w badaniu"],
+  button_label: "Przechodzę dalej",
   data: { phase: "zgoda" }
 });
 
-/* 3️⃣ METRYCZKA */
+/* 🔹 3 — Metryczka (osobna strona) */
 timeline.push({
   type: jsPsychSurveyHtmlForm,
   preamble: `<h2>Metryczka</h2>`,
@@ -110,16 +99,13 @@ timeline.push({
   data: { phase: "metryczka" }
 });
 
-/* Tymczasowy koniec – dla testów */
+/* 🔹 Tymczasowy koniec – test działania */
 timeline.push({
   type: jsPsychHtmlButtonResponse,
-  stimulus: `<h2>Jeśli to widzisz — zgoda i metryczka działają poprawnie 🎉</h2>`,
+  stimulus: `<h2>🎉 Metryczka działa poprawnie – jesteś sztosem</h2>`,
   choices: ["Zakończ"]
 });
 
 jsPsych.run(timeline);
 </script>
 </html>
-
-
-
