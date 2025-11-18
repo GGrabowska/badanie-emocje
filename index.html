@@ -13,19 +13,61 @@
 
   <link href="https://unpkg.com/jspsych@7.3.0/css/jspsych.css" rel="stylesheet" />
 
-  <style>
-    body {
-      background: white;
-    }
+<style>
+body {
+  max-width: 900px;
+  margin: 0 auto;
+  font-size: 20px;
+  line-height: 1.4;
+}
 
-    /* TO JEST GŁÓWNY KONTENER NA BADANIE */
-    #jspsych-target {
-      max-width: 900px;
-      margin: 40px auto;
-      font-size: 20px;
-      line-height: 1.4;
-    }
-  </style>
+.jspsych-content-wrapper {
+  display: flex;
+  justify-content: center;
+}
+
+.jspsych-content {
+  max-width: 900px;
+  margin: 0 auto !important;
+  text-align: left !important;
+  padding: 0 !important;
+}
+
+/* 🔥 UPIĘKSZENIE I WYRÓWNANIE FORMULARZY */
+.jspsych-survey-html-form {
+  width: 100%;
+}
+
+.jspsych-survey-html-form label {
+  display: block;
+  margin: 18px 0 6px;
+  font-weight: 500;
+}
+
+.jspsych-survey-html-form input[type="number"],
+.jspsych-survey-html-form input[type="text"] {
+  width: 250px;
+  padding: 6px 10px;
+  font-size: 18px;
+  margin-top: 4px;
+}
+
+.jspsych-survey-html-form input[type="radio"] {
+  margin-right: 6px;
+  transform: scale(1.2);
+}
+
+.jspsych-survey-html-form br {
+  line-height: 10px;
+}
+
+.jspsych-btn {
+  font-size: 20px !important;
+  padding: 10px 22px !important;
+  margin-top: 30px !important;
+}
+</style>
+
 </head>
 
 <body>
@@ -281,6 +323,7 @@ timeline.push({
 jsPsych.run(timeline);
 </script>
 </html>
+
 
 
 
