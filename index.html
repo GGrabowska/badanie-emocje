@@ -9,7 +9,6 @@
   <script src="https://unpkg.com/@jspsych/plugin-html-button-response"></script>
   <script src="https://unpkg.com/@jspsych/plugin-survey-html-form"></script>
   <script src="https://unpkg.com/@jspsych/plugin-survey-likert"></script>
-  <script src="https://unpkg.com/@jspsych/plugin-survey-likert"></script>
   <link href="https://unpkg.com/jspsych@7.3.0/css/jspsych.css" rel="stylesheet" />
 
 </head>
@@ -143,8 +142,6 @@ timeline.push({
   data: { phase: "zmęczenie_FAS" }
 });
 
-timeline.push({ ...mood_question, data: { phase: "nastroj_przed_testami" } });
-
 /* =======================  PYTANIE O NASTRÓJ ======================= */
 const mood_question = {
   type: jsPsychSurveyLikert,
@@ -155,6 +152,10 @@ const mood_question = {
   button_label: "Dalej",
   data: { phase: "ocena_nastroju" }
 };
+
+  
+timeline.push({ ...mood_question, data: { phase: "nastroj_przed_testami" } });
+
 
 /* =======================  DANE TESTÓW EMOTEK ======================= */
 const tests = [
@@ -260,5 +261,6 @@ timeline.push({
 jsPsych.run(timeline);
 </script>
 </html>
+
 
 
