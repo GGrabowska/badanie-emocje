@@ -38,13 +38,16 @@ const jsPsych = initJsPsych({
 /* Timeline badania */
 const timeline = [];
 
-/* Ekran powitalny */
 timeline.push({
   type: jsPsychHtmlButtonResponse,
-  stimulus: `<h2>Zaproszenie do badania</h2>
-  <p>Badanie dotyczy emocji i pamięci krótkotrwałej.</p>
-  <p>Zajmie około 15–20 minut.</p>`,
-  choices: ["Zaczynam"]
+  stimulus: `
+    <h2>Zaproszenie do badania</h2>
+    <p>Badanie dotyczy emocji i pamięci krótkotrwałej.</p>
+    <p>Zajmie około 15–20 minut.</p>
+  `,
+  choices: ["Zaczynam"],
+  button_label: "Zaczynam",
+  data: { phase: "intro" }
 });
 
 
@@ -99,4 +102,5 @@ timeline.push({
 jsPsych.run(timeline);
 </script>
 </html>
+
 
