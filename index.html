@@ -5,40 +5,37 @@
   <title>Badanie: Emocje i pamięć</title>
 
   <!-- jsPsych i pluginy -->
-<script src="https://unpkg.com/jspsych@7.3.0"></script>
-<script src="https://unpkg.com/@jspsych/plugin-html-button-response"></script>
-<script src="https://unpkg.com/@jspsych/plugin-html-keyboard-response"></script>
-<script src="https://unpkg.com/@jspsych/plugin-survey-html-form"></script>
-<script src="https://unpkg.com/@jspsych/plugin-survey-likert"></script>
+  <script src="https://unpkg.com/jspsych@7.3.0"></script>
+  <script src="https://unpkg.com/@jspsych/plugin-html-button-response"></script>
+  <script src="https://unpkg.com/@jspsych/plugin-html-keyboard-response"></script>
+  <script src="https://unpkg.com/@jspsych/plugin-survey-html-form"></script>
+  <script src="https://unpkg.com/@jspsych/plugin-survey-likert"></script>
 
-<link href="https://unpkg.com/jspsych@7.3.0/css/jspsych.css" rel="stylesheet" />
-<style>
-body {
-  max-width: 900px;
-  margin: 0 auto;
-  font-size: 20px;
-  line-height: 1.4;
-}
+  <link href="https://unpkg.com/jspsych@7.3.0/css/jspsych.css" rel="stylesheet" />
 
-.jspsych-content-wrapper {
-  display: flex;
-  justify-content: center;
-}
+  <style>
+    body {
+      background: white;
+    }
 
-/* ⬇ TU WKLEJ — ZAMIENIA OBECNY BLOK jspsych-content */
-.jspsych-content {
-  max-width: 900px;
-  margin: 0 auto !important;
-  text-align: left !important;
-  padding: 0 !important;
-}
-</style>
+    /* TO JEST GŁÓWNY KONTENER NA BADANIE */
+    #jspsych-target {
+      max-width: 900px;
+      margin: 40px auto;
+      font-size: 20px;
+      line-height: 1.4;
+    }
+  </style>
 </head>
 
-<body></body>
+<body>
+  <!-- tu jsPsych będzie rysował całe badanie -->
+  <div id="jspsych-target"></div>
+</body>
 
 <script>
 const jsPsych = initJsPsych({
+  display_element: 'jspsych-target',   // ⬅ nowość
   on_finish: () => {
     fetch("https://script.google.com/macros/s/AKfycbw8ZgeZoanxg5NnTQH86WYmc01odFuhOB-BlrKpg-ucRLqLW3m9iHa3Np0phv9eWRlM/exec", {
       method: "POST",
@@ -48,6 +45,7 @@ const jsPsych = initJsPsych({
     });
   }
 });
+
 
 const timeline = [];
 
@@ -283,5 +281,6 @@ timeline.push({
 jsPsych.run(timeline);
 </script>
 </html>
+
 
 
