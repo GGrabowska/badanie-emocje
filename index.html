@@ -4,213 +4,58 @@
   <meta charset="UTF-8">
   <title>Badanie: Emocje i pamięć</title>
 
-  <!-- jsPsych i pluginy -->
+  <!-- jsPsych -->
   <script src="https://unpkg.com/jspsych@7.3.0"></script>
   <script src="https://unpkg.com/@jspsych/plugin-html-button-response"></script>
   <script src="https://unpkg.com/@jspsych/plugin-survey-likert"></script>
   <script src="https://unpkg.com/@jspsych/plugin-survey-html-form"></script>
   <script src="https://unpkg.com/@jspsych/plugin-html-keyboard-response"></script>
-  <link href="https://unpkg.com/jspsych@7.3.0/css/jspsych.css" rel="stylesheet"/>
+  <link href="https://unpkg.com/jspsych@7.3.0/css/jspsych.css" rel="stylesheet" />
 
-  <!-- style -->
   <style>
-    .emoji-btn {
-      font-size: 48px;
-      cursor: move;
-      user-select: none;
-      padding: 10px;
-      border: 1px solid #ccc;
-      margin: 5px;
-      display: inline-block;
-    }
-    .drop-slot {
-      width: 60px;
-      height: 60px;
-      font-size: 40px;
-      border: 2px dashed #aaa;
-      display: inline-flex;
-      justify-content: center;
-      align-items: center;
-      margin: 5px;
-    }
-    .correct-place { border: 3px solid green; }
-    .wrong-place { border: 3px solid red; }
-    .correct-emoji-wrong-place { border: 3px solid orange; }
-    #grid, #slots {
-      margin-top: 20px;
-      display: flex;
-      flex-wrap: wrap;
-      justify-content: center;
-    }
-    #result {
-      text-align: center;
-      font-weight: bold;
-      margin-top: 20px;
-    }
+    body { background: white; }
+    .emoji-btn { font-size: 48px; cursor: move; user-select: none; padding: 10px; border: 1px solid #ccc; margin: 5px; display: inline-block; }
+    .drop-slot { width: 60px; height: 60px; font-size: 40px; border: 2px dashed #aaa; display: inline-flex; justify-content: center; align-items: center; margin: 5px; }
+    #result { font-weight: bold; text-align: center; margin-top: 20px; }
   </style>
 </head>
 
-<body>
-<div id="jspsych-target"></div>
+<body></body>
 
 <script>
-/* tu jest najważniejsza zmiana: on_finish w initJsPsych */
+/* Inicjacja jsPsych – TAK MA BYĆ, BEZ onFinish */
 const jsPsych = initJsPsych({
   on_finish: () => {
-    // wysyłanie danych do Google Sheets
     fetch("https://script.google.com/macros/s/AKfycbw8ZgeZoanxg5NnTQH86WYmc01odFuhOB-BlrKpg-ucRLqLW3m9iHa3Np0phv9eWRlM/exec", {
       method: "POST",
       mode: "no-cors",
       headers: { "Content-Type": "application/json" },
       body: jsPsych.data.get().json()
     });
-
-    // jeśli chcesz po badaniu pokazać dane uczestnikowi, odkomentuj:
-    // jsPsych.data.displayData();
   }
 });
 
+/* Timeline badania */
 const timeline = [];
 
-/* 1) Zaproszenie */
+/* Ekran powitalny */
 timeline.push({
   type: jsPsychHtmlButtonResponse,
-  stimulus: `
-    <h2>Zaproszenie do badania</h2>
-    <p>Cześć! Nazywam się Gabriela Grabowska i zapraszam Cię do udziału w badaniu pt.
-    <strong>„Wpływ emocji na pamięć krótkotrwałą”.</strong></p>
-    <p>Badanie potrwa około <strong>20 minut</strong> i jest całkowicie anonimowe.</p>
-  `,
-  choices: ["Dalej"]
+  stimulus: `<h2>Zaproszenie do badania</h2>
+  <p>Badanie dotyczy emocji i pamięci krótkotrwałej.</p>
+  <p>Zajmie około 15–20 minut.</p>`,
+  choices: ["Zaczynam"]
 });
 
-/* 2) Zgoda */
-timeline.push({
-  type: jsPsychSurveyHtmlForm,
-  preamble: `<h3>Zgoda na udział w badaniu</h3>`,
-  html: `<label><input type="checkbox" name="zgoda" required> Wyrażam zgodę na udział w badaniu</label>`,
-  button_label: "Dalej",
-  data: { phase: "zgoda" }
-});
-
-/* 3) Metryczka */
-timeline.push({
-  type: jsPsychSurveyHtmlForm,
-  preamble: `<h3>Metryczka</h3>`,
-  html: `
-    <label>Wiek: <input type="number" name="wiek" min="10" max="100" required /></label><br><br>
-    <label>Płeć:
-      <select name="plec" required>
-        <option value="">-- wybierz --</option>
-        <option>Kobieta</option>
-        <option>Mężczyzna</option>
-        <option>Inna</option>
-        <option>Nie podano</option>
-      </select>
-    </label>
-  `,
-  button_label: "Dalej",
-  data: { phase: "metryczka" }
-});
-
-/* 4) PANAS */
-timeline.push({
-  type: jsPsychSurveyLikert,
-  preamble: `<h3>Kwestionariusz PANAS</h3>`,
-  questions: [
-    { prompt: "Uważny/a", labels: ["1","2","3","4","5"], required: true },
-    { prompt: "Entuzjastyczny/a", labels: ["1","2","3","4","5"], required: true },
-    { prompt: "Przestraszony/a", labels: ["1","2","3","4","5"], required: true },
-    { prompt: "Zawstydzony/a", labels: ["1","2","3","4","5"], required: true },
-    { prompt: "Drażliwy/a", labels: ["1","2","3","4","5"], required: true },
-    { prompt: "Zaniepokojony/a", labels: ["1","2","3","4","5"], required: true },
-    { prompt: "Nerwowy/a", labels: ["1","2","3","4","5"], required: true }
-  ],
-  button_label: "Dalej",
-  data: { phase: "panas" }
-});
-
-/* ---------- TESTY EMOTEK ---------- */
-const tests = [
-  { type: "pozytywny", label: "pozytywnymi", seq: ["😄","😊","😂","🥰","😆"], grid: ["😄","😊","😂","🥰","😆","🤗","😋","😍","🙂","😃"] },
-  { type: "neutralny", label: "neutralnymi", seq: ["😐","🤔","😶","🙄","😑"], grid: ["😐","🤔","😶","🙄","😑","😴","🧐","😬","😕","😒"] },
-  { type: "negatywny", label: "negatywnymi", seq: ["😢","😠","😭","😩","😡"], grid: ["😢","😠","😭","😩","😡","😖","😤","😞","😣","😔"] }
-];
-
-let dragEmoji;
-
-tests.forEach(test => {
-  /* Intro */
-  timeline.push({
-    type: jsPsychHtmlButtonResponse,
-    stimulus: `<p>Test z ${test.label} emotkami.</p><p>Kliknij, aby rozpocząć.</p>`,
-    choices: ["Start"],
-    data: { phase: `intro_${test.type}` }
-  });
-
-  /* Prezentacja emoji */
-  timeline.push({
-    timeline: [
-      { type: jsPsychHtmlKeyboardResponse, stimulus: jsPsych.timelineVariable('e'), choices: "NO_KEYS", trial_duration: 1000 },
-      { type: jsPsychHtmlKeyboardResponse, stimulus: "", choices: "NO_KEYS", trial_duration: 300 }
-    ],
-    timeline_variables: test.seq.map(e => ({ e: `<div style="font-size:64px;">${e}</div>` })),
-    data: { phase: `prezentacja_${test.type}` }
-  });
-
-  /* Drag & Drop */
-  timeline.push({
-    type: jsPsychHtmlButtonResponse,
-    stimulus: () => {
-      let html = `<p>Ułóż emotki we właściwej kolejności:</p><div id="grid">`;
-      test.grid.forEach(e => html += `<div class="emoji-btn" draggable="true">${e}</div>`);
-      html += `</div><div id="slots">`;
-      for (let i=0;i<5;i++) html += `<div class="drop-slot"></div>`;
-      html += `</div><button id="finish">Zakończ</button><div id="result"></div>`;
-      return html;
-    },
-    choices: [],
-    on_load: () => {
-      let start = performance.now();
-
-      document.querySelectorAll('.emoji-btn').forEach(btn =>
-        btn.addEventListener('dragstart', e => dragEmoji = e.target.textContent)
-      );
-
-      document.querySelectorAll('.drop-slot').forEach(slot => {
-        slot.addEventListener('dragover', e => e.preventDefault());
-        slot.addEventListener('drop', e => slot.textContent = dragEmoji);
-      });
-
-      document.getElementById("finish").addEventListener("click", () => {
-        let correct = 0;
-        const answers = [];
-        document.querySelectorAll(".drop-slot").forEach((slot,i) => {
-          const e = slot.textContent;
-          answers.push(e);
-          if (e === test.seq[i]) correct++;
-        });
-
-        jsPsych.data.write({ phase:`test_${test.type}`, answers, correct });
-
-        document.getElementById("result").innerHTML =
-          `<p>Poprawne miejsca: <strong>${correct}/5</strong></p><button id="next">Dalej</button>`;
-        document.getElementById("next").onclick = () => jsPsych.finishTrial();
-      });
-    }
-  });
-});
-
-/* Zakończenie */
+/* Tu będziemy stopniowo dodawać kolejne elementy badania */
 timeline.push({
   type: jsPsychHtmlButtonResponse,
-  stimulus: `<h2>Dziękujemy za udział!</h2><p>To już wszystko.</p>`,
-  choices: ["Zakończ"],
-  data: { phase: "end" }
+  stimulus: `<h2>Koniec testowej wersji</h2>
+  <p>Jeśli to okno się wyświetla — badanie działa poprawnie.</p>`,
+  choices: ["Zakończ"]
 });
 
-/* start badania */
+/* Start */
 jsPsych.run(timeline);
 </script>
-</body>
 </html>
