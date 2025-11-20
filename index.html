@@ -168,9 +168,8 @@ timeline.push({
   `,
   button_label: "Dalej",
   data: { phase: "metryczka" }
+  on_finish: () => jsPsych.clearDisplay()
 });
-
-on_finish: () => jsPsych.clearDisplay()
 
 /* 🔹 Instrukcja całego badania */
 timeline.push({
@@ -329,6 +328,7 @@ timeline.push({
 jsPsych.run(timeline);
 </script>
 </html>
+
 
 
 
