@@ -97,13 +97,37 @@ timeline.push({
   preamble: `<h2>Zgoda na udział w badaniu</h2>`,
   html: `
     <p>Szanowna Pani / Szanowny Panie,</p>
-    <p>Nazywam się Gabriela Grabowska, studiuję na Uniwersytecie SWPS.
-    W ramach mojej pracy licencjackiej pt. <strong>„Wpływ emocji na pamięć krótkotrwałą”</strong>
-    prowadzę niniejsze badanie pod opieką dr Joanny Gutral-Sutherland.</p>
-    <p>Dane są anonimowe, poufne i zostaną wykorzystane wyłącznie do celów naukowych.</p>
-    <label style="font-size:18px;">
+
+    <p>Nazywam się Gabriela Grabowska, jestem studentką kierunku psychologii i informatyki
+    na Wydziale Projektowania Uniwersytetu SWPS w Warszawie. W ramach mojej pracy licencjackiej
+    pt. <strong>„Wpływ emocji na pamięć krótkotrwałą”</strong>, realizuję badanie naukowe pod opieką
+    dr Joanny Gutral-Sutherland.</p>
+
+    <p>Celem badania jest sprawdzenie, w jaki sposób emocjonalny charakter bodźców wizualnych
+    wpływa na funkcjonowanie pamięci krótkotrwałej. Badanie polega na wykonaniu serii zadań
+    poznawczych: oceny emocji, rozpoznania bodźców oraz odtworzenia ich kolejności.</p>
+
+    <p>Udział w badaniu zajmie około <strong>20 minut</strong>.</p>
+
+    <p>Dane zebrane w trakcie badania są poufne, anonimowe i zostaną wykorzystane wyłącznie
+    do celów naukowych. Uzyskane wyniki będą miały charakter zbiorczy, uniemożliwiający
+    identyfikację poszczególnych uczestników.</p>
+
+    <p>Udział w badaniu jest całkowicie dobrowolny. Ma Pan/Pani prawo do wycofania się z badania
+    na każdym jego etapie bez podania przyczyny. Odmowa udziału w badaniu nie wiąże się z żadnymi
+    konsekwencjami.</p>
+
+    <p>W razie pytań lub wątpliwości proszę o kontakt:<br>
+    <strong>gabcia.grabowska@gmail.com</strong></p>
+
+    <p><strong>Klikając „Wyrażam zgodę na udział w badaniu”, potwierdzam, że:</strong><br>
+    • zapoznałem/-am się z powyższymi informacjami,<br>
+    • rozumiem cel i przebieg badania,<br>
+    • wiem, że udział jest dobrowolny i mogę się wycofać w dowolnym momencie.</p>
+
+    <label style="font-size:18px; margin-top:12px;">
       <input type="checkbox" name="zgoda" required>
-      ✔ Potwierdzam zapoznanie się z informacjami i wyrażam zgodę na udział w badaniu.
+      ✔ Wyrażam zgodę na udział w badaniu
     </label>
   `,
   button_label: "Przechodzę dalej",
@@ -252,3 +276,4 @@ timeline.push({
 jsPsych.run(timeline);
 </script>
 </html>
+
