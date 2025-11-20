@@ -66,6 +66,32 @@ body {
   padding: 10px 22px !important;
   margin-top: 30px !important;
 }
+
+/* ⭐ Wyrównanie formularzy Likert do środka */
+.jspsych-survey-likert-question {
+  text-align: center !important;
+  margin-bottom: 45px !important;
+}
+
+/* ⭐ Wyrównanie etykiet pytań (tekstów typu „Zaniepokojony/a”) */
+.jspsych-survey-likert-question > .jspsych-survey-likert-prompt {
+  font-size: 22px;
+  font-weight: 500;
+  display: block;
+  margin-bottom: 12px;
+}
+
+/* ⭐ Upiększenie skali (żeby nie była taka „rozlazła”) */
+.jspsych-survey-likert-opts {
+  margin: 0 auto !important;
+  width: 70% !important;
+}
+
+/* ⭐ Wyśrodkowanie przycisku Dalej */
+.jspsych-btn {
+  display: block !important;
+  margin: 40px auto !important;
+}
 </style>
 
 </head>
@@ -90,14 +116,16 @@ const jsPsych = initJsPsych({
 
 
 const timeline = [];
-
 /* 🔹 1 — Zaproszenie */
 timeline.push({
   type: jsPsychHtmlButtonResponse,
   stimulus: `
-    <h2>Zaproszenie do badania</h2>
-    <p>Badanie dotyczy emocji i pamięci krótkotrwałej.</p>
-    <p>Zajmie około 15–20 minut.</p>
+    <p style="font-size: 22px; margin-bottom: 16px;">Cześć! 😊</p>
+    <p>Zapraszam Cię do udziału w krótkim badaniu dotyczącym tego,
+    jak bodźce emocjonalne w postaci emoji wpływają na pamięć krótkotrwałą.</p>
+    <p>Całość zajmie około <strong>15–20 minut</strong>, a badanie jest całkowicie anonimowe.
+    Twoje odpowiedzi są dla mnie ogromnie pomocne przy pisaniu pracy licencjackiej.</p>
+    <p>Dziękuję, że poświęcasz swój czas — to dla mnie wiele znaczy 💛</p>
   `,
   choices: ["Rozpocznij"]
 });
@@ -323,6 +351,7 @@ timeline.push({
 jsPsych.run(timeline);
 </script>
 </html>
+
 
 
 
