@@ -30,11 +30,7 @@ body {
   text-align: left !important;
   padding: 0 !important;
 }
-.jspsych-survey-html-form label {
-  display: block;
-  margin: 18px 0 6px;
-  font-weight: 500;
-}
+
 .jspsych-survey-html-form input[type="number"],
 .jspsych-survey-html-form input[type="text"] {
   width: 250px;
@@ -57,6 +53,22 @@ body {
 .jspsych-survey-likert-question { text-align: center !important; margin-bottom: 45px !important; }
 .jspsych-survey-likert-prompt { font-size: 22px; font-weight: 500; margin-bottom: 12px; }
 .jspsych-survey-likert-opts { margin: 0 auto !important; width: 70% !important; }
+
+/* 🔧 Naprawa formatowania metryczki */
+.jspsych-survey-html-form label {
+  display: block !important;
+  margin-bottom: 18px !important;
+}
+
+.jspsych-survey-html-form input[type="radio"] {
+  display: inline-block !important;
+  margin: 6px 6px 6px 0 !important;
+}
+
+.jspsych-content {
+  text-align: left !important;
+}
+  
 </style>
 </head>
 
@@ -290,6 +302,7 @@ timeline.push({
 jsPsych.run(timeline);
 </script>
 </html>
+
 
 
 
