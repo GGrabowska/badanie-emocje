@@ -180,6 +180,38 @@ timeline.push({
   data: { phase: "metryczka" }
 });
 
+/* 🔹 Instrukcja całego badania */
+timeline.push({
+  type: jsPsychHtmlButtonResponse,
+  stimulus: `
+    <h2>Instrukcja badania</h2>
+
+    <p>Badanie składa się z kilku etapów:</p>
+
+    <p><strong>1) Kwestionariusz PANAS</strong> — ocenisz, w jakim stopniu odczuwasz w tej chwili różne emocje.</p>
+    <p><strong>2) Kwestionariusz FAS</strong> — odpowiesz na pytania dotyczące poziomu energii i zmęczenia.</p>
+    <p><strong>3) Zadanie próbne</strong> — krótka próba, żeby zapoznać się z zasadami.</p>
+    <p><strong>4) Właściwe badanie</strong> — składające się z trzech rund: emotki pozytywne, neutralne i negatywne.</p>
+
+    <hr style="margin:20px 0;">
+
+    <p><strong>Przebieg pojedynczej rundy:</strong></p>
+    <p>Najpierw zobaczysz sekwencję 5 emotikonów. Każda będzie pokazywana przez <strong>1 sekundę</strong> z przerwą <strong>1 sekundy</strong> między nimi. Spróbuj zapamiętać ich <strong>treść i kolejność</strong>.</p>
+
+    <p>Po krótkiej przerwie zobaczysz <strong>siatkę 10 emotikonów</strong> — 5 znanych i 5 nowych. Twoim zadaniem będzie:</p>
+    <ul style="text-align:left; max-width:800px; margin:0 auto;">
+      <li>wskazać emotikony, które widziałeś/widziałaś wcześniej</li>
+      <li>ułożyć je we właściwej kolejności</li>
+    </ul>
+
+    <p>Nie musisz się spieszyć — możesz pracować w swoim tempie. Ważna jest zarówno poprawność odpowiedzi, jak i czas wykonania zadania.</p>
+
+    <p style="margin-top:25px;">Jeżeli wszystko jest jasne, kliknij przycisk poniżej, aby przejść dalej.</p>
+  `,
+  choices: ["Rozumiem i zaczynam"],
+  data: { phase: "instrukcja" }
+});
+
 /* 🔹 PANAS */
 timeline.push({
   type: jsPsychSurveyLikert,
@@ -305,6 +337,7 @@ timeline.push({
 jsPsych.run(timeline);
 </script>
 </html>
+
 
 
 
