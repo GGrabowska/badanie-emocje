@@ -11,7 +11,7 @@
   <script src="https://unpkg.com/@jspsych/plugin-survey-html-form"></script>
   <script src="https://unpkg.com/@jspsych/plugin-survey-likert"></script>
 
-  <link href="https://unpkg.com/jspsych@7.3.0/css/jspsych.css" rel="stylesheet" />
+  <link href="https://unpkg.com/jspsych@7.3.0/css/jspsych.css" rel="stylesheet">
 
 <style>
 body {
@@ -20,30 +20,21 @@ body {
   font-size: 20px;
   line-height: 1.4;
 }
-
 .jspsych-content-wrapper {
   display: flex;
   justify-content: center;
 }
-
 .jspsych-content {
   max-width: 900px;
   margin: 0 auto !important;
   text-align: left !important;
   padding: 0 !important;
 }
-
-/* 🔥 UPIĘKSZENIE I WYRÓWNANIE FORMULARZY */
-.jspsych-survey-html-form {
-  width: 100%;
-}
-
 .jspsych-survey-html-form label {
   display: block;
   margin: 18px 0 6px;
   font-weight: 500;
 }
-
 .jspsych-survey-html-form input[type="number"],
 .jspsych-survey-html-form input[type="text"] {
   width: 250px;
@@ -51,152 +42,95 @@ body {
   font-size: 18px;
   margin-top: 4px;
 }
-
 .jspsych-survey-html-form input[type="radio"] {
   margin-right: 6px;
   transform: scale(1.2);
 }
-
-.jspsych-survey-html-form br {
-  line-height: 10px;
-}
-
 .jspsych-btn {
   font-size: 20px !important;
   padding: 10px 22px !important;
   margin-top: 30px !important;
-}
-
-/* ⭐ Wyrównanie formularzy Likert do środka */
-.jspsych-survey-likert-question {
-  text-align: center !important;
-  margin-bottom: 45px !important;
-}
-
-/* ⭐ Wyrównanie etykiet pytań (tekstów typu „Zaniepokojony/a”) */
-.jspsych-survey-likert-question > .jspsych-survey-likert-prompt {
-  font-size: 22px;
-  font-weight: 500;
-  display: block;
-  margin-bottom: 12px;
-}
-
-/* ⭐ Upiększenie skali (żeby nie była taka „rozlazła”) */
-.jspsych-survey-likert-opts {
-  margin: 0 auto !important;
-  width: 70% !important;
-}
-
-/* ⭐ Wyśrodkowanie przycisku Dalej */
-.jspsych-btn {
   display: block !important;
-  margin: 40px auto !important;
+  margin-left: auto !important;
+  margin-right: auto !important;
 }
+.jspsych-survey-likert-question { text-align: center !important; margin-bottom: 45px !important; }
+.jspsych-survey-likert-prompt { font-size: 22px; font-weight: 500; margin-bottom: 12px; }
+.jspsych-survey-likert-opts { margin: 0 auto !important; width: 70% !important; }
 </style>
-
 </head>
 
 <body>
-  <!-- tu jsPsych będzie rysował całe badanie -->
   <div id="jspsych-target"></div>
 </body>
 
 <script>
 const jsPsych = initJsPsych({
-  display_element: 'jspsych-target',   // ⬅ nowość
+  display_element: 'jspsych-target',
   on_finish: () => {
     fetch("https://script.google.com/macros/s/AKfycbw8ZgeZoanxg5NnTQH86WYmc01odFuhOB-BlrKpg-ucRLqLW3m9iHa3Np0phv9eWRlM/exec", {
-      method: "POST",
-      mode: "no-cors",
+      method: "POST", mode: "no-cors",
       headers: { "Content-Type": "application/json" },
       body: jsPsych.data.get().json()
     });
   }
 });
 
-
 const timeline = [];
-/* 🔹 1 — Zaproszenie */
+
+/* 🔹 Zaproszenie */
 timeline.push({
   type: jsPsychHtmlButtonResponse,
   stimulus: `
-    <p style="font-size: 22px; margin-bottom: 16px;">Cześć! 😊</p>
-    <p>Zapraszam Cię do udziału w krótkim badaniu dotyczącym tego,
-    jak bodźce emocjonalne w postaci emoji wpływają na pamięć krótkotrwałą.</p>
-    <p>Całość zajmie około <strong>15–20 minut</strong>, a badanie jest całkowicie anonimowe.
-    Twoje odpowiedzi są dla mnie ogromnie pomocne przy pisaniu pracy licencjackiej.</p>
-    <p>Dziękuję, że poświęcasz swój czas — to dla mnie wiele znaczy 💛</p>
+    <p style="font-size:24px; text-align:center;">Cześć! 😊</p>
+    <p style="text-align:center;">Zapraszam Cię do udziału w krótkim badaniu dotyczącym tego,
+    jak bodźce emocjonalne w postaci emoji wpływają na pamięć krótkotrwałą.
+    Udział zajmuje ok. <strong>15–20 min</strong> i jest całkowicie anonimowy.</p>
+    <p style="text-align:center;">Twoje odpowiedzi są dla mnie bardzo ważne przy pisaniu pracy licencjackiej 💛</p>
   `,
   choices: ["Rozpocznij"]
 });
 
-/* 🔹 2 — Zgoda */
+/* 🔹 Zgoda */
 timeline.push({
   type: jsPsychSurveyHtmlForm,
   preamble: `<h2>Zgoda na udział w badaniu</h2>`,
   html: `
     <p>Szanowna Pani / Szanowny Panie,</p>
-    <p>Nazywam się Gabriela Grabowska, jestem studentką kierunku psychologii i informatyki 
-    na Wydziale Projektowania Uniwersytetu SWPS w Warszawie. 
-    W ramach mojej pracy licencjackiej pt. <strong>„Wpływ emocji na pamięć krótkotrwałą”</strong>, 
-    realizuję badanie naukowe pod opieką dr Joanny Gutral-Sutherland.</p>
-
-    <p>Celem badania jest sprawdzenie, w jaki sposób emocjonalny charakter bodźców wizualnych 
-    wpływa na funkcjonowanie pamięci krótkotrwałej. Badanie polega na wykonaniu serii zadań poznawczych: 
-    oceny emocji, rozpoznania bodźców oraz odtworzenia ich kolejności.</p>
-
-    <p>Udział w badaniu zajmie około <strong>20 minut</strong>.</p>
-
-    <p>Dane zebrane w trakcie badania są poufne, anonimowe i zostaną wykorzystane wyłącznie do celów naukowych. 
-    Wyniki będą miały charakter zbiorczy, uniemożliwiający identyfikację uczestników.</p>
-
-    <p>Udział w badaniu jest dobrowolny. Można wycofać się na każdym etapie — bez konsekwencji.</p>
-
-    <br>
+    <p>Nazywam się Gabriela Grabowska, studiuję na Uniwersytecie SWPS.
+    W ramach mojej pracy licencjackiej pt. <strong>„Wpływ emocji na pamięć krótkotrwałą”</strong>
+    prowadzę niniejsze badanie pod opieką dr Joanny Gutral-Sutherland.</p>
+    <p>Dane są anonimowe, poufne i zostaną wykorzystane wyłącznie do celów naukowych.</p>
     <label style="font-size:18px;">
       <input type="checkbox" name="zgoda" required>
-      ✔ Potwierdzam, że zapoznałem/-am się z informacjami i wyrażam zgodę na udział w badaniu.
+      ✔ Potwierdzam zapoznanie się z informacjami i wyrażam zgodę na udział w badaniu.
     </label>
   `,
   button_label: "Przechodzę dalej",
   data: { phase: "zgoda" }
 });
 
-/* 🔹 3 — Metryczka */
+/* 🔹 Metryczka */
 timeline.push({
   type: jsPsychSurveyHtmlForm,
   preamble: `<h2>Metryczka</h2>`,
   html: `
-    <label>Wiek (wpisz liczbę):<br>
-      <input type="number" name="wiek" min="10" max="100" required>
-    </label><br><br>
-
-    <label>Płeć:</label><br>
-      <input type="radio" name="plec" value="Kobieta" required> Kobieta<br>
-      <input type="radio" name="plec" value="Mężczyzna"> Mężczyzna<br>
-      <input type="radio" name="plec" value="Inna"> Inna<br>
-      <input type="radio" name="plec" value="Wolę nie podawać"> Wolę nie podawać<br><br>
-
-    <label>Wykształcenie:</label><br>
-      <input type="radio" name="wykszt" value="Podstawowe" required> Podstawowe<br>
-      <input type="radio" name="wykszt" value="Średnie"> Średnie<br>
-      <input type="radio" name="wykszt" value="Licencjat/inżynier"> Wyższe (licencjat/inżynier)<br>
-      <input type="radio" name="wykszt" value="Magister / wyżej"> Wyższe (magister lub wyższe)<br><br>
-
-    <label>Czy bierzesz udział w terapii psychologicznej lub psychiatrycznej?</label><br>
-      <input type="radio" name="terapia" value="Tak" required> Tak<br>
-      <input type="radio" name="terapia" value="Nie"> Nie<br>
-      <input type="radio" name="terapia" value="Wolę nie podawać"> Wolę nie podawać<br>
+    <label>Wiek:<input type="number" name="wiek" min="10" max="100" required></label>
+    <br><br>
+    <label>Płeć:</label>
+      <input type="radio" name="plec" value="Kobieta" required> Kobieta
+      <input type="radio" name="plec" value="Mężczyzna"> Mężczyzna
+      <input type="radio" name="plec" value="Inna"> Inna
+      <input type="radio" name="plec" value="Wolę nie podawać"> Wolę nie podawać
   `,
   button_label: "Dalej",
   data: { phase: "metryczka" }
 });
 
-/* 🔹 4 — PANAS */
+/* 🔹 PANAS */
 timeline.push({
   type: jsPsychSurveyLikert,
-  preamble: `<h2>Kwestionariusz PANAS</h2>
-  <p>Oceń, w jakim stopniu odczuwasz poniższe emocje w tej chwili.</p>`,
+  preamble: `<h2>Kwestionariusz PANAS</h2><p>Oceń, w jakim stopniu odczuwasz poniższe emocje w tej chwili.</p>`,
   questions: [
     { prompt: "Uważny/a", labels: ["1","2","3","4","5"], required: true },
     { prompt: "Entuzjastyczny/a", labels: ["1","2","3","4","5"], required: true },
@@ -211,75 +145,58 @@ timeline.push({
   data: { phase: "panas" }
 });
 
-/* 🔹 5 — Kwestionariusz zmęczenia FAS */
+/* 🔹 FAS zmęczenie */
 timeline.push({
   type: jsPsychSurveyLikert,
-  preamble: `<h2>Kwestionariusz zmęczenia (FAS)</h2>
-    <p>Poniższe stwierdzenia odnoszą się do Twojego codziennego samopoczucia. Wybierz, jak często je odczuwasz:</p>`,
+  preamble: `<h2>Kwestionariusz zmęczenia (FAS)</h2>`,
   questions: [
-    { prompt: "1. Cierpię z powodu zmęczenia.", labels: ["Nigdy","Czasami","Regularnie","Często","Zawsze"], required: true },
-    { prompt: "2. Męczę się bardzo szybko.", labels: ["Nigdy","Czasami","Regularnie","Często","Zawsze"], required: true },
-    { prompt: "3. Jestem mało aktywny/a w ciągu dnia.", labels: ["Nigdy","Czasami","Regularnie","Często","Zawsze"], required: true },
-    { prompt: "4. Mam dosyć energii do codziennego życia.", labels: ["Nigdy","Czasami","Regularnie","Często","Zawsze"], required: true },
-    { prompt: "5. Fizycznie, czuję się wyczerpany/a.", labels: ["Nigdy","Czasami","Regularnie","Często","Zawsze"], required: true },
-    { prompt: "6. Mam problemy z rozpoczęciem czynności.", labels: ["Nigdy","Czasami","Regularnie","Często","Zawsze"], required: true },
-    { prompt: "7. Mam problemy z jasnym myśleniem.", labels: ["Nigdy","Czasami","Regularnie","Często","Zawsze"], required: true },
-    { prompt: "8. Brakuje mi chęci do zrobienia czegokolwiek.", labels: ["Nigdy","Czasami","Regularnie","Często","Zawsze"], required: true },
-    { prompt: "9. Psychicznie, jestem wyczerpany/a.", labels: ["Nigdy","Czasami","Regularnie","Często","Zawsze"], required: true },
-    { prompt: "10. W trakcie wykonywania czynności koncentruję się całkiem dobrze.", labels: ["Nigdy","Czasami","Regularnie","Często","Zawsze"], required: true }
-  ],
+    "Cierpię z powodu zmęczenia.","Męczę się bardzo szybko.","Jestem mało aktywny/a.","Mam dosyć energii.","Fizycznie czuję się wyczerpany/a.",
+    "Mam problem z rozpoczęciem czynności.","Mam problem z jasnym myśleniem.","Brakuje mi chęci do działania.",
+    "Psychicznie czuję się wyczerpany/a.","W trakcie czynności koncentruję się dobrze."
+  ].map(q => ({ prompt: q, labels: ["Nigdy","Czasami","Regularnie","Często","Zawsze"], required: true })),
   button_label: "Dalej",
-  data: { phase: "zmęczenie_FAS" }
+  data: { phase: "zmeczenie_FAS" }
 });
 
-/* =======================  PYTANIE O NASTRÓJ ======================= */
+/* 🔹 Ocena nastroju */
 const mood_question = {
   type: jsPsychSurveyLikert,
-  preamble: `<h2>Ocena nastroju</h2><p>Jak oceniasz swój obecny nastrój?</p>`,
+  preamble: `<h2>Ocena nastroju</h2><p>Jak oceniasz swój nastrój?</p>`,
   questions: [
     { prompt: "Nastrój", labels: ["1 – bardzo zły","2","3","4","5","6","7 – bardzo dobry"], required: true }
   ],
-  button_label: "Dalej",
-  data: { phase: "ocena_nastroju" }
+  button_label: "Dalej"
 };
-
-  
 timeline.push({ ...mood_question, data: { phase: "nastroj_przed_testami" } });
 
-
-/* =======================  DANE TESTÓW EMOTEK ======================= */
+/* 🔹 Definicje trzech testów */
 const tests = [
   { type: "pozytywne", msg: "pozytywnymi", seq: ["😄","😊","😂","🥰","😆"], grid: ["😄","😊","😂","🥰","😆","🤗","😋","😍","🙂","😃"] },
   { type: "neutralne", msg: "neutralnymi", seq: ["😐","🤔","😶","🙄","😑"], grid: ["😐","🤔","😶","🙄","😑","🧐","😬","😕","😒","😴"] },
   { type: "negatywne", msg: "negatywnymi", seq: ["😢","😠","😭","😩","😡"], grid: ["😢","😠","😭","😩","😡","😖","😞","😣","😤","😔"] }
 ];
 
-/* =======================  GENEROWANIE 3 TESTÓW ======================= */
 let startTime;
 
-tests.forEach((test, index) => {
+/* 🔹 Generowanie 3 testów emotek */
+tests.forEach(test => {
 
-  /* Wprowadzenie przed testem */
   timeline.push({
     type: jsPsychHtmlButtonResponse,
-    stimulus: `
-      <h2>Teraz rozpoczniesz test z emotkami ${test.msg}.</h2>
-      <p>Za chwilę zostanie pokazana sekwencja 5 emotek. Spróbuj zapamiętać kolejność.</p>
-    `,
-    choices: ["Rozumiem, zaczynam"]
+    stimulus: `<h2>Teraz rozpoczniesz test z emotkami ${test.msg}.</h2>
+    <p>Najpierw zobaczysz sekwencję 5 emoji — postaraj się zapamiętać ich kolejność.</p>`,
+    choices: ["Zaczynam"]
   });
 
-  /* Prezentacja emotek */
   timeline.push({
     timeline: [
-      { type: jsPsychHtmlKeyboardResponse, stimulus: jsPsych.timelineVariable("e"), choices: "NO_KEYS", trial_duration: 1000 },
+      { type: jsPsychHtmlKeyboardResponse, stimulus: jsPsych.timelineVariable('e'), choices: "NO_KEYS", trial_duration: 1000 },
       { type: jsPsychHtmlKeyboardResponse, stimulus: "", choices: "NO_KEYS", trial_duration: 300 }
     ],
     timeline_variables: test.seq.map(e => ({ e: `<div style="font-size:70px;">${e}</div>` })),
     data: { phase: `prezentacja_${test.type}` }
   });
 
-  /* Drag & drop zadanie */
   timeline.push({
     type: jsPsychHtmlButtonResponse,
     stimulus: () => {
@@ -291,68 +208,47 @@ tests.forEach((test, index) => {
       return html;
     },
     choices: [],
-
     on_load: () => {
       let drag;
       document.querySelectorAll('.emoji-btn').forEach(btn =>
         btn.addEventListener('dragstart', e => drag = e.target.textContent)
       );
-
       document.querySelectorAll('.drop-slot').forEach(slot => {
         slot.addEventListener('dragover', e => e.preventDefault());
         slot.addEventListener('drop', e => slot.textContent = drag);
       });
 
-      /* START TIMER */
       startTime = performance.now();
-
       document.getElementById("finish").addEventListener("click", () => {
-        const endTime = performance.now();
-        const reactionTime = ((endTime - startTime) / 1000).toFixed(2);
-
+        const rt = ((performance.now() - startTime) / 1000).toFixed(2);
         const answers = [];
         let correct = 0;
-        document.querySelectorAll(".drop-slot").forEach((slot, i) => {
-          const e = slot.textContent;
-          answers.push(e);
-          if (e === test.seq[i]) correct++;
+        document.querySelectorAll(".drop-slot").forEach((slot,i) => {
+          answers.push(slot.textContent);
+          if (slot.textContent === test.seq[i]) correct++;
         });
 
-        jsPsych.data.write({
-          phase: `wyniki_${test.type}`,
-          odpowiedzi: answers,
-          poprawne: correct,
-          czas_s: reactionTime
-        });
+        jsPsych.data.write({ phase:`wyniki_${test.type}`, odpowiedzi:answers, poprawne:correct, czas_s:rt });
 
         document.getElementById("result").innerHTML =
-          `<p>Poprawnych miejsc: <strong>${correct}/5</strong><br>Czas: <strong>${reactionTime} s</strong></p>
+          `<p>Poprawnych miejsc: <strong>${correct}/5</strong><br>Czas: <strong>${rt} s</strong></p>
            <button id="next">Dalej</button>`;
-
         document.getElementById("next").onclick = () => jsPsych.finishTrial();
       });
     }
   });
 
-  /* Pytanie o nastrój PO TEŚCIE */
-  timeline.push({
-    ...mood_question,
-    data: { phase: `nastroj_po_${test.type}` }
-  });
+  timeline.push({ ...mood_question, data: { phase: `nastroj_po_${test.type}` } });
 
 });
 
+/* 🔹 Zakończenie */
 timeline.push({
   type: jsPsychHtmlButtonResponse,
   stimulus: `<h2>Dziękujemy za udział w badaniu! 💛</h2><p>Twoje odpowiedzi zostały zapisane.</p>`,
   choices: ["Zakończ"]
-});  
-  
+});
+
 jsPsych.run(timeline);
 </script>
 </html>
-
-
-
-
-
