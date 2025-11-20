@@ -169,8 +169,9 @@ timeline.push({
   button_label: "Dalej",
   data: { phase: "metryczka" },
   on_finish: () => {
-  document.querySelector("#jspsych-target").innerHTML = "";
+    window.scrollTo(0, 0);
 }
+
 });
   
 
@@ -331,6 +332,7 @@ timeline.push({
 jsPsych.run(timeline);
 </script>
 </html>
+
 
 
 
