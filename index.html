@@ -167,7 +167,7 @@ timeline.push({
       <input type="radio" name="terapia" value="Wolę nie podawać"> Wolę nie podawać<br><br>
   `,
   button_label: "Dalej",
-  data: { phase: "metryczka" }
+  data: { phase: "metryczka" },
   on_finish: () => {
   document.querySelector("#jspsych-target").innerHTML = "";
 }
@@ -331,5 +331,6 @@ timeline.push({
 jsPsych.run(timeline);
 </script>
 </html>
+
 
 
