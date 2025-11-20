@@ -156,22 +156,25 @@ timeline.push({
     </label>
     <br><br>
 
-    <label>Płeć (zaznacz jedną odpowiedź):</label><br>
-      <input type="radio" name="plec" value="Kobieta" required> Kobieta<br>
-      <input type="radio" name="plec" value="Mężczyzna"> Mężczyzna<br>
-      <input type="radio" name="plec" value="Inna"> Inna<br>
-      <input type="radio" name="plec" value="Wolę nie podawać"> Wolę nie podawać<br><br>
+    <label>Płeć (zaznacz jedną odpowiedź):</label>
+      <br><input type="radio" name="plec" value="Kobieta" required> Kobieta
+      <br><input type="radio" name="plec" value="Mężczyzna"> Mężczyzna
+      <br><input type="radio" name="plec" value="Inna"> Inna
+      <br><input type="radio" name="plec" value="Wolę nie podawać"> Wolę nie podawać
+    <br><br>
 
-    <label>Wykształcenie (zaznacz najwyższy ukończony poziom):</label><br>
-      <input type="radio" name="wykszt" value="Podstawowe" required> Podstawowe<br>
-      <input type="radio" name="wykszt" value="Średnie"> Średnie<br>
-      <input type="radio" name="wykszt" value="Wyższe licencjat/inżynier"> Wyższe (licencjat/inżynier)<br>
-      <input type="radio" name="wykszt" value="Wyższe magister/wyżej"> Wyższe (magister lub wyższe)<br><br>
+    <label>Wykształcenie (zaznacz najwyższy ukończony poziom):</label>
+      <br><input type="radio" name="wykszt" value="Podstawowe" required> Podstawowe
+      <br><input type="radio" name="wykszt" value="Średnie"> Średnie
+      <br><input type="radio" name="wykszt" value="Wyższe licencjat/inżynier"> Wyższe (licencjat/inżynier)
+      <br><input type="radio" name="wykszt" value="Wyższe magister/wyżej"> Wyższe (magister lub wyższe)
+    <br><br>
 
-    <label>Czy bierzesz udział w terapii psychologicznej lub psychiatrycznej?</label><br>
-      <input type="radio" name="terapia" value="Tak" required> Tak<br>
-      <input type="radio" name="terapia" value="Nie"> Nie<br>
-      <input type="radio" name="terapia" value="Wolę nie podawać"> Wolę nie podawać<br><br>
+    <label>Czy bierzesz udział w terapii psychologicznej lub psychiatrycznej?</label>
+      <br><input type="radio" name="terapia" value="Tak" required> Tak
+      <br><input type="radio" name="terapia" value="Nie"> Nie
+      <br><input type="radio" name="terapia" value="Wolę nie podawać"> Wolę nie podawać
+    <br><br>
   `,
   button_label: "Dalej",
   data: { phase: "metryczka" }
@@ -302,6 +305,7 @@ timeline.push({
 jsPsych.run(timeline);
 </script>
 </html>
+
 
 
 
