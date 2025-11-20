@@ -88,6 +88,10 @@ const jsPsych = initJsPsych({
   }
 });
 
+jsPsych.on_trial_start(() => {
+  window.scrollTo({ top: 0, behavior: "smooth" });
+});
+  
 const timeline = [];
 
 /* 🔹 Zaproszenie */
@@ -334,6 +338,7 @@ timeline.push({
 jsPsych.run(timeline);
 </script>
 </html>
+
 
 
 
