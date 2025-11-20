@@ -52,7 +52,11 @@ body {
 }
 .jspsych-survey-likert-question { text-align: center !important; margin-bottom: 45px !important; }
 .jspsych-survey-likert-prompt { font-size: 22px; font-weight: 500; margin-bottom: 12px; }
-.jspsych-survey-likert-opts { margin: 0 auto !important; width: 70% !important; }
+.jspsych-survey-likert-opts {
+  width: 100% !important;
+  max-width: 900px;
+  margin: 0 auto;
+}
 
 /* 🔧 Naprawa formatowania metryczki */
 .jspsych-survey-html-form label {
@@ -337,6 +341,7 @@ timeline.push({
 jsPsych.run(timeline);
 </script>
 </html>
+
 
 
 
