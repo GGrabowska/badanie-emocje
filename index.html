@@ -149,30 +149,36 @@ timeline.push({
     </label>
     <br><br>
 
-    <label>Płeć (zaznacz jedną odpowiedź):</label><br>
+    <label>Płeć (zaznacz jedną odpowiedź):<br>
       <input type="radio" name="plec" value="Kobieta" required> Kobieta<br>
       <input type="radio" name="plec" value="Mężczyzna"> Mężczyzna<br>
       <input type="radio" name="plec" value="Inna"> Inna<br>
-      <input type="radio" name="plec" value="Wolę nie podawać"> Wolę nie podawać<br><br>
+      <input type="radio" name="plec" value="Wolę nie podawać"> Wolę nie podawać
+    </label>
+    <br><br>
 
-    <label>Wykształcenie (zaznacz najwyższy ukończony poziom):</label><br>
+    <label>Wykształcenie (zaznacz najwyższy ukończony poziom):<br>
       <input type="radio" name="wykszt" value="Podstawowe" required> Podstawowe<br>
       <input type="radio" name="wykszt" value="Średnie"> Średnie<br>
       <input type="radio" name="wykszt" value="Wyższe licencjat/inżynier"> Wyższe (licencjat/inżynier)<br>
-      <input type="radio" name="wykszt" value="Wyższe magister/wyżej"> Wyższe (magister lub wyższe)<br><br>
+      <input type="radio" name="wykszt" value="Wyższe magister/wyżej"> Wyższe (magister lub wyższe)
+    </label>
+    <br><br>
 
-    <label>Czy bierzesz udział w terapii psychologicznej lub psychiatrycznej?</label><br>
+    <label>
+      Czy bierzesz udział w terapii psychologicznej lub psychiatrycznej?<br>
       <input type="radio" name="terapia" value="Tak" required> Tak<br>
       <input type="radio" name="terapia" value="Nie"> Nie<br>
-      <input type="radio" name="terapia" value="Wolę nie podawać"> Wolę nie podawać<br><br>
+      <input type="radio" name="terapia" value="Wolę nie podawać"> Wolę nie podawać
+    </label>
+    <br><br>
   `,
   button_label: "Dalej",
   data: { phase: "metryczka" },
   on_finish: () => {
     window.scrollTo(0, 0);
-}
+  }
 });
-  
 
 /* 🔹 Instrukcja całego badania */
 timeline.push({
@@ -331,6 +337,7 @@ timeline.push({
 jsPsych.run(timeline);
 </script>
 </html>
+
 
 
 
