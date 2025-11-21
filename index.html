@@ -210,20 +210,9 @@ timeline.push({
 
 /* 🔹 Instrukcja całego badania — poprawiona wersja */
 timeline.push({
-  type: jsPsychHtmlButtonResponse,
-  stimulus: '',
-  choices: [],
-  on_start: () => {
-    document.querySelector('#jspsych-target').innerHTML = ''; // 💣 czyści ekran
-  },
-  on_finish: () => window.scrollTo(0, 0) // ⬆️ przewija do góry
-});
-
-timeline.push({
-  type: jsPsychHtmlButtonResponse,
-  stimulus: `
-    <h2>Instrukcja badania</h2>
-
+  type: jsPsychSurveyHtmlForm,
+  preamble: `<h2>Instrukcja badania</h2>`,
+  html: `
     <p>Badanie składa się z kilku etapów:</p>
 
     <p><strong>1) Kwestionariusz PANAS</strong> — ocenisz, w jakim stopniu odczuwasz w tej chwili różne emocje.</p>
@@ -244,9 +233,9 @@ timeline.push({
 
     <p>Nie musisz się spieszyć — możesz pracować w swoim tempie. Ważna jest zarówno poprawność odpowiedzi, jak i czas wykonania zadania.</p>
 
-    <p style="margin-top:25px;">Jeżeli wszystko jest jasne, kliknij przycisk poniżej, aby przejść dalej.</p>
+    <p style="margin-top:25px;"><strong>Kliknij przycisk „Dalej”, aby przejść do badania.</strong></p>
   `,
-  choices: ["Rozumiem i zaczynam"],
+  button_label: "Rozumiem i zaczynam",
   data: { phase: "instrukcja" }
 });
 
@@ -376,6 +365,7 @@ timeline.push({
 jsPsych.run(timeline);
 </script>
 </html>
+
 
 
 
