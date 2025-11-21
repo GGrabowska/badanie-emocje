@@ -224,26 +224,27 @@ timeline.push({
 const INSTRUKCJA = {
   type: jsPsychHtmlButtonResponse,
   stimulus: `
-    <div style="max-width: 800px; margin: auto; text-align: left; padding: 40px;">
-      <h2 style="text-align:center;">Instrukcja badania</h2>
-      <p><strong>Etapy:</strong></p>
-      <ol>
-        <li>Kwestionariusz PANAS</li>
-        <li>Kwestionariusz FAS</li>
-        <li>Zadanie próbne</li>
-        <li>Właściwe badanie (3 rundy: pozytywne, neutralne, negatywne)</li>
-      </ol>
-      <p>W każdej rundzie:</p>
-      <ul>
-        <li>Zobaczysz 5 emoji – jedno co sekundę</li>
-        <li>Potem siatkę 10 emoji – wybierasz znane i układasz je w kolejności</li>
-      </ul>
-      <p>Nie musisz się spieszyć – ważna jest poprawność i czas.</p>
-    </div>
+    <h2 style="text-align:center;">Instrukcja badania</h2>
+    <p><strong>Etapy:</strong></p>
+    <ol>
+      <li>Kwestionariusz PANAS</li>
+      <li>Kwestionariusz FAS</li>
+      <li>Zadanie próbne</li>
+      <li>Właściwe badanie (3 rundy: pozytywne, neutralne, negatywne)</li>
+    </ol>
+    <p>W każdej rundzie:</p>
+    <ul>
+      <li>Zobaczysz 5 emoji – jedno co sekundę</li>
+      <li>Potem siatkę 10 emoji – wybierasz znane i układasz je w kolejności</li>
+    </ul>
+    <p>Nie musisz się spieszyć – ważna jest poprawność i czas.</p>
   `,
   choices: ["Rozumiem i zaczynam"],
   data: { phase: "instrukcja" }
 };
+
+timeline.push(INSTRUKCJA);
+
 
 
 /* 🔹 PANAS */
@@ -427,6 +428,7 @@ timeline.push({
 jsPsych.run(timeline);
 </script>
 </html>
+
 
 
 
