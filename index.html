@@ -201,9 +201,10 @@ timeline.push({
   `,
   button_label: "Dalej",
   data: { phase: "metryczka" },
-  on_finish: () => {
-    window.scrollTo(0, 0);
-  }
+on_finish: function() {
+  document.getElementById("jspsych-target").scrollIntoView({ behavior: "instant" });
+}
+
 });
 
 /* 🔹 Instrukcja */
@@ -397,6 +398,7 @@ timeline.push({
 jsPsych.run(timeline);
 </script>
 </html>
+
 
 
 
