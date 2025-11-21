@@ -205,7 +205,7 @@ timeline.push({
 
 /* 🔹 Instrukcja */
 timeline.push({
-  type: jsPsychSurveyHtmlForm,
+  type: jsPsychHtmlButtonResponse,  // ✅ poprawny plugin
   stimulus: `
     <div style="max-width: 800px; margin: auto;">
       <h2>Instrukcja badania</h2>
@@ -224,8 +224,8 @@ timeline.push({
       <p>Nie musisz się spieszyć – ważna jest poprawność i czas.</p>
     </div>
   `,
-  button_label: "Rozumiem i zaczynam",
-  data: { phase: "instrukcja" },
+  choices: ["Rozumiem i zaczynam"],
+  data: { phase: "instrukcja" }
 });
 
 
@@ -394,6 +394,7 @@ timeline.push({
 jsPsych.run(timeline);
 </script>
 </html>
+
 
 
 
