@@ -201,15 +201,11 @@ timeline.push({
   `,
   button_label: "Dalej",
   data: { phase: "metryczka" },
-on_finish: function() {
-  document.getElementById("jspsych-target").scrollIntoView({ behavior: "instant" });
-}
-
 });
 
 /* 🔹 Instrukcja */
 timeline.push({
-  type: jsPsychHtmlButtonResponse,
+  type: jsPsychSurveyHtmlForm,
   stimulus: `
     <div style="max-width: 800px; margin: auto;">
       <h2>Instrukcja badania</h2>
@@ -228,9 +224,8 @@ timeline.push({
       <p>Nie musisz się spieszyć – ważna jest poprawność i czas.</p>
     </div>
   `,
-  choices: ["Rozumiem i zaczynam"],
+  button_label: "Rozumiem i zaczynam",
   data: { phase: "instrukcja" },
-  on_start: () => window.scrollTo({ top: 0, behavior: "instant" })
 });
 
 
@@ -399,6 +394,7 @@ timeline.push({
 jsPsych.run(timeline);
 </script>
 </html>
+
 
 
 
