@@ -267,14 +267,43 @@ timeline.push({
 
 /* 🔹 Ocena nastroju */
 const mood_question = {
-  type: jsPsychSurveyLikert,
-  preamble: `<h2>Ocena nastroju</h2><p>Jak oceniasz swój nastrój?</p>`,
-  questions: [
-    { prompt: "Nastrój", labels: ["1 – bardzo zły","2","3","4","5","6","7 – bardzo dobry"], required: true }
-  ],
-  button_label: "Dalej"
+  type: jsPsychSurveyHtmlForm,
+  preamble: `<h2>Ocena nastroju</h2><p style="margin-bottom: 40px;">Jak oceniasz swój nastrój?</p>`,
+  html: `
+    <style>
+      .mood-scale {
+        display: flex;
+        justify-content: space-between;
+        max-width: 600px;
+        margin: 0 auto 40px auto;
+      }
+      .mood-scale label {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        font-size: 16px;
+        text-align: center;
+      }
+      .mood-scale input[type="radio"] {
+        transform: scale(1.4);
+        margin-bottom: 8px;
+      }
+    </style>
+
+    <div class="mood-scale">
+      <label><input type="radio" name="mood" value="1" required><span>1<br>bardzo zły</span></label>
+      <label><input type="radio" name="mood" value="2"><span>2</span></label>
+      <label><input type="radio" name="mood" value="3"><span>3</span></label>
+      <label><input type="radio" name="mood" value="4"><span>4</span></label>
+      <label><input type="radio" name="mood" value="5"><span>5<br>bardzo dobry</span></label>
+    </div>
+  `,
+  button_label: "Dalej",
+  data: { phase: "nastroj_przed_testami" }
 };
-timeline.push({ ...mood_question, data: { phase: "nastroj_przed_testami" } });
+
+timeline.push(mood_question);
+
 
 /* 🔹 Definicje trzech testów */
 const tests = [
@@ -359,6 +388,7 @@ timeline.push({
 jsPsych.run(timeline);
 </script>
 </html>
+
 
 
 
