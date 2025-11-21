@@ -230,8 +230,9 @@ timeline.push({
   `,
   choices: ["Rozumiem i zaczynam"],
   data: { phase: "instrukcja" },
-  on_finish: () => window.scrollTo(0, 0)
+  on_start: () => window.scrollTo({ top: 0, behavior: "instant" })
 });
+
 
 /* 🔹 PANAS */
 timeline.push({
@@ -398,6 +399,7 @@ timeline.push({
 jsPsych.run(timeline);
 </script>
 </html>
+
 
 
 
