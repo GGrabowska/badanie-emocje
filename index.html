@@ -64,12 +64,10 @@ body {
 
 /* 🔹 🔥 NAPRAWIONE skale Likert (PANAS + FAS + ocena nastroju) */
 .jspsych-survey-likert-question {
-  display: flex !important;
-  flex-direction: column !important;
-  align-items: center !important;
   margin-bottom: 45px !important;
-  text-align: center !important;
+  text-align: left !important;
 }
+
 .jspsych-survey-likert-prompt {
   font-size: 22px;
   font-weight: 500;
@@ -77,11 +75,11 @@ body {
 }
 .jspsych-survey-likert-opts {
   display: flex !important;
-  justify-content: space-between !important;
-  gap: 12px;
-  max-width: 550px;
+  justify-content: space-around !important;
+  gap: 8px;
+  max-width: 450px;
   width: 100%;
-  margin: 0 auto !important;
+  margin: 0 !important;
 }
 .jspsych-survey-likert-opts li {
   flex: 1;
@@ -394,6 +392,7 @@ timeline.push({
 jsPsych.run(timeline);
 </script>
 </html>
+
 
 
 
