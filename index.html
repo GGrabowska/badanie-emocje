@@ -68,29 +68,29 @@ body {
   text-align: left !important;
 }
 
-/* 🔹 Skale Likert (PANAS + FAS) poprawiona */
+/* ⭐ Estetyczne skale Likert dla PANAS i FAS */
 .jspsych-survey-likert-opts {
-  max-width: 780px !important;     /* skale będą dłuższe */
-  margin: 0 auto !important;
+  max-width: 700px;               /* dłuższa linia */
+  margin: 0 auto;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.jspsych-survey-likert-opts li {
+  list-style: none;
+  text-align: center;
+  flex-grow: 1;                    /* równy odstęp */
 }
 
 .jspsych-survey-likert-opts input[type="radio"] {
-  transform: scale(1.10);          /* mniejsze „kółka” */
-  margin: 0 6px;
+  transform: scale(1.05);          /* mniejsze kropki */
+  margin-bottom: 4px;
 }
 
 .jspsych-survey-likert-opts label {
-  font-size: 16px !important;       /* mniejsze napisy 1–5 / Nigdy–Zawsze */
+  font-size: 16px;                 /* mniejsze napisy */
   font-weight: 400;
-}
-
-.jspsych-survey-likert-prompt {
-  font-size: 20px !important;       /* pytanie trochę mniejsze */
-  margin-bottom: 10px !important;
-}
-
-.jspsych-survey-likert-question {
-  margin-bottom: 32px !important;   /* mniej pustej przestrzeni między pytaniami */
 }
 
 </style>
@@ -361,6 +361,7 @@ timeline.push({
 jsPsych.run(timeline);
 </script>
 </html>
+
 
 
 
