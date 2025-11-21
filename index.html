@@ -294,16 +294,19 @@ let startTime;
 /* 🔹 Generowanie 3 testów emotek */
 tests.forEach(test => {
 
+timeline.push({ 
+  ...mood_question, 
+  data: { phase: `nastroj_po_${test.type}` } 
+});
+
 timeline.push({
   type: jsPsychHtmlButtonResponse,
-  stimulus: `
-    <div style="margin-top: 120px;">
-      <h2>Teraz rozpoczniesz test z emotkami ${test.msg}.</h2>
-      <p>Najpierw zobaczysz sekwencję 5 emoji — postaraj się zapamiętać ich kolejność.</p>
-    </div>
-  `,
+  stimulus: `<h2>Teraz rozpoczniesz test z emotkami ${test.msg}.</h2>
+  <p>Najpierw zobaczysz sekwencję 5 emoji — postaraj się zapamiętać ich kolejność.</p>`,
   choices: ["Zaczynam"]
 });
+
+
 
   timeline.push({
     timeline: [
@@ -369,19 +372,3 @@ timeline.push({
 jsPsych.run(timeline);
 </script>
 </html>
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
