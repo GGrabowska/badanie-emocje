@@ -205,10 +205,10 @@ timeline.push({
 
 /* 🔹 Instrukcja */
 timeline.push({
-  type: jsPsychSurveyHtmlForm,
-  preamble: `<h2>Instrukcja badania</h2>`,
-  html: `
+  type: jsPsychHtmlButtonResponse,
+  stimulus: `
     <div style="max-width: 800px; margin: auto;">
+      <h2>Instrukcja badania</h2>
       <p><strong>Etapy:</strong></p>
       <ol>
         <li>Kwestionariusz PANAS</li>
@@ -224,7 +224,7 @@ timeline.push({
       <p>Nie musisz się spieszyć – ważna jest poprawność i czas.</p>
     </div>
   `,
-  button_label: "Rozumiem i zaczynam",
+  choices: ["Rozumiem i zaczynam"],
   data: { phase: "instrukcja" }
 });
 
@@ -394,6 +394,7 @@ timeline.push({
 jsPsych.run(timeline);
 </script>
 </html>
+
 
 
 
