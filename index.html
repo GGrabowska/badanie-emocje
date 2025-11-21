@@ -73,11 +73,13 @@ body {
   margin: 0 auto !important;
 }
 
-.jspsych-survey-likert-opts li {
-  transform: scale(1.35);
-  margin: 0 12px;
+.jspsych-survey-likert-opts input[type="radio"] {
+  transform: scale(1.4);
+  margin: 0 8px;
 }
-
+.jspsych-survey-likert-opts label {
+  font-size: 20px;
+}
 </style>
 </head>
 
@@ -346,5 +348,6 @@ timeline.push({
 jsPsych.run(timeline);
 </script>
 </html>
+
 
 
