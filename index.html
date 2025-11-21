@@ -198,7 +198,6 @@ timeline.push({
       <input type="radio" name="terapia" value="Nie"> Nie<br>
       <input type="radio" name="terapia" value="Wolę nie podawać"> Wolę nie podawać
     </label>
-    <br><br>
   `,
   button_label: "Dalej",
   data: { phase: "metryczka" },
@@ -207,7 +206,7 @@ timeline.push({
   }
 });
 
-/* 🔹 Instrukcja całego badania — poprawiona wersja */
+/* 🔹 Instrukcja */
 timeline.push({
   type: jsPsychHtmlButtonResponse,
   stimulus: `
@@ -222,15 +221,15 @@ timeline.push({
       </ol>
       <p>W każdej rundzie:</p>
       <ul>
-        <li>Zobaczysz 5 emoji, jedna co sekundę</li>
+        <li>Zobaczysz 5 emoji – jedno co sekundę</li>
         <li>Potem siatkę 10 emoji – wybierasz znane i układasz je w kolejności</li>
       </ul>
       <p>Nie musisz się spieszyć – ważna jest poprawność i czas.</p>
-      <p>Kliknij, żeby rozpocząć badanie.</p>
     </div>
   `,
   choices: ["Rozumiem i zaczynam"],
-  data: { phase: "instrukcja" }
+  data: { phase: "instrukcja" },
+  on_finish: () => window.scrollTo(0, 0)
 });
 
 /* 🔹 PANAS */
@@ -251,7 +250,7 @@ timeline.push({
   data: { phase: "panas" }
 });
 
-/* 🔹 FAS zmęczenie */
+/* 🔹 FAS */
 timeline.push({
   type: jsPsychSurveyLikert,
   preamble: `<h2>Kwestionariusz zmęczenia (FAS)</h2>`,
@@ -264,22 +263,37 @@ timeline.push({
   data: { phase: "zmeczenie_FAS" }
 });
 
-/* 🔹 Ocena nastroju */
-const mood_question = {
-  type: jsPsychSurveyLikert,
-  preamble: `<h2>Ocena nastroju</h2><p>Jak aktualnie oceniasz swój nastrój?</p>`,
-  questions: [
-    {
-      prompt: "Nastrój",
-      labels: ["1 – bardzo zły", "2", "3", "4", "5 – bardzo dobry"],
-      required: true
-    }
-  ],
-  button_label: "Dalej",
-  data: { phase: "nastroj_przed_testami" }
+/* 🔹 Próbny test emoji */
+const trialTest = {
+  type: jsPsychHtmlButtonResponse,
+  stimulus: `<h2>Zaraz wykonasz zadanie próbne.</h2>
+  <p>Zobaczysz 5 emoji – zapamiętaj ich kolejność.</p>`,
+  choices: ["Zaczynam"]
 };
+timeline.push(trialTest);
 
-timeline.push(mood_question);
+timeline.push({
+  timeline: [
+    { type: jsPsychHtmlKeyboardResponse, stimulus: jsPsych.timelineVariable('e'), choices: "NO_KEYS", trial_duration: 1000 },
+    { type: jsPsychHtmlKeyboardResponse, stimulus: "", choices: "NO_KEYS", trial_duration: 300 }
+  ],
+  timeline_variables: ["🧃", "🍀", "🎧", "🚴", "🛹"].map(e => ({ e: `<div style="font-size:70px;">${e}</div>` })),
+  data: { phase: "probny_test_emoji" }
+});
+
+/* 🔹 Nastrój po próbnym teście */
+timeline.push({
+  type: jsPsychSurveyLikert,
+  preamble: `<h2>Jak aktualnie się czujesz?</h2>`,
+  questions: [{
+    prompt: "Nastrój",
+    labels: ["1 – bardzo zły", "2", "3", "4", "5 – bardzo dobry"],
+    required: true
+  }],
+  button_label: "Dalej",
+  data: { phase: "nastroj_po_probnym" }
+});
+
 
 /* 🔹 Definicje trzech testów */
 const tests = [
@@ -371,4 +385,5 @@ timeline.push({
 jsPsych.run(timeline);
 </script>
 </html>
+
 
