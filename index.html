@@ -21,11 +21,13 @@ body {
   line-height: 1.4;
 }
 
-/* Wyśrodkowanie ekranu */
 .jspsych-content-wrapper {
   display: flex;
   justify-content: center;
+  align-items: center;     /* DODAĆ */
+  height: 100vh;           /* DODAĆ */
 }
+
 .jspsych-content {
   max-width: 900px;
   margin: 0 auto !important;
@@ -338,6 +340,52 @@ timeline.push({
   data: { phase: "probny_test_emoji" }
 });
 
+// 🔹 Zadanie drag&drop po teście próbnym
+timeline.push({
+  type: jsPsychHtmlButtonResponse,
+  stimulus: () => {
+    let html = `<p>Ułóż emotki we właściwej kolejności:</p><div id="grid">`;
+    ["🧃", "🍀", "🎧", "🚴", "🛹", "🥑", "🎲", "🎨", "🧩", "📷"].forEach(e => {
+      html += `<div class="emoji-btn" draggable="true">${e}</div>`;
+    });
+    html += `</div><div id="slots">`;
+    for (let i = 0; i < 5; i++) html += `<div class="drop-slot"></div>`;
+    html += `</div><button id="finish">Zakończ</button><div id="result"></div>`;
+    return html;
+  },
+  choices: [],
+  on_load: () => {
+    let drag;
+    document.querySelectorAll('.emoji-btn').forEach(btn =>
+      btn.addEventListener('dragstart', e => drag = e.target.textContent)
+    );
+    document.querySelectorAll('.drop-slot').forEach(slot => {
+      slot.addEventListener('dragover', e => e.preventDefault());
+      slot.addEventListener('drop', e => slot.textContent = drag);
+    });
+
+    startTime = performance.now();
+    document.getElementById("finish").addEventListener("click", () => {
+      const rt = ((performance.now() - startTime) / 1000).toFixed(2);
+      const answers = [];
+      document.querySelectorAll(".drop-slot").forEach((slot) => {
+        answers.push(slot.textContent);
+      });
+
+      jsPsych.data.write({
+        phase: "wyniki_probny_test",
+        odpowiedzi: answers,
+        czas_s: rt
+      });
+
+      document.getElementById("result").innerHTML =
+        `<p>Twoje odpowiedzi zostały zapisane.<br>Czas: <strong>${rt} s</strong></p>
+         <button id="next">Dalej</button>`;
+      document.getElementById("next").onclick = () => jsPsych.finishTrial();
+    });
+  }
+});
+  
 const mood_question = {
   type: jsPsychSurveyLikert,
   preamble: `<h2>Ocena nastroju</h2><p>Jak aktualnie oceniasz swój nastrój?</p>`,
@@ -350,19 +398,6 @@ const mood_question = {
   ],
   button_label: "Dalej"
 };
-
-/* 🔹 Nastrój po próbnym teście */
-timeline.push({
-  type: jsPsychSurveyLikert,
-  preamble: `<h2>Jak aktualnie się czujesz?</h2>`,
-  questions: [{
-    prompt: "Nastrój",
-    labels: ["1 – bardzo zły", "2", "3", "4", "5 – bardzo dobry"],
-    required: true
-  }],
-  button_label: "Dalej",
-  data: { phase: "nastroj_po_probnym" }
-});
 
 /* 🔹 Definicje trzech testów */
 const tests = [
@@ -454,9 +489,3 @@ timeline.push({
 jsPsych.run(timeline);
 </script>
 </html>
-
-
-
-
-
-
