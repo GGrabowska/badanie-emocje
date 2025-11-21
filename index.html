@@ -20,6 +20,8 @@ body {
   font-size: 20px;
   line-height: 1.4;
 }
+
+/* Wyśrodkowanie ekranu */
 .jspsych-content-wrapper {
   display: flex;
   justify-content: center;
@@ -29,8 +31,14 @@ body {
   margin: 0 auto !important;
   text-align: left !important;
   padding: 40px !important;
+  zoom: 1.12; /* powiększenie wszystkiego */
 }
 
+/* 🔹 Metryczka — poprawne formatowanie pól */
+.jspsych-survey-html-form label {
+  display: block !important;
+  margin-bottom: 18px !important;
+}
 .jspsych-survey-html-form input[type="number"],
 .jspsych-survey-html-form input[type="text"] {
   width: 250px;
@@ -39,9 +47,12 @@ body {
   margin-top: 4px;
 }
 .jspsych-survey-html-form input[type="radio"] {
-  margin-right: 6px;
+  display: inline-block !important;
+  margin: 6px 6px 6px 0 !important;
   transform: scale(1.2);
 }
+
+/* 🔹 Przyciski */
 .jspsych-btn {
   font-size: 20px !important;
   padding: 10px 22px !important;
@@ -50,56 +61,44 @@ body {
   margin-left: auto !important;
   margin-right: auto !important;
 }
-.jspsych-survey-likert-question { text-align: center !important; margin-bottom: 45px !important; }
-.jspsych-survey-likert-prompt { font-size: 22px; font-weight: 500; margin-bottom: 12px; }
 
-/* 🔧 Naprawa formatowania metryczki */
-.jspsych-survey-html-form label {
-  display: block !important;
-  margin-bottom: 18px !important;
+/* 🔹 🔥 NAPRAWIONE skale Likert (PANAS + FAS + ocena nastroju) */
+.jspsych-survey-likert-question {
+  display: flex !important;
+  flex-direction: column !important;
+  align-items: center !important;
+  margin-bottom: 45px !important;
+  text-align: center !important;
 }
-
-.jspsych-survey-html-form input[type="radio"] {
-  display: inline-block !important;
-  margin: 6px 6px 6px 0 !important;
+.jspsych-survey-likert-prompt {
+  font-size: 22px;
+  font-weight: 500;
+  margin-bottom: 18px;
 }
-
-.jspsych-content {
-  text-align: left !important;
-}
-
 .jspsych-survey-likert-opts {
-  max-width: 700px !important;
-  width: 100% !important;
-  margin: 0 auto !important;
   display: flex !important;
   justify-content: space-between !important;
-  align-items: flex-start !important;
-  gap: 10px;
+  gap: 12px;
+  max-width: 550px;
+  width: 100%;
+  margin: 0 auto !important;
 }
-
 .jspsych-survey-likert-opts li {
   flex: 1;
+  list-style-type: none;
   text-align: center;
 }
-
 .jspsych-survey-likert-opts input[type="radio"] {
-  transform: scale(1.05);          /* mniejsze kropki */
-  margin-bottom: 4px;
+  transform: scale(1.3);
+  margin-bottom: 6px;
 }
-
 .jspsych-survey-likert-opts label {
-  font-size: 16px;                 /* mniejsze napisy */
+  font-size: 16px;
   font-weight: 400;
 }
-/* 🔥 Powiększenie całej karty kwestionariuszy */
-.jspsych-content {
-  zoom: 1.12;   /* 1.00 = normalnie, 1.12 = +12% większe */
-}
-
 </style>
-</head>
 
+</head>
 <body>
   <div id="jspsych-target"></div>
 </body>
@@ -372,3 +371,4 @@ timeline.push({
 jsPsych.run(timeline);
 </script>
 </html>
+
