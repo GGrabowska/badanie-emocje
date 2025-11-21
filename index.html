@@ -208,7 +208,17 @@ timeline.push({
   }
 });
 
-/* 🔹 Instrukcja całego badania */
+/* 🔹 Instrukcja całego badania — poprawiona wersja */
+timeline.push({
+  type: jsPsychHtmlButtonResponse,
+  stimulus: '',
+  choices: [],
+  on_start: () => {
+    document.querySelector('#jspsych-target').innerHTML = ''; // 💣 czyści ekran
+  },
+  on_finish: () => window.scrollTo(0, 0) // ⬆️ przewija do góry
+});
+
 timeline.push({
   type: jsPsychHtmlButtonResponse,
   stimulus: `
@@ -239,6 +249,7 @@ timeline.push({
   choices: ["Rozumiem i zaczynam"],
   data: { phase: "instrukcja" }
 });
+
 
 /* 🔹 PANAS */
 timeline.push({
@@ -365,6 +376,7 @@ timeline.push({
 jsPsych.run(timeline);
 </script>
 </html>
+
 
 
 
