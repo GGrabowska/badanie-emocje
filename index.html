@@ -294,6 +294,19 @@ timeline.push({
   data: { phase: "nastroj_po_probnym" }
 });
 
+const mood_question = {
+  type: jsPsychSurveyLikert,
+  preamble: `<h2>Ocena nastroju</h2><p>Jak aktualnie oceniasz swój nastrój?</p>`,
+  questions: [
+    {
+      prompt: "Nastrój",
+      labels: ["1 – bardzo zły", "2", "3", "4", "5 – bardzo dobry"],
+      required: true
+    }
+  ],
+  button_label: "Dalej"
+};
+
 
 /* 🔹 Definicje trzech testów */
 const tests = [
@@ -385,5 +398,6 @@ timeline.push({
 jsPsych.run(timeline);
 </script>
 </html>
+
 
 
