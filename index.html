@@ -52,11 +52,6 @@ body {
 }
 .jspsych-survey-likert-question { text-align: center !important; margin-bottom: 45px !important; }
 .jspsych-survey-likert-prompt { font-size: 22px; font-weight: 500; margin-bottom: 12px; }
-.jspsych-survey-likert-opts {
-  width: 100% !important;
-  max-width: 900px;
-  margin: 0 auto;
-}
 
 /* 🔧 Naprawa formatowania metryczki */
 .jspsych-survey-html-form label {
@@ -73,14 +68,16 @@ body {
   text-align: left !important;
 }
 
-.jspsych-survey-likert-opts li {
-  width: 100% !important;
-  display: flex !important;
-  justify-content: space-between !important;
-  padding: 0 40px !important;
+.jspsych-survey-likert-opts {
+  max-width: 1000px !important;
+  margin: 0 auto !important;
 }
 
-  
+.jspsych-survey-likert-opts label {
+  font-size: 22px !important;
+  padding: 0 12px !important;
+}
+
 </style>
 </head>
 
@@ -349,11 +346,3 @@ timeline.push({
 jsPsych.run(timeline);
 </script>
 </html>
-
-
-
-
-
-
-
-
