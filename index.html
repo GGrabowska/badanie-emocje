@@ -68,18 +68,18 @@ body {
   text-align: left !important;
 }
 
-/* ⭐ Estetyczne skale Likert dla PANAS i FAS */
 .jspsych-survey-likert-opts {
   max-width: 700px !important;
   width: 100% !important;
   margin: 0 auto !important;
   display: flex !important;
   justify-content: space-between !important;
-  align-items: center !important;
+  align-items: flex-start !important;
+  gap: 10px;
 }
 
 .jspsych-survey-likert-opts li {
-  flex-grow: 1;
+  flex: 1;
   text-align: center;
 }
 
@@ -294,12 +294,16 @@ let startTime;
 /* 🔹 Generowanie 3 testów emotek */
 tests.forEach(test => {
 
-  timeline.push({
-    type: jsPsychHtmlButtonResponse,
-    stimulus: `<h2>Teraz rozpoczniesz test z emotkami ${test.msg}.</h2>
-    <p>Najpierw zobaczysz sekwencję 5 emoji — postaraj się zapamiętać ich kolejność.</p>`,
-    choices: ["Zaczynam"]
-  });
+timeline.push({
+  type: jsPsychHtmlButtonResponse,
+  stimulus: `
+    <div style="margin-top: 120px;">
+      <h2>Teraz rozpoczniesz test z emotkami ${test.msg}.</h2>
+      <p>Najpierw zobaczysz sekwencję 5 emoji — postaraj się zapamiętać ich kolejność.</p>
+    </div>
+  `,
+  choices: ["Zaczynam"]
+});
 
   timeline.push({
     timeline: [
@@ -365,6 +369,7 @@ timeline.push({
 jsPsych.run(timeline);
 </script>
 </html>
+
 
 
 
