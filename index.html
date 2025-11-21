@@ -210,9 +210,10 @@ timeline.push({
 
 /* 🔹 Instrukcja całego badania — poprawiona wersja */
 timeline.push({
-  type: jsPsychSurveyHtmlForm,
-  preamble: `<h2>Instrukcja badania</h2>`,
-  html: `
+  type: jsPsychHtmlButtonResponse,
+  stimulus: `
+    <h2>Instrukcja badania</h2>
+
     <p>Badanie składa się z kilku etapów:</p>
 
     <p><strong>1) Kwestionariusz PANAS</strong> — ocenisz, w jakim stopniu odczuwasz w tej chwili różne emocje.</p>
@@ -235,10 +236,9 @@ timeline.push({
 
     <p style="margin-top:25px;"><strong>Kliknij przycisk „Dalej”, aby przejść do badania.</strong></p>
   `,
-  button_label: "Rozumiem i zaczynam",
+  choices: ["Rozumiem i zaczynam"],
   data: { phase: "instrukcja" }
 });
-
 
 /* 🔹 PANAS */
 timeline.push({
@@ -365,6 +365,7 @@ timeline.push({
 jsPsych.run(timeline);
 </script>
 </html>
+
 
 
 
