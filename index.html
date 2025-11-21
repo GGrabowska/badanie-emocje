@@ -281,19 +281,6 @@ timeline.push({
   data: { phase: "probny_test_emoji" }
 });
 
-/* 🔹 Nastrój po próbnym teście */
-timeline.push({
-  type: jsPsychSurveyLikert,
-  preamble: `<h2>Jak aktualnie się czujesz?</h2>`,
-  questions: [{
-    prompt: "Nastrój",
-    labels: ["1 – bardzo zły", "2", "3", "4", "5 – bardzo dobry"],
-    required: true
-  }],
-  button_label: "Dalej",
-  data: { phase: "nastroj_po_probnym" }
-});
-
 const mood_question = {
   type: jsPsychSurveyLikert,
   preamble: `<h2>Ocena nastroju</h2><p>Jak aktualnie oceniasz swój nastrój?</p>`,
@@ -307,6 +294,18 @@ const mood_question = {
   button_label: "Dalej"
 };
 
+/* 🔹 Nastrój po próbnym teście */
+timeline.push({
+  type: jsPsychSurveyLikert,
+  preamble: `<h2>Jak aktualnie się czujesz?</h2>`,
+  questions: [{
+    prompt: "Nastrój",
+    labels: ["1 – bardzo zły", "2", "3", "4", "5 – bardzo dobry"],
+    required: true
+  }],
+  button_label: "Dalej",
+  data: { phase: "nastroj_po_probnym" }
+});
 
 /* 🔹 Definicje trzech testów */
 const tests = [
@@ -398,6 +397,7 @@ timeline.push({
 jsPsych.run(timeline);
 </script>
 </html>
+
 
 
 
