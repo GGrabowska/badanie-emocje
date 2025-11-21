@@ -71,15 +71,25 @@ body {
 .jspsych-survey-likert-opts {
   max-width: 600px !important;
   margin: 0 auto !important;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.jspsych-survey-likert-opts li {
+  list-style: none;
+  text-align: center;
 }
 
 .jspsych-survey-likert-opts input[type="radio"] {
-  transform: scale(1.4);
-  margin: 0 8px;
+  transform: scale(1.25);
+  margin-bottom: 4px;
 }
+
 .jspsych-survey-likert-opts label {
-  font-size: 20px;
+  font-size: 19px;
 }
+
 </style>
 </head>
 
@@ -348,6 +358,7 @@ timeline.push({
 jsPsych.run(timeline);
 </script>
 </html>
+
 
 
 
