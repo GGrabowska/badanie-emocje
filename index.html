@@ -212,29 +212,23 @@ timeline.push({
 timeline.push({
   type: jsPsychHtmlButtonResponse,
   stimulus: `
-    <h2>Instrukcja badania</h2>
-
-    <p>Badanie składa się z kilku etapów:</p>
-
-    <p><strong>1) Kwestionariusz PANAS</strong> — ocenisz, w jakim stopniu odczuwasz w tej chwili różne emocje.</p>
-    <p><strong>2) Kwestionariusz FAS</strong> — odpowiesz na pytania dotyczące poziomu energii i zmęczenia.</p>
-    <p><strong>3) Zadanie próbne</strong> — krótka próba, żeby zapoznać się z zasadami.</p>
-    <p><strong>4) Właściwe badanie</strong> — składające się z trzech rund: emotki pozytywne, neutralne i negatywne.</p>
-
-    <hr style="margin:20px 0;">
-
-    <p><strong>Przebieg pojedynczej rundy:</strong></p>
-    <p>Najpierw zobaczysz sekwencję 5 emotikonów. Każda będzie pokazywana przez <strong>1 sekundę</strong> z przerwą <strong>1 sekundy</strong> między nimi. Spróbuj zapamiętać ich <strong>treść i kolejność</strong>.</p>
-
-    <p>Po krótkiej przerwie zobaczysz <strong>siatkę 10 emotikonów</strong> — 5 znanych i 5 nowych. Twoim zadaniem będzie:</p>
-    <ul style="text-align:left; max-width:800px; margin:0 auto;">
-      <li>wskazać emotikony, które widziałeś/widziałaś wcześniej</li>
-      <li>ułożyć je we właściwej kolejności</li>
-    </ul>
-
-    <p>Nie musisz się spieszyć — możesz pracować w swoim tempie. Ważna jest zarówno poprawność odpowiedzi, jak i czas wykonania zadania.</p>
-
-    <p style="margin-top:25px;"><strong>Kliknij przycisk „Rozumiem i zaczynam”, aby przejść do badania.</strong></p>
+    <div style="max-width: 800px; margin: auto;">
+      <h2>Instrukcja badania</h2>
+      <p><strong>Etapy:</strong></p>
+      <ol>
+        <li>Kwestionariusz PANAS</li>
+        <li>Kwestionariusz FAS</li>
+        <li>Zadanie próbne</li>
+        <li>Właściwe badanie (3 rundy: pozytywne, neutralne, negatywne)</li>
+      </ol>
+      <p>W każdej rundzie:</p>
+      <ul>
+        <li>Zobaczysz 5 emoji, jedna co sekundę</li>
+        <li>Potem siatkę 10 emoji – wybierasz znane i układasz je w kolejności</li>
+      </ul>
+      <p>Nie musisz się spieszyć – ważna jest poprawność i czas.</p>
+      <p>Kliknij, żeby rozpocząć badanie.</p>
+    </div>
   `,
   choices: ["Rozumiem i zaczynam"],
   data: { phase: "instrukcja" }
@@ -365,6 +359,7 @@ timeline.push({
 jsPsych.run(timeline);
 </script>
 </html>
+
 
 
 
