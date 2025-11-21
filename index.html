@@ -76,10 +76,28 @@ body {
 }
 
 .jspsych-survey-likert-opts {
-  display: flex !important;
-  justify-content: flex-start !important;
-  gap: 20px;
-  width: auto;
+  display: block !important;
+  text-align: center;
+  margin: 10px 0 30px 0;
+  position: relative;
+}
+
+.jspsych-survey-likert-opts::before {
+  content: "";
+  position: absolute;
+  top: 50%;
+  left: 8%;
+  width: 84%;
+  height: 2px;
+  background-color: #ccc;
+  z-index: 0;
+}
+
+.jspsych-survey-likert-opts li {
+  display: inline-block;
+  width: 10%;
+  position: relative;
+  z-index: 1;
 }
 
 .jspsych-survey-likert-opts li {
@@ -407,4 +425,5 @@ timeline.push({
 jsPsych.run(timeline);
 </script>
 </html>
+
 
