@@ -114,6 +114,22 @@ body {
   font-size: 14px;
 }
 
+/* 🔹 Wyrównanie skali Likert — linia startuje równo pod pytaniem */
+.jspsych-survey-likert-statement {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+}
+
+.jspsych-survey-likert-question {
+  align-items: flex-start !important;
+}
+
+.jspsych-survey-likert-opts {
+  margin-left: 0 !important;
+}
+
 </style>
 
 </head>
@@ -299,7 +315,8 @@ const trialTest = {
   type: jsPsychHtmlButtonResponse,
   stimulus: `<h2>Zaraz wykonasz zadanie próbne.</h2>
   <p>Zobaczysz 5 emoji – zapamiętaj ich kolejność.</p>`,
-  choices: ["Zaczynam"]
+  choices: ["Zaczynam"],
+  data: { phase: "instrukcja_probna" }
 };
 timeline.push(trialTest);
 
@@ -428,6 +445,7 @@ timeline.push({
 jsPsych.run(timeline);
 </script>
 </html>
+
 
 
 
