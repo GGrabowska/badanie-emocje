@@ -62,35 +62,34 @@ body {
   margin-right: auto !important;
 }
 
-/* 🔹 Naprawione skale Likert (PANAS + FAS + Nastrój) */
+/* 🔹 Poprawione skale Likert (PANAS + FAS) */
 .jspsych-survey-likert-question {
-  margin-bottom: 40px !important;
+  margin-bottom: 32px !important;
   text-align: left !important;
+  align-items: flex-start !important;
 }
 
 .jspsych-survey-likert-prompt {
   font-size: 20px;
-  margin-bottom: 10px;
   font-weight: 500;
+  margin-bottom: 8px;
 }
 
 .jspsych-survey-likert-opts {
   display: flex !important;
-  justify-content: space-between;
-  max-width: 500px;
-  margin: 0;
-  padding: 0;
-  list-style: none;
+  justify-content: flex-start !important;
+  gap: 20px;
+  width: auto;
 }
 
 .jspsych-survey-likert-opts li {
-  flex: 1;
+  list-style: none;
   text-align: center;
 }
 
 .jspsych-survey-likert-opts input[type="radio"] {
   transform: scale(1.2);
-  margin-bottom: 6px;
+  margin-bottom: 4px;
 }
 
 .jspsych-survey-likert-opts label {
@@ -208,23 +207,21 @@ timeline.push({
 timeline.push({
   type: jsPsychHtmlButtonResponse,
   stimulus: `
-    <div style="max-width: 800px; margin: auto;">
-      <h2>Instrukcja badania</h2>
-      <p><strong>Etapy:</strong></p>
-      <ol>
-        <li>Kwestionariusz PANAS</li>
-        <li>Kwestionariusz FAS</li>
-        <li>Zadanie próbne</li>
-        <li>Właściwe badanie (3 rundy: pozytywne, neutralne, negatywne)</li>
-      </ol>
-      <p>W każdej rundzie:</p>
-      <ul>
-        <li>Zobaczysz 5 emoji – jedno co sekundę</li>
-        <li>Potem siatkę 10 emoji – wybierasz znane i układasz je w kolejności</li>
-      </ul>
-      <p>Nie musisz się spieszyć – ważna jest poprawność i czas.</p>
-    </div>
-  `,
+  <h2 style="text-align:center;">Instrukcja badania</h2>
+  <p><strong>Etapy:</strong></p>
+  <ol>
+    <li>Kwestionariusz PANAS</li>
+    <li>Kwestionariusz FAS</li>
+    <li>Zadanie próbne</li>
+    <li>Właściwe badanie (3 rundy: pozytywne, neutralne, negatywne)</li>
+  </ol>
+  <p>W każdej rundzie:</p>
+  <ul>
+    <li>Zobaczysz 5 emoji – jedno co sekundę</li>
+    <li>Potem siatkę 10 emoji – wybierasz znane i układasz je w kolejności</li>
+  </ul>
+  <p>Nie musisz się spieszyć – ważna jest poprawność i czas.</p>
+`
   choices: ["Rozumiem i zaczynam"],
   data: { phase: "instrukcja" }
 });
@@ -395,6 +392,7 @@ timeline.push({
 jsPsych.run(timeline);
 </script>
 </html>
+
 
 
 
