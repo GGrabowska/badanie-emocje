@@ -163,7 +163,6 @@ body {
   box-shadow: 1px 1px 5px rgba(0,0,0,0.1);
 }
 
-
 .emoji-btn {
   font-size: 48px;
   cursor: grab;
@@ -176,6 +175,13 @@ body {
 
 .emoji-btn:active {
   cursor: grabbing;
+}
+
+#grid {
+  display: grid;
+  grid-template-columns: repeat(5, 1fr);
+  gap: 20px;
+  justify-content: center;
 }
 
 #slots {
@@ -196,6 +202,18 @@ body {
   background-color: #f9f9f9;
 }
 
+.slot-wrapper {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.slot-number {
+  font-size: 18px;
+  font-weight: bold;
+  margin-bottom: 4px;
+}
+
 #result {
   text-align: center;
   margin-top: 30px;
@@ -208,7 +226,6 @@ body {
   padding: 10px 24px;
   font-size: 18px;
 }
-
 
 </style>
 
@@ -336,13 +353,10 @@ const INSTRUKCJA = {
     <p>Nie musisz się spieszyć – ważna jest poprawność i czas.</p>
   `,
   choices: ["Rozumiem i zaczynam"],
-  data: { phase: "instrukcja" }, 
-  on_start: () => window.scrollTo(0, 0)
+  post_trial_gap: 500,  // <–– dodaj to
+  on_start: () => window.scrollTo(0, 0),
+  data: { phase: "instrukcja" }
 };
-
-timeline.push(INSTRUKCJA);
-
-
 
 /* 🔹 PANAS */
 timeline.push({
@@ -390,6 +404,13 @@ timeline.push({
   data: { phase: "zmeczenie_FAS" }
 });
 
+timeline.push({
+  type: jsPsychHtmlButtonResponse,
+  stimulus: `<p>Za chwilę rozpocznie się zadanie próbne.</p>`,
+  choices: ["Kontynuuj"],
+  data: { phase: "przejscie_do_probnego" },
+  on_start: () => window.scrollTo(0, 0)
+});
 
 /* 🔹 Zadanie próbne — osobna strona z instrukcją */
 timeline.push({
@@ -441,47 +462,65 @@ timeline.push({
 // 🔹 Zadanie drag&drop po teście próbnym
 timeline.push({
   type: jsPsychHtmlButtonResponse,
-  stimulus: () => {
-    let html = `<p>Ułóż emotki we właściwej kolejności:</p><div id="grid">`;
+stimulus: () => {
+  let html = `<p>Ułóż emotki we właściwej kolejności:</p>
+              <button id="show-grid">Pokaż siatkę emotek</button>
+              <div id="grid" style="display:none;">`;
     ["🧃", "🍀", "🎧", "🚴", "🛹", "🥑", "🎲", "🎨", "🧩", "📷"].forEach(e => {
       html += `<div class="emoji-btn" draggable="true">${e}</div>`;
     });
-    html += `</div><div id="slots">`;
-    for (let i = 0; i < 5; i++) html += `<div class="drop-slot"></div>`;
+html += `</div><div id="slots" style="display:none;">`;
+for (let i = 0; i < 5; i++) {
+  html += `<div class="slot-wrapper">
+             <span class="slot-number">${i + 1}</span>
+             <div class="drop-slot"></div>
+           </div>`;
+}
     html += `</div><button id="finish">Zakończ</button><div id="result"></div>`;
     return html;
   },
   choices: [],
-  on_load: () => {
-    let drag;
-    document.querySelectorAll('.emoji-btn').forEach(btn =>
-      btn.addEventListener('dragstart', e => drag = e.target.textContent)
-    );
-    document.querySelectorAll('.drop-slot').forEach(slot => {
-      slot.addEventListener('dragover', e => e.preventDefault());
-      slot.addEventListener('drop', e => slot.textContent = drag);
+on_load: () => {
+  let drag;
+  document.querySelectorAll('.emoji-btn').forEach(btn =>
+    btn.addEventListener('dragstart', e => drag = e.target.textContent)
+  );
+
+  document.getElementById("finish").style.display = "none";
+
+  document.getElementById("show-grid").addEventListener("click", () => {
+    document.getElementById("grid").style.display = "grid";
+    document.getElementById("slots").style.display = "flex";
+    document.getElementById("finish").style.display = "block";
+    document.getElementById("show-grid").style.display = "none";
+
+    startTime = performance.now(); // ✅ czas startuje dopiero po kliknięciu
+  });
+
+  document.querySelectorAll('.drop-slot').forEach(slot => {
+    slot.addEventListener('dragover', e => e.preventDefault());
+    slot.addEventListener('drop', e => slot.textContent = drag);
+  });
+
+  document.getElementById("finish").addEventListener("click", () => {
+    const rt = ((performance.now() - startTime) / 1000).toFixed(2);
+    const answers = [];
+    document.querySelectorAll(".drop-slot").forEach((slot) => {
+      answers.push(slot.textContent);
     });
 
-    startTime = performance.now();
-    document.getElementById("finish").addEventListener("click", () => {
-      const rt = ((performance.now() - startTime) / 1000).toFixed(2);
-      const answers = [];
-      document.querySelectorAll(".drop-slot").forEach((slot) => {
-        answers.push(slot.textContent);
-      });
-
-      jsPsych.data.write({
-        phase: "wyniki_probny_test",
-        odpowiedzi: answers,
-        czas_s: rt
-      });
-
-      document.getElementById("result").innerHTML =
-        `<p>Twoje odpowiedzi zostały zapisane.<br>Czas: <strong>${rt} s</strong></p>
-         <button id="next">Dalej</button>`;
-      document.getElementById("next").onclick = () => jsPsych.finishTrial();
+    jsPsych.data.write({
+      phase: "wyniki_probny_test",
+      odpowiedzi: answers,
+      czas_s: rt
     });
-  }
+
+    document.getElementById("result").innerHTML =
+      `<p>Twoje odpowiedzi zostały zapisane.<br>Czas: <strong>${rt} s</strong></p>
+       <button id="next">Dalej</button>`;
+    document.getElementById("next").onclick = () => jsPsych.finishTrial();
+  });
+}
 });
   
 /* 🔹 Definicje trzech testów */
@@ -538,46 +577,65 @@ tests.forEach(test => {
   });
 
   // 4. Zadanie drag&drop
-  timeline.push({
-    type: jsPsychHtmlButtonResponse,
-    stimulus: () => {
-      let html = `<p>Ułóż emotki we właściwej kolejności:</p><div id="grid">`;
-      test.grid.forEach(e => html += `<div class="emoji-btn" draggable="true">${e}</div>`);
-      html += `</div><div id="slots">`;
-      for (let i = 0; i < 5; i++) html += `<div class="drop-slot"></div>`;
-      html += `</div><button id="finish">Zakończ</button><div id="result"></div>`;
-      return html;
-    },
-    choices: [],
-    on_load: () => {
-      let drag;
-      document.querySelectorAll('.emoji-btn').forEach(btn =>
-        btn.addEventListener('dragstart', e => drag = e.target.textContent)
-      );
-      document.querySelectorAll('.drop-slot').forEach(slot => {
-        slot.addEventListener('dragover', e => e.preventDefault());
-        slot.addEventListener('drop', e => slot.textContent = drag);
-      });
-
-      startTime = performance.now();
-      document.getElementById("finish").addEventListener("click", () => {
-        const rt = ((performance.now() - startTime) / 1000).toFixed(2);
-        const answers = [];
-        let correct = 0;
-        document.querySelectorAll(".drop-slot").forEach((slot,i) => {
-          answers.push(slot.textContent);
-          if (slot.textContent === test.seq[i]) correct++;
-        });
-
-        jsPsych.data.write({ phase:`wyniki_${test.type}`, odpowiedzi:answers, poprawne:correct, czas_s:rt });
-
-        document.getElementById("result").innerHTML =
-          `<p>Poprawnych miejsc: <strong>${correct}/5</strong><br>Czas: <strong>${rt} s</strong></p>
-           <button id="next">Dalej</button>`;
-        document.getElementById("next").onclick = () => jsPsych.finishTrial();
-      });
+// 4. Zadanie drag&drop — z przyciskiem "Pokaż siatkę emotek"
+timeline.push({
+  type: jsPsychHtmlButtonResponse,
+  stimulus: () => {
+    let html = `<p>Ułóż emotki we właściwej kolejności:</p>
+                <button id="show-grid">Pokaż siatkę emotek</button>
+                <div id="grid" style="display:none;">`;
+    test.grid.forEach(e => html += `<div class="emoji-btn" draggable="true">${e}</div>`);
+    html += `</div><div id="slots" style="display:none;">`;
+    for (let i = 0; i < 5; i++) {
+      html += `<div class="slot-wrapper">
+                 <span class="slot-number">${i + 1}</span>
+                 <div class="drop-slot"></div>
+               </div>`;
     }
-  });
+    html += `</div><button id="finish">Zakończ</button><div id="result"></div>`;
+    return html;
+  },
+  choices: [],
+  on_load: () => {
+    let drag;
+    document.querySelectorAll('.emoji-btn').forEach(btn =>
+      btn.addEventListener('dragstart', e => drag = e.target.textContent)
+    );
+
+    document.getElementById("finish").style.display = "none";
+
+    document.getElementById("show-grid").addEventListener("click", () => {
+      document.getElementById("grid").style.display = "grid";
+      document.getElementById("slots").style.display = "flex";
+      document.getElementById("finish").style.display = "block";
+      document.getElementById("show-grid").style.display = "none";
+
+      startTime = performance.now(); // ✅ start liczenia czasu dopiero po kliknięciu
+    });
+
+    document.querySelectorAll('.drop-slot').forEach(slot => {
+      slot.addEventListener('dragover', e => e.preventDefault());
+      slot.addEventListener('drop', e => slot.textContent = drag);
+    });
+
+    document.getElementById("finish").addEventListener("click", () => {
+      const rt = ((performance.now() - startTime) / 1000).toFixed(2);
+      const answers = [];
+      let correct = 0;
+      document.querySelectorAll(".drop-slot").forEach((slot,i) => {
+        answers.push(slot.textContent);
+        if (slot.textContent === test.seq[i]) correct++;
+      });
+
+      jsPsych.data.write({ phase:`wyniki_${test.type}`, odpowiedzi:answers, poprawne:correct, czas_s:rt });
+
+      document.getElementById("result").innerHTML =
+        `<p>Poprawnych miejsc: <strong>${correct}/5</strong><br>Czas: <strong>${rt} s</strong></p>
+         <button id="next">Dalej</button>`;
+      document.getElementById("next").onclick = () => jsPsych.finishTrial();
+    });
+  }
+});
 
   // 5. Pytanie PO TEŚCIE
   timeline.push({
@@ -585,7 +643,6 @@ tests.forEach(test => {
     preamble: `<h2>Jak się czujesz po wykonaniu testu z emotkami ${test.msg}?</h2>`,
     data: { phase: `nastroj_po_${test.type}` }
   });
-
 });
 
  
@@ -599,5 +656,6 @@ timeline.push({
 jsPsych.run(timeline);
 </script>
 </html>
+
 
 
