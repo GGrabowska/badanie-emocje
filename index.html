@@ -23,7 +23,7 @@ body {
 html, body {
   margin: 0;
   padding: 0;
-  overflow-x: hidden;  /* ⛔️ blokuje poziome przewijanie */
+  overflow-x: hidden; 
   overflow-y: auto;
   width: 100%;
   height: 100%;
@@ -102,8 +102,8 @@ html, body {
   content: "";
   position: absolute;
   top: 50%;
-  left: 0;
-  width: 100%;
+  left: 10%;
+  right: 10%;
   height: 2px;
   background-color: #ccc;
   z-index: 0;
@@ -127,7 +127,8 @@ html, body {
 }
 
 .jspsych-survey-likert-opts label {
-  font-size: 14px;
+  font-size: 18px;
+  font-weight: 500;
 }
 
 /* 🔹 Wyrównanie skali Likert — linia startuje równo pod pytaniem */
@@ -701,7 +702,13 @@ timeline.push({
 });
 
 jsPsych.run(timeline);
+// 🔄 Automatyczny scroll do góry po każdej nowej stronie
+jsPsych.pluginAPI.registerPreloadCallback(() => {
+  window.scrollTo(0, 0);
+});
+
 </script>
 </html>
+
 
 
