@@ -99,8 +99,17 @@ html, body {
   list-style: none;
   max-width: 500px;
   margin-left: 0 !important; /* ⬅️ PRZESUWA SZARY PASEK DO LEWEJ */
+}.jspsych-survey-likert-opts {
+  display: flex !important;
+  justify-content: space-between;
+  gap: 10px;
+  margin-bottom: 30px;
+  padding: 0;
+  list-style: none;
+  max-width: 500px;
+  margin-left: auto !important;  /* ✅ WYŚRODKOWANIE LINII */
+  margin-right: auto !important; /* ✅ WYŚRODKOWANIE LINII */
 }
-
 
 /* Każda opcja (kółko + etykieta) */
 .jspsych-survey-likert-opts li {
@@ -697,6 +706,7 @@ jsPsych.pluginAPI.registerPreloadCallback(() => {
 
 </script>
 </html>
+
 
 
 
