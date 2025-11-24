@@ -78,53 +78,51 @@ html, body {
 }
 
 /* 🔹 Poprawione skale Likert (PANAS + FAS) */
-/* 🔹 Poprawione skale Likert (PANAS + FAS) */
 .jspsych-survey-likert-question {
-  margin-bottom: 32px !important;
+  margin-bottom: 40px !important;
   text-align: left !important;
 }
 
 .jspsych-survey-likert-statement {
-  margin-bottom: 10px;
+  margin-bottom: 12px;
   font-weight: 500;
 }
 
-/* Kontener opcji Likert */
 .jspsych-survey-likert-opts {
-  display: flex !important;
+  display: flex;
   justify-content: space-between;
-  gap: 10px;
-  margin-bottom: 30px;
+  position: relative;
+  width: 100%;
+  max-width: 500px;
+  margin: 0 auto 30px auto;
   padding: 0;
   list-style: none;
-  max-width: 500px;
-  margin-left: 0 !important; /* ⬅️ PRZESUWA SZARY PASEK DO LEWEJ */
-}.jspsych-survey-likert-opts {
-  display: flex !important;
-  justify-content: space-between;
-  gap: 10px;
-  margin-bottom: 30px;
-  padding: 0;
-  list-style: none;
-  max-width: 500px;
-  margin-left: auto !important;  /* ✅ WYŚRODKOWANIE LINII */
-  margin-right: auto !important; /* ✅ WYŚRODKOWANIE LINII */
+  background: #ccc;
+  height: 2px;
 }
 
-/* Każda opcja (kółko + etykieta) */
 .jspsych-survey-likert-opts li {
+  position: relative;
   flex: 1;
   text-align: center;
+  height: 50px; /* wysokość dla inputa + labelki */
 }
 
 .jspsych-survey-likert-opts input[type="radio"] {
-  display: block;
-  margin: 0 auto 6px auto;
-  transform: scale(1.4);
+  position: absolute;
+  top: -12px;
+  left: 50%;
+  transform: translateX(-50%) scale(1.3);
+  z-index: 2;
 }
 
 .jspsych-survey-likert-opts label {
+  position: absolute;
+  top: 22px;
+  left: 50%;
+  transform: translateX(-50%);
   font-size: 16px;
+  z-index: 2;
 }
 
 /* 🔹 Wyrównanie skali Likert — linia startuje równo pod pytaniem */
@@ -230,6 +228,10 @@ body {
   overflow-x: hidden !important;
 }
 
+body.lock-scroll {
+  overflow: hidden !important;
+}
+
 </style>
 
 </head>
@@ -268,7 +270,10 @@ timeline.push({
     Udział zajmuje ok. <strong>15–20 min</strong> i jest całkowicie anonimowy.</p>
     <p style="text-align:center;">Twoje odpowiedzi są dla mnie bardzo ważne przy pisaniu pracy licencjackiej 💛</p>
   `,
-  choices: ["Rozpocznij"]
+  choices: ["Rozpocznij"],
+  on_start: () => document.body.classList.add("lock-scroll"),
+  on_finish: () => document.body.classList.remove("lock-scroll")
+
 });
 
 /* 🔹 Zgoda */
@@ -372,7 +377,9 @@ const INSTRUKCJA = {
   choices: ["Rozumiem i zaczynam"],
   post_trial_gap: 500, 
   data: { phase: "instrukcja" },
-  on_start: () => window.scrollTo(0, 0),
+  on_start: () => document.body.classList.add("lock-scroll"),
+  on_finish: () => document.body.classList.remove("lock-scroll")
+
 };
 
 timeline.push(INSTRUKCJA);
@@ -452,7 +459,9 @@ timeline.push({
   `,
   choices: ["Rozpocznij zadanie próbne"],
   data: { phase: "instrukcja_probna" },
-  on_start: () => window.scrollTo(0, 0),
+  on_start: () => document.body.classList.add("lock-scroll"),
+  on_finish: () => document.body.classList.remove("lock-scroll")
+
   post_trial_gap: 500
 });
 timeline.push(clear_screen);
@@ -470,7 +479,10 @@ timeline.push({
       type: jsPsychHtmlKeyboardResponse, 
       stimulus: "", 
       choices: "NO_KEYS", 
-      trial_duration: 300 
+      trial_duration: 300,
+      on_start: () => document.body.classList.add("lock-scroll"),
+      on_finish: () => document.body.classList.remove("lock-scroll")
+
     }
   ],
   timeline_variables: ["🧃", "🍀", "🎧", "🚴", "🛹"].map(e => ({ 
@@ -550,7 +562,8 @@ timeline.push({
     <p>Weź oddech i przygotuj się 🙂</p>
     <p>Pojawi się teraz pytanie o Twój aktualny nastrój.</p>`,
   choices: ["Rozpocznij badanie"],
-  on_start: () => window.scrollTo(0, 0),
+  on_start: () => document.body.classList.add("lock-scroll"),
+  on_finish: () => document.body.classList.remove("lock-scroll")
   on_load: () => window.scrollTo(0, 0),
   data: { phase: "przejscie_do_glownego" },
   post_trial_gap: 500
@@ -573,7 +586,9 @@ timeline.push({
   ...mood_question,
   preamble: `<h2>Jak się aktualnie czujesz?</h2><p>Odpowiedz zanim rozpoczniesz pierwszą rundę badania.</p>`,
   data: { phase: "nastroj_przed_pozytywne" },
-  on_start: () => window.scrollTo(0, 0)
+  on_start: () => document.body.classList.add("lock-scroll"),
+  on_finish: () => document.body.classList.remove("lock-scroll")
+
 });
 timeline.push(clear_screen);
   
@@ -600,8 +615,8 @@ tests.forEach(test => {
   // 2. Prezentacja emoji
   timeline.push({
     timeline: [
-      { type: jsPsychHtmlKeyboardResponse, stimulus: jsPsych.timelineVariable('e'), choices: "NO_KEYS", trial_duration: 1000 },
-      { type: jsPsychHtmlKeyboardResponse, stimulus: "", choices: "NO_KEYS", trial_duration: 300 }
+      { type: jsPsychHtmlKeyboardResponse, stimulus: jsPsych.timelineVariable('e'), choices: "NO_KEYS", trial_duration: 1000, on_start: () => document.body.classList.add("lock-scroll"), on_finish: () => document.body.classList.remove("lock-scroll") },
+      { type: jsPsychHtmlKeyboardResponse, stimulus: "", choices: "NO_KEYS", trial_duration: 300, on_start: () => document.body.classList.add("lock-scroll"), on_finish: () => document.body.classList.remove("lock-scroll") }
     ],
     timeline_variables: test.seq.map(e => ({ e: `<div style="font-size:70px;">${e}</div>` })),
     data: { phase: `prezentacja_${test.type}` }
@@ -672,7 +687,8 @@ tests.forEach(test => {
     ...mood_question,
     preamble: `<h2>Jak się czujesz po wykonaniu testu z emotkami ${test.msg}?</h2>`,
     data: { phase: `nastroj_po_${test.type}` },
-    on_start: () => window.scrollTo(0, 0)
+    on_start: () => document.body.classList.add("lock-scroll"),
+    on_finish: () => document.body.classList.remove("lock-scroll")
   });
   timeline.push(clear_screen);
 });
@@ -706,6 +722,7 @@ jsPsych.pluginAPI.registerPreloadCallback(() => {
 
 </script>
 </html>
+
 
 
 
