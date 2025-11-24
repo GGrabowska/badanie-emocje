@@ -102,8 +102,8 @@ html, body {
   content: "";
   position: absolute;
   top: 50%;
-  left: 8%;
-  width: 84%;
+  left: 0;
+  width: 100%;
   height: 2px;
   background-color: #ccc;
   z-index: 0;
@@ -355,20 +355,22 @@ timeline.push(clear_screen);
 const INSTRUKCJA = {
   type: jsPsychHtmlButtonResponse,
   stimulus: `
-    <h2 style="text-align:center;">Instrukcja badania</h2>
+  <div style="max-width: 700px; margin: 0 auto; text-align: left;">
+    <h2 style="text-align: center;">Instrukcja badania</h2>
     <p><strong>Etapy:</strong></p>
-    <ol>
+    <ol style="padding-left: 20px;">
       <li>Kwestionariusz PANAS</li>
       <li>Kwestionariusz FAS</li>
       <li>Zadanie próbne</li>
       <li>Właściwe badanie (3 rundy: pozytywne, neutralne, negatywne)</li>
     </ol>
-    <p>W każdej rundzie:</p>
-    <ul>
+    <p><strong>W każdej rundzie:</strong></p>
+    <ul style="padding-left: 20px; list-style-type: disc;">
       <li>Zobaczysz 5 emoji – jedno co sekundę</li>
       <li>Potem siatkę 10 emoji – wybierasz znane i układasz je w kolejności</li>
     </ul>
     <p>Nie musisz się spieszyć – ważna jest poprawność i czas.</p>
+  </div>
   `,
   choices: ["Rozumiem i zaczynam"],
   post_trial_gap: 500, 
@@ -700,3 +702,4 @@ timeline.push({
 jsPsych.run(timeline);
 </script>
 </html>
+
