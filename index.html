@@ -358,9 +358,7 @@ const INSTRUKCJA = {
   post_trial_gap: 500,  // <–– dodaj to
   data: { phase: "instrukcja" },
   on_start: () => window.scrollTo(0, 0)
-};
-  
-timeline.push(INSTRUKCJA);
+}; 
   
 /* 🔹 PANAS */
 timeline.push({
@@ -409,6 +407,8 @@ timeline.push({
   data: { phase: "zmeczenie_FAS" },
   on_start: () => window.scrollTo(0, 0)
 });
+
+timeline.push(INSTRUKCJA); 
 
 /* 🔹 Zadanie próbne — osobna strona z instrukcją */
 timeline.push({
@@ -660,6 +660,7 @@ timeline.push({
 jsPsych.run(timeline);
 </script>
 </html>
+
 
 
 
