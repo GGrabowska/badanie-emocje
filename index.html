@@ -532,6 +532,19 @@ timeline.push({
   data: { phase: "przejscie_do_glownego" }
 });
 
+const mood_question = {
+  type: jsPsychSurveyLikert,
+  preamble: `<h2>Ocena nastroju</h2><p>Jak aktualnie oceniasz swój nastrój?</p>`,
+  questions: [
+    {
+      prompt: "Nastrój",
+      labels: ["1 – bardzo zły", "2", "3", "4", "5 – bardzo dobry"],
+      required: true
+    }
+  ],
+  button_label: "Dalej"
+};
+
 timeline.push({
   ...mood_question,
   preamble: `<h2>Jak się aktualnie czujesz?</h2><p>Odpowiedz zanim rozpoczniesz pierwszą rundę badania.</p>`,
@@ -548,9 +561,9 @@ const tests = [
 
 let startTime;
 
-/* 🔹 Generowanie 3 testów emotek */
+tests.forEach(test => {
 
-  // 2. Instrukcja do konkretnego testu
+  // 1. Instrukcja dla konkretnego testu
   timeline.push({
     type: jsPsychHtmlButtonResponse,
     stimulus: `<h2>Teraz rozpoczniesz test z emotkami ${test.msg}.</h2>
@@ -558,7 +571,7 @@ let startTime;
     choices: ["Zaczynam"]
   });
 
-  // 3. Prezentacja emoji
+  // 2. Prezentacja emoji
   timeline.push({
     timeline: [
       { type: jsPsychHtmlKeyboardResponse, stimulus: jsPsych.timelineVariable('e'), choices: "NO_KEYS", trial_duration: 1000 },
@@ -568,75 +581,76 @@ let startTime;
     data: { phase: `prezentacja_${test.type}` }
   });
 
-  // 4. Zadanie drag&drop
-// 4. Zadanie drag&drop — z przyciskiem "Pokaż siatkę emotek"
-timeline.push({
-  type: jsPsychHtmlButtonResponse,
-  stimulus: () => {
-    let html = `<p>Ułóż emotki we właściwej kolejności:</p>
-                <button id="show-grid">Pokaż siatkę emotek</button>
-                <div id="grid" style="display:none;">`;
-    test.grid.forEach(e => html += `<div class="emoji-btn" draggable="true">${e}</div>`);
-    html += `</div><div id="slots" style="display:none;">`;
-    for (let i = 0; i < 5; i++) {
-      html += `<div class="slot-wrapper">
-                 <span class="slot-number">${i + 1}</span>
-                 <div class="drop-slot"></div>
-               </div>`;
-    }
-    html += `</div><button id="finish">Zakończ</button><div id="result"></div>`;
-    return html;
-  },
-  choices: [],
-  on_load: () => {
-    let drag;
-    document.querySelectorAll('.emoji-btn').forEach(btn =>
-      btn.addEventListener('dragstart', e => drag = e.target.textContent)
-    );
+  // 3. Drag&Drop
+  timeline.push({
+    type: jsPsychHtmlButtonResponse,
+    stimulus: () => {
+      let html = `<p>Ułóż emotki we właściwej kolejności:</p>
+                  <button id="show-grid">Pokaż siatkę emotek</button>
+                  <div id="grid" style="display:none;">`;
+      test.grid.forEach(e => html += `<div class="emoji-btn" draggable="true">${e}</div>`);
+      html += `</div><div id="slots" style="display:none;">`;
+      for (let i = 0; i < 5; i++) {
+        html += `<div class="slot-wrapper">
+                   <span class="slot-number">${i + 1}</span>
+                   <div class="drop-slot"></div>
+                 </div>`;
+      }
+      html += `</div><button id="finish">Zakończ</button><div id="result"></div>`;
+      return html;
+    },
+    choices: [],
+    on_load: () => {
+      let drag;
+      document.querySelectorAll('.emoji-btn').forEach(btn =>
+        btn.addEventListener('dragstart', e => drag = e.target.textContent)
+      );
 
-    document.getElementById("finish").style.display = "none";
+      document.getElementById("finish").style.display = "none";
 
-    document.getElementById("show-grid").addEventListener("click", () => {
-      document.getElementById("grid").style.display = "grid";
-      document.getElementById("slots").style.display = "flex";
-      document.getElementById("finish").style.display = "block";
-      document.getElementById("show-grid").style.display = "none";
+      document.getElementById("show-grid").addEventListener("click", () => {
+        document.getElementById("grid").style.display = "grid";
+        document.getElementById("slots").style.display = "flex";
+        document.getElementById("finish").style.display = "block";
+        document.getElementById("show-grid").style.display = "none";
 
-      startTime = performance.now(); // ✅ start liczenia czasu dopiero po kliknięciu
-    });
-
-    document.querySelectorAll('.drop-slot').forEach(slot => {
-      slot.addEventListener('dragover', e => e.preventDefault());
-      slot.addEventListener('drop', e => slot.textContent = drag);
-    });
-
-    document.getElementById("finish").addEventListener("click", () => {
-      const rt = ((performance.now() - startTime) / 1000).toFixed(2);
-      const answers = [];
-      let correct = 0;
-      document.querySelectorAll(".drop-slot").forEach((slot,i) => {
-        answers.push(slot.textContent);
-        if (slot.textContent === test.seq[i]) correct++;
+        startTime = performance.now();
       });
 
-      jsPsych.data.write({ phase:`wyniki_${test.type}`, odpowiedzi:answers, poprawne:correct, czas_s:rt });
+      document.querySelectorAll('.drop-slot').forEach(slot => {
+        slot.addEventListener('dragover', e => e.preventDefault());
+        slot.addEventListener('drop', e => slot.textContent = drag);
+      });
 
-      document.getElementById("result").innerHTML =
-        `<p>Poprawnych miejsc: <strong>${correct}/5</strong><br>Czas: <strong>${rt} s</strong></p>
-         <button id="next">Dalej</button>`;
-      document.getElementById("next").onclick = () => jsPsych.finishTrial();
-    });
-  }
-});
+      document.getElementById("finish").addEventListener("click", () => {
+        const rt = ((performance.now() - startTime) / 1000).toFixed(2);
+        const answers = [];
+        let correct = 0;
+        document.querySelectorAll(".drop-slot").forEach((slot,i) => {
+          answers.push(slot.textContent);
+          if (slot.textContent === test.seq[i]) correct++;
+        });
 
-  // 5. Pytanie PO TEŚCIE
+        jsPsych.data.write({ phase:`wyniki_${test.type}`, odpowiedzi:answers, poprawne:correct, czas_s:rt });
+
+        document.getElementById("result").innerHTML =
+          `<p>Poprawnych miejsc: <strong>${correct}/5</strong><br>Czas: <strong>${rt} s</strong></p>
+           <button id="next">Dalej</button>`;
+        document.getElementById("next").onclick = () => jsPsych.finishTrial();
+      });
+    }
+  });
+
+  // 4. Pytanie o nastrój po każdej rundzie
   timeline.push({
     ...mood_question,
     preamble: `<h2>Jak się czujesz po wykonaniu testu z emotkami ${test.msg}?</h2>`,
     data: { phase: `nastroj_po_${test.type}` },
     on_start: () => window.scrollTo(0, 0)
   });
+
 });
+
 
  
 /* 🔹 Zakończenie */
@@ -650,5 +664,6 @@ timeline.push({
 jsPsych.run(timeline);
 </script>
 </html>
+
 
 
