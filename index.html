@@ -33,12 +33,11 @@ html, body {
 }
 
 .jspsych-content-wrapper {
+  height: auto;
+  min-height: 100vh;
   display: flex;
+  flex-direction: column;
   justify-content: center;
-  padding: 30px;
-  overflow-x: hidden;
-  max-width: 100vw;
-  box-sizing: border-box;
 }
 
 .jspsych-content {
@@ -92,33 +91,29 @@ html, body {
 }
 
 .jspsych-survey-likert-opts {
-  display: block !important;
-  text-align: center;
-  margin: 10px 0 30px 0;
+  display: flex !important;
+  justify-content: space-between;
   position: relative;
+  margin: 10px 0 30px 0;
 }
 
 .jspsych-survey-likert-opts::before {
   content: "";
   position: absolute;
   top: 50%;
-  left: 10%;
-  right: 10%;
+  left: 0;
+  right: 0;
   height: 2px;
   background-color: #ccc;
   z-index: 0;
 }
 
 .jspsych-survey-likert-opts li {
-  display: inline-block;
-  width: 10%;
-  position: relative;
-  z-index: 1;
-}
-
-.jspsych-survey-likert-opts li {
   list-style: none;
   text-align: center;
+  z-index: 1;
+  width: auto !important;
+  flex: 1;
 }
 
 .jspsych-survey-likert-opts input[type="radio"] {
@@ -152,10 +147,10 @@ html, body {
   min-height: 100vh;
   display: flex;
   flex-direction: column;
+  justify-content: center;
   align-items: center;
-  justify-content: flex-start;
-  overflow-y: auto;
   padding: 40px 20px;
+  box-sizing: border-box;
 }
 
 .emoji-btn {
@@ -555,6 +550,7 @@ timeline.push({
     <p>Pojawi się teraz pytanie o Twój aktualny nastrój.</p>`,
   choices: ["Rozpocznij badanie"],
   on_start: () => window.scrollTo(0, 0),
+  on_load: () => window.scrollTo(0, 0),
   data: { phase: "przejscie_do_glownego" },
   post_trial_gap: 500
 });
@@ -709,6 +705,7 @@ jsPsych.pluginAPI.registerPreloadCallback(() => {
 
 </script>
 </html>
+
 
 
 
