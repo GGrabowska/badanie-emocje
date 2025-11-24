@@ -78,42 +78,42 @@ html, body {
 }
 
 /* 🔹 Poprawione skale Likert (PANAS + FAS) */
+/* 🔹 Poprawione skale Likert (PANAS + FAS) */
 .jspsych-survey-likert-question {
   margin-bottom: 32px !important;
   text-align: left !important;
 }
 
 .jspsych-survey-likert-statement {
-  width: 100%;
-  display: flex;
-  flex-direction: column;
-  align-items: stretch;
+  margin-bottom: 10px;
+  font-weight: 500;
 }
 
+/* Kontener opcji Likert */
 .jspsych-survey-likert-opts {
   display: flex !important;
   justify-content: space-between;
   gap: 10px;
-  margin: 10px 0 30px 0;
-  padding: 0 20px;
-  position: relative;
+  margin: 0 auto 30px auto;
+  max-width: 500px;
+  padding: 0;
+  list-style: none;
 }
 
+/* Każda opcja (kółko + etykieta) */
 .jspsych-survey-likert-opts li {
-  list-style: none;
   flex: 1;
   text-align: center;
 }
 
 .jspsych-survey-likert-opts input[type="radio"] {
-  margin-bottom: 5px;
-  transform: scale(1.3);
+  display: block;
+  margin: 0 auto 6px auto;
+  transform: scale(1.4);
 }
 
 .jspsych-survey-likert-opts label {
-  display: block;
-  font-size: 18px;
-  font-weight: 500;
+  font-size: 16px;
 }
 
 /* 🔹 Wyrównanie skali Likert — linia startuje równo pod pytaniem */
@@ -695,6 +695,7 @@ jsPsych.pluginAPI.registerPreloadCallback(() => {
 
 </script>
 </html>
+
 
 
 
