@@ -550,21 +550,6 @@ let startTime;
 
 /* 🔹 Generowanie 3 testów emotek */
 
-const mood_question = {
-  type: jsPsychSurveyLikert,
-  preamble: `<h2>Ocena nastroju</h2><p>Jak aktualnie oceniasz swój nastrój?</p>`,
-  questions: [
-    {
-      prompt: "Nastrój",
-      labels: ["1 – bardzo zły", "2", "3", "4", "5 – bardzo dobry"],
-      required: true
-    }
-  ],
-  button_label: "Dalej"
-};
-
-tests.forEach(test => {
-
   // 2. Instrukcja do konkretnego testu
   timeline.push({
     type: jsPsychHtmlButtonResponse,
@@ -665,4 +650,5 @@ timeline.push({
 jsPsych.run(timeline);
 </script>
 </html>
+
 
