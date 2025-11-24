@@ -29,8 +29,9 @@ html, body {
 }
 
 .jspsych-content-wrapper {
+  width: 100%;
   padding: 30px;
-  min-height: auto;
+  text-align: center;
 }
 
 .jspsych-content {
@@ -140,8 +141,6 @@ html, body {
 /* Zmiana: każda próba zajmuje cały ekran */
 #jspsych-target {
   min-height: 100vh;
-  height: 100vh;
-  overflow: hidden;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -689,6 +688,7 @@ timeline.push({
 jsPsych.run(timeline);
 </script>
 </html>
+
 
 
 
