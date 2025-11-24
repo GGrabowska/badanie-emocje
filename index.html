@@ -549,7 +549,11 @@ on_load: () => {
     document.getElementById("result").innerHTML =
       `<p>Twoje odpowiedzi zostały zapisane.<br>Czas: <strong>${rt} s</strong></p>
        <button id="next">Dalej</button>`;
-    document.getElementById("next").onclick = () => jsPsych.finishTrial();
+    document.getElementById("next").onclick = () => {
+    document.getElementById("jspsych-target").innerHTML = ""; // ⬅️ Czyścimy DOM
+      jsPsych.finishTrial();
+};
+
   });
 }
 });
@@ -678,7 +682,11 @@ tests.forEach(test => {
         document.getElementById("result").innerHTML =
           `<p>Poprawnych miejsc: <strong>${correct}/5</strong><br>Czas: <strong>${rt} s</strong></p>
            <button id="next">Dalej</button>`;
-        document.getElementById("next").onclick = () => jsPsych.finishTrial();
+       document.getElementById("next").onclick = () => {
+         document.getElementById("jspsych-target").innerHTML = "";
+         jsPsych.finishTrial();
+};
+
       });
     }
   });
@@ -723,6 +731,7 @@ jsPsych.pluginAPI.registerPreloadCallback(() => {
 
 </script>
 </html>
+
 
 
 
