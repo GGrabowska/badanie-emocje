@@ -40,11 +40,12 @@ html, body {
   margin: 0 auto !important;
   text-align: left !important;
   padding: 40px !important;
-  zoom: 1.12; /* powiększenie wszystkiego */
-  min-height: 100vh;  
-  display: flex;     
-  flex-direction: column; 
+  zoom: 1.12;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
   justify-content: center;
+  overflow: hidden;
 }
 
 /* 🔹 Metryczka — poprawne formatowanie pól */
@@ -146,9 +147,11 @@ html, body {
 /* Zmiana: każda próba zajmuje cały ekran */
 #jspsych-target {
   min-height: 100vh;
-  overflow-y: auto;
+  height: 100vh;
+  overflow: hidden;
   display: flex;
   align-items: center;
+  justify-content: center;
 }
 
 #grid {
@@ -160,18 +163,6 @@ html, body {
   max-width: 700px;
   margin-left: auto;
   margin-right: auto;
-}
-
-.emoji-btn {
-  font-size: 56px;
-  width: 70px;
-  height: 70px;
-  text-align: center;
-  line-height: 70px;
-  border: 2px solid #ddd;
-  border-radius: 8px;
-  background-color: #fff;
-  box-shadow: 1px 1px 5px rgba(0,0,0,0.1);
 }
 
 .emoji-btn {
@@ -376,10 +367,9 @@ const INSTRUKCJA = {
     <p>Nie musisz się spieszyć – ważna jest poprawność i czas.</p>
   `,
   choices: ["Rozumiem i zaczynam"],
-  post_trial_gap: 500,  // <–– dodaj to
+  post_trial_gap: 500, 
   data: { phase: "instrukcja" },
   on_start: () => window.scrollTo(0, 0),
-  post_trial_gap: 500
 }; 
 timeline.push(INSTRUKCJA);
 timeline.push(clear_screen);
@@ -706,4 +696,5 @@ timeline.push({
 jsPsych.run(timeline);
 </script>
 </html>
+
 
