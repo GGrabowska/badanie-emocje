@@ -125,20 +125,21 @@ html, body {
   z-index: 2;
 }
 
-/* 🔹 Wyrównanie skali Likert — linia startuje równo pod pytaniem */
-.jspsych-survey-likert-statement {
-  width: 100%;
-  display: flex;
-  flex-direction: column;
-  align-items: stretch;
-}
-
 .jspsych-survey-likert-question {
-  align-items: flex-start !important;
+  text-align: center !important;
 }
 
 .jspsych-survey-likert-opts {
-  margin-left: 0 !important;
+  display: flex;
+  justify-content: space-between;
+  position: relative;
+  width: 100%;
+  max-width: 600px;
+  margin: 16px auto 40px auto;
+  padding: 0;
+  list-style: none;
+  background: #ccc;
+  height: 2px;
 }
   
 /* Zmiana: każda próba zajmuje cały ekran */
@@ -722,6 +723,7 @@ jsPsych.pluginAPI.registerPreloadCallback(() => {
 
 </script>
 </html>
+
 
 
 
