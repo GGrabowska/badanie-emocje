@@ -28,18 +28,17 @@ html, body {
 }
 
 .jspsych-content-wrapper {
-  width: 100%;
+  display: flex;
+  justify-content: center;
   padding: 30px;
-  text-align: center;
+  overflow-x: hidden; /* usuwa przewijanie poziome */
 }
 
 .jspsych-content {
-  width: 100% !important;
-  max-width: none !important;
-  margin: 0 auto !important;
-  text-align: center !important;
-  padding: 40px !important;
-  zoom: 1.12;
+  max-width: 800px;
+  width: 100%;
+  padding: 40px;
+  text-align: center;
   box-sizing: border-box;
 }
 
@@ -692,6 +691,7 @@ timeline.push({
 jsPsych.run(timeline);
 </script>
 </html>
+
 
 
 
