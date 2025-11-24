@@ -34,6 +34,11 @@ body {
   text-align: left !important;
   padding: 40px !important;
   zoom: 1.12; /* powiększenie wszystkiego */
+  min-height: 100vh;  
+  display: flex;     
+  flex-direction: column; 
+  justify-content: center;
+}
 }
 
 /* 🔹 Metryczka — poprawne formatowanie pól */
@@ -648,6 +653,8 @@ tests.forEach(test => {
     data: { phase: `nastroj_po_${test.type}` },
     on_start: () => window.scrollTo(0, 0)
   });
+});
+
  
 /* 🔹 Zakończenie */
 timeline.push({
@@ -660,6 +667,7 @@ timeline.push({
 jsPsych.run(timeline);
 </script>
 </html>
+
 
 
 
