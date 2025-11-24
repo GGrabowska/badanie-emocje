@@ -94,11 +94,13 @@ html, body {
   display: flex !important;
   justify-content: space-between;
   gap: 10px;
-  margin: 0 auto 30px auto;
-  max-width: 500px;
+  margin-bottom: 30px;
   padding: 0;
   list-style: none;
+  max-width: 500px;
+  margin-left: 0 !important; /* ⬅️ PRZESUWA SZARY PASEK DO LEWEJ */
 }
+
 
 /* Każda opcja (kółko + etykieta) */
 .jspsych-survey-likert-opts li {
@@ -695,6 +697,7 @@ jsPsych.pluginAPI.registerPreloadCallback(() => {
 
 </script>
 </html>
+
 
 
 
