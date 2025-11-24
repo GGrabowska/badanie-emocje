@@ -20,6 +20,13 @@ body {
   font-size: 20px;
   line-height: 1.4;
 }
+  
+html, body {
+  margin: 0;
+  padding: 0;
+  overflow: hidden;
+  height: 100%;
+}
 
 .jspsych-content-wrapper {
   display: flex;
@@ -252,6 +259,13 @@ const jsPsych = initJsPsych({
   
 const timeline = [];
 
+const clear_screen = {
+  type: jsPsychHtmlKeyboardResponse,
+  stimulus: '',
+  choices: "NO_KEYS",
+  trial_duration: 200
+};
+
 /* 🔹 Zaproszenie */
 timeline.push({
   type: jsPsychHtmlButtonResponse,
@@ -337,9 +351,12 @@ timeline.push({
   `,
   button_label: "Dalej",
   data: { phase: "metryczka" },
-  on_start: () => window.scrollTo(0, 0)
+  on_start: () => window.scrollTo(0, 0),
+  post_trial_gap: 500
 });
-
+  
+timeline.push(clear_screen);
+  
 const INSTRUKCJA = {
   type: jsPsychHtmlButtonResponse,
   stimulus: `
@@ -361,8 +378,11 @@ const INSTRUKCJA = {
   choices: ["Rozumiem i zaczynam"],
   post_trial_gap: 500,  // <–– dodaj to
   data: { phase: "instrukcja" },
-  on_start: () => window.scrollTo(0, 0)
+  on_start: () => window.scrollTo(0, 0),
+  post_trial_gap: 500
 }; 
+timeline.push(INSTRUKCJA);
+timeline.push(clear_screen);
   
 /* 🔹 PANAS */
 timeline.push({
@@ -382,9 +402,11 @@ timeline.push({
   scale_width: 500,
   button_label: "Dalej",
   data: { phase: "panas" },
-  on_start: () => window.scrollTo(0, 0)
+  on_start: () => window.scrollTo(0, 0),
+  post_trial_gap: 500
 });
-
+timeline.push(clear_screen);
+  
 /* 🔹 FAS */
 timeline.push({
   type: jsPsychSurveyLikert,
@@ -409,10 +431,10 @@ timeline.push({
   scale_width: 500,
   button_label: "Dalej",
   data: { phase: "zmeczenie_FAS" },
-  on_start: () => window.scrollTo(0, 0)
+  on_start: () => window.scrollTo(0, 0),
+  post_trial_gap: 500
 });
-
-timeline.push(INSTRUKCJA); 
+timeline.push(clear_screen);
 
 /* 🔹 Zadanie próbne — osobna strona z instrukcją */
 timeline.push({
@@ -436,9 +458,11 @@ timeline.push({
   `,
   choices: ["Rozpocznij zadanie próbne"],
   data: { phase: "instrukcja_probna" },
-  on_start: () => window.scrollTo(0, 0)
+  on_start: () => window.scrollTo(0, 0),
+  post_trial_gap: 500
 });
-
+timeline.push(clear_screen);
+  
 // 🔹 Prezentacja emoji (próba)
 timeline.push({
   timeline: [
@@ -533,7 +557,8 @@ timeline.push({
     <p>Pojawi się teraz pytanie o Twój aktualny nastrój.</p>`,
   choices: ["Rozpocznij badanie"],
   on_start: () => window.scrollTo(0, 0),
-  data: { phase: "przejscie_do_glownego" }
+  data: { phase: "przejscie_do_glownego" },
+  post_trial_gap: 500
 });
 
 const mood_question = {
@@ -555,7 +580,8 @@ timeline.push({
   data: { phase: "nastroj_przed_pozytywne" },
   on_start: () => window.scrollTo(0, 0)
 });
-
+timeline.push(clear_screen);
+  
 /* 🔹 Definicje trzech testów */
 const tests = [
   { type: "pozytywne", msg: "pozytywnymi", seq: ["😄","😊","😂","🥰","😆"], grid: ["😄","😊","😂","🥰","😆","🤗","😋","😍","🙂","😃"] },
@@ -574,7 +600,8 @@ tests.forEach(test => {
       <p>Najpierw zobaczysz sekwencję 5 emoji — postaraj się zapamiętać ich kolejność.</p>`,
     choices: ["Zaczynam"]
   });
-
+  timeline.push(clear_screen);
+  
   // 2. Prezentacja emoji
   timeline.push({
     timeline: [
@@ -652,6 +679,20 @@ tests.forEach(test => {
     data: { phase: `nastroj_po_${test.type}` },
     on_start: () => window.scrollTo(0, 0)
   });
+  timeline.push(clear_screen);
+});
+
+timeline.push({
+  type: jsPsychHtmlButtonResponse,
+  stimulus: function() {
+    const total_correct = jsPsych.data.get().filter({ phase: /wyniki_/ }).select("poprawne").sum();
+    const total_time = jsPsych.data.get().filter({ phase: /wyniki_/ }).select("czas_s").sum();
+    return `<h2>Podsumowanie</h2>
+            <p>Poprawnych odpowiedzi: ${total_correct} / 15</p>
+            <p>Łączny czas: ${total_time.toFixed(2)} s</p>`;
+  },
+  choices: ["Zakończ badanie"],
+  data: { phase: "podsumowanie" }
 });
 
 /* 🔹 Zakończenie */
@@ -665,3 +706,4 @@ timeline.push({
 jsPsych.run(timeline);
 </script>
 </html>
+
