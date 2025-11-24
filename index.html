@@ -561,9 +561,11 @@ timeline.push({
     <p>Weź oddech i przygotuj się 🙂</p>
     <p>Pojawi się teraz pytanie o Twój aktualny nastrój.</p>`,
   choices: ["Rozpocznij badanie"],
-  on_start: () => document.body.classList.add("lock-scroll"),
-  on_finish: () => document.body.classList.remove("lock-scroll"), 
-  on_load: () => window.scrollTo(0, 0),
+  on_start: () => {
+    document.body.classList.add("lock-scroll");
+    window.scrollTo(0, 0); // ⬅️ to przenosimy tutaj
+  },
+  on_finish: () => document.body.classList.remove("lock-scroll"),
   data: { phase: "przejscie_do_glownego" },
   post_trial_gap: 500
 });
@@ -721,6 +723,7 @@ jsPsych.pluginAPI.registerPreloadCallback(() => {
 
 </script>
 </html>
+
 
 
 
