@@ -462,7 +462,6 @@ timeline.push({
   data: { phase: "instrukcja_probna" },
   on_start: () => document.body.classList.add("lock-scroll"),
   on_finish: () => document.body.classList.remove("lock-scroll"),
-  post_trial_gap: 500
 });
 timeline.push(clear_screen);
   
@@ -722,6 +721,7 @@ jsPsych.pluginAPI.registerPreloadCallback(() => {
 
 </script>
 </html>
+
 
 
 
