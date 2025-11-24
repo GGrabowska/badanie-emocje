@@ -29,10 +29,8 @@ html, body {
 }
 
 .jspsych-content-wrapper {
-  display: flex;
-  justify-content: center;
-  align-items: center;     /* DODAĆ */
-  height: 100vh;           /* DODAĆ */
+  padding: 30px;
+  min-height: auto;
 }
 
 .jspsych-content {
@@ -41,11 +39,6 @@ html, body {
   text-align: initial !important;
   padding: 40px !important;
   zoom: 1.12;
-  height: 100%;
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  overflow: hidden;
 }
 
 /* 🔹 Metryczka — poprawne formatowanie pól */
@@ -696,6 +689,7 @@ timeline.push({
 jsPsych.run(timeline);
 </script>
 </html>
+
 
 
 
