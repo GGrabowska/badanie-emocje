@@ -34,11 +34,13 @@ html, body {
 }
 
 .jspsych-content {
-  max-width: 900px;
+  width: 100% !important;
+  max-width: none !important;
   margin: 0 auto !important;
   text-align: center !important;
   padding: 40px !important;
   zoom: 1.12;
+  box-sizing: border-box;
 }
 
 /* 🔹 Metryczka — poprawne formatowanie pól */
@@ -690,6 +692,7 @@ timeline.push({
 jsPsych.run(timeline);
 </script>
 </html>
+
 
 
 
