@@ -513,11 +513,10 @@ timeline.push({
     <div style="min-height: 100vh; display: flex; flex-direction: column; justify-content: center; align-items: center;">
       <h3>Zapamiętałeś/aś kolejność?</h3>
       <p>Kliknij, aby przejść do siatki emoji i ułożyć je w kolejności.</p>
-      <div style="margin-top: 40px;">%choice%</div>
     </div>
   `,
   choices: ["Pokaż siatkę emotek"],
-  button_html: `<button class="jspsych-btn" style="padding:14px 24px; font-size:20px;">%choice%</button>`,
+  button_html: `<button class="jspsych-btn" style="margin-top:40px; padding:14px 24px; font-size:20px;">%choice%</button>`,
   data: { phase: "pokaz_siatke_probna" },
   on_start: () => {
     window.scrollTo(0, 0);
@@ -799,6 +798,7 @@ timeline.push({
 jsPsych.run(timeline);
 </script>
 </html>
+
 
 
 
