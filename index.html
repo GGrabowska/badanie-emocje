@@ -489,8 +489,8 @@ timeline.push({
       on_finish: () => document.body.classList.remove("lock-scroll")
     }
   ],
-  timeline_variables: ["🧃", "🍀", "🎧", "🚴", "🛹"].map(e => ({ 
-    e: `<div style="font-size:70px; display:flex; justify-content:center; align-items:center; height:100vh;">${e}</div>` 
+timeline_variables: ["🧃", "🍀", "🎧", "🚴", "🛹"].map(e => ({ 
+  e: `<div style="font-size:70px; display:flex; justify-content:center; align-items:center; height:100vh; width:100vw;">${e}</div>` 
   })),
   data: { phase: "probny_test_emoji" }
 });
@@ -516,9 +516,12 @@ timeline.push({
 timeline.push({
   type: jsPsychHtmlButtonResponse,
   stimulus: () => {
-    let html = `<p>Ułóż emotki we właściwej kolejności:</p>
-                <button id="show-grid">Pokaż siatkę emotek</button>
-                <div id="grid" style="display:none;">`;
+ let html = `
+  <div id="grid-interface">
+    <p>Ułóż emotki we właściwej kolejności:</p>
+    <button id="show-grid">Pokaż siatkę emotek</button>
+  </div>
+  <div id="grid" style="display:none;">`;
     ["🧃", "🍀", "🎧", "🚴", "🛹", "🥑", "🎲", "🎨", "🧩", "📷"].forEach(e => {
       html += `<div class="emoji-btn" draggable="true">${e}</div>`;
     });
@@ -545,11 +548,12 @@ timeline.push({
 
     document.getElementById("finish").style.display = "none";
 
-    document.getElementById("show-grid").addEventListener("click", () => {
-      document.getElementById("grid").style.display = "grid";
-      document.getElementById("slots").style.display = "flex";
-      document.getElementById("finish").style.display = "block";
-      document.getElementById("show-grid").style.display = "none";
+document.getElementById("show-grid").addEventListener("click", () => {
+  document.getElementById("grid-interface").style.display = "none"; // 🔹 Ukryj cały interfejs z przyciskiem
+  document.getElementById("grid").style.display = "grid";
+  document.getElementById("slots").style.display = "flex";
+  document.getElementById("finish").style.display = "block";
+});
 
       // ⏱️ ZACZNIJ POMIAR CZASU
       startTime = performance.now();
@@ -760,6 +764,7 @@ jsPsych.pluginAPI.registerPreloadCallback(() => {
 
 </script>
 </html>
+
 
 
 
