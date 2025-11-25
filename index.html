@@ -523,50 +523,52 @@ timeline.push({
 
 // 🔹 Zadanie drag&drop po teście próbnym
 timeline.push({
-  type: jsPsychHtmlButtonResponse,
+  type: jsPsychHtmlKeyboardResponse,
   stimulus: () => {
- let html = `
-  <div id="grid-interface">
-    <p>Ułóż emotki we właściwej kolejności:</p>
-    <button id="show-grid">Pokaż siatkę emotek</button>
-  </div>
-  <div id="grid" style="display:none;">`;
+    let html = `
+      <div id="grid-interface">
+        <p>Ułóż emotki we właściwej kolejności:</p>
+        <button id="show-grid">Pokaż siatkę emotek</button>
+      </div>
+      <div id="grid" style="display:none;">`;
+    
     ["🧃", "🍀", "🎧", "🚴", "🛹", "🥑", "🎲", "🎨", "🧩", "📷"].forEach(e => {
       html += `<div class="emoji-btn" draggable="true">${e}</div>`;
     });
+
     html += `</div><div id="slots" style="display:none;">`;
+
     for (let i = 0; i < 5; i++) {
       html += `<div class="slot-wrapper">
-                 <span class="slot-number">${i + 1}</span>
-                 <div class="drop-slot"></div>
-               </div>`;
+                <span class="slot-number">${i + 1}</span>
+                <div class="drop-slot"></div>
+              </div>`;
     }
+
     html += `</div><button id="finish">Zakończ</button><div id="result"></div>`;
     return html;
   },
-  choices: [],
+  choices: "NO_KEYS", // 👈 nie ma automatycznego przycisku jsPsych
   on_load: () => {
-    // 🔒 ZABLOKUJ SCROLL
     document.body.classList.add("lock-scroll");
-
     let drag;
 
-document.querySelectorAll('.emoji-btn').forEach(btn => {
-  btn.addEventListener('dragstart', e => {
-    drag = e.target.textContent;
-  });
-});
+    document.querySelectorAll('.emoji-btn').forEach(btn => {
+      btn.addEventListener('dragstart', e => {
+        drag = e.target.textContent;
+      });
+    });
 
     document.getElementById("finish").style.display = "none";
 
-document.getElementById("show-grid").addEventListener("click", () => {
-  document.getElementById("grid-interface").style.display = "none"; // 🔹 Ukryj cały interfejs z przyciskiem
-  document.getElementById("grid").style.display = "grid";
-  document.getElementById("slots").style.display = "flex";
-  document.getElementById("finish").style.display = "block";
+    document.getElementById("show-grid").addEventListener("click", () => {
+      document.getElementById("grid-interface").style.display = "none";
+      document.getElementById("grid").style.display = "grid";
+      document.getElementById("slots").style.display = "flex";
+      document.getElementById("finish").style.display = "block";
 
       startTime = performance.now();
-});
+    });
 
     document.querySelectorAll('.drop-slot').forEach(slot => {
       slot.addEventListener('dragover', e => e.preventDefault());
@@ -576,7 +578,7 @@ document.getElementById("show-grid").addEventListener("click", () => {
     document.getElementById("finish").addEventListener("click", () => {
       const rt = ((performance.now() - startTime) / 1000).toFixed(2);
       const answers = [];
-      document.querySelectorAll(".drop-slot").forEach((slot) => {
+      document.querySelectorAll(".drop-slot").forEach(slot => {
         answers.push(slot.textContent);
       });
 
@@ -591,7 +593,6 @@ document.getElementById("show-grid").addEventListener("click", () => {
          <button id="next">Dalej</button>`;
 
       document.getElementById("next").onclick = () => {
-        // 🧹 WYCZYŚĆ DOM I ODBLOKUJ SCROLL
         document.body.classList.remove("lock-scroll");
         document.getElementById("jspsych-target").innerHTML = "";
         jsPsych.finishTrial();
@@ -773,6 +774,7 @@ jsPsych.pluginAPI.registerPreloadCallback(() => {
 
 </script>
 </html>
+
 
 
 
