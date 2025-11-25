@@ -516,7 +516,8 @@ timeline.push({
     </div>
   `,
   choices: ["Pokaż siatkę emotek"],
-  button_html: `<button class="jspsych-btn" style="margin-top:40px; padding:14px 24px; font-size:20px;">%choice%</button>`,
+  // 👇 Tutaj PRZYCISK zostanie dodany automatycznie POD stimulus
+  button_html: `<button class="jspsych-btn" style="margin-top: 40px; font-size: 20px;">%choice%</button>`,
   data: { phase: "pokaz_siatke_probna" },
   on_start: () => {
     window.scrollTo(0, 0);
@@ -798,6 +799,7 @@ timeline.push({
 jsPsych.run(timeline);
 </script>
 </html>
+
 
 
 
