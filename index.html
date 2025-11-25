@@ -507,10 +507,20 @@ timeline.push({
 // 🔹 Przycisk „Pokaż siatkę emotek” po ostatniej emoji
 timeline.push({
   type: jsPsychHtmlButtonResponse,
-  stimulus: `<p></p>`,
+  stimulus: `
+    <div style="min-height: 100vh; display: flex; flex-direction: column; justify-content: center; align-items: center;">
+      <h3>Zapamiętałeś/aś kolejność?</h3>
+      <p>Kliknij, aby przejść do siatki emoji i ułożyć je w kolejności.</p>
+    </div>
+  `,
   choices: ["Pokaż siatkę emotek"],
   button_html: `<button class="jspsych-btn" style="padding:14px 24px; font-size:20px;">%choice%</button>`,
-  data: { phase: "pokaz_siatke_probna" }
+  data: { phase: "pokaz_siatke_probna" },
+  on_start: () => {
+    window.scrollTo(0, 0);
+    document.body.classList.add("lock-scroll");
+  },
+  on_finish: () => document.body.classList.remove("lock-scroll")
 });
 
 // 🔹 Zadanie drag&drop po teście próbnym (NAPRAWIONE)
@@ -786,6 +796,7 @@ timeline.push({
 jsPsych.run(timeline);
 </script>
 </html>
+
 
 
 
