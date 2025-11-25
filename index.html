@@ -487,7 +487,10 @@ timeline.push({
   timeline: [
     { 
       type: jsPsychHtmlKeyboardResponse, 
-      stimulus: jsPsych.timelineVariable('e'), 
+      stimulus: () => {
+  const e = jsPsych.timelineVariable('e');
+  return `<div style="font-size:70px; display:flex; justify-content:center; align-items:center; height:100%; width:100%; margin:0;">${e}</div>`;
+},
       choices: "NO_KEYS", 
       trial_duration: 1000,
       on_start: () => document.body.classList.add("lock-scroll"),
@@ -502,9 +505,8 @@ timeline.push({
       on_finish: () => document.body.classList.remove("lock-scroll")
     }
   ],
-timeline_variables: ["🧃", "🍀", "🎧", "🚴", "🛹"].map(e => {
-  return { stimulus: `<div style="font-size:70px; display:flex; justify-content:center; align-items:center; height:100%; width:100%; margin:0;">${e}</div>` };
-}),
+timeline_variables: ["🧃", "🍀", "🎧", "🚴", "🛹"].map(e => ({ e })),
+
   data: { phase: "probny_test_emoji" }
 });
 
@@ -512,13 +514,14 @@ timeline_variables: ["🧃", "🍀", "🎧", "🚴", "🛹"].map(e => {
 timeline.push({
   type: jsPsychHtmlButtonResponse,
   stimulus: `
-    <div style="min-height: 100vh; display: flex; flex-direction: column; justify-content: center; align-items: center;">
-      <h3>Zapamiętałeś/aś kolejność?</h3>
-      <p>Kliknij, aby przejść do siatki emoji i ułożyć je w kolejności.</p>
-    </div>`,
-  choices: ["Pokaż siatkę emotek"],
-  on_start: () => {
-    window.scrollTo(0, 0);
+    <div style="min-height: 100vh; display: flex; justify-content: center; align-items: center;">
+      <button class="jspsych-btn">Pokaż siatkę emotek</button>
+    </div>
+  `,
+  choices: [],
+  on_load: () => {
+    const btn = document.querySelector(".jspsych-btn");
+    btn.addEventListener("click", () => jsPsych.finishTrial());
     document.body.classList.add("lock-scroll");
   },
   on_finish: () => document.body.classList.remove("lock-scroll"),
@@ -797,5 +800,6 @@ timeline.push({
 
 </script>
 </html>
+
 
 
