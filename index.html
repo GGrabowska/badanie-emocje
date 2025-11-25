@@ -24,7 +24,7 @@ html, body {
   margin: 0;
   padding: 0;
   overflow-x: hidden; 
-  overflow-y: auto;
+  overflow-y: scroll;
   width: 100%;
   height: 100%;
   box-sizing: border-box;
@@ -229,8 +229,12 @@ body {
   overflow-x: hidden !important;
 }
 
+html.lock-scroll,
 body.lock-scroll {
   overflow: hidden !important;
+  height: 100vh !important;
+  position: fixed !important;
+  width: 100%;
 }
 
 </style>
@@ -494,8 +498,11 @@ timeline.push({
 // 🔹 Przycisk „Pokaż siatkę emotek” po ostatniej emoji
 timeline.push({
   type: jsPsychHtmlButtonResponse,
-  stimulus: `<h3>Zapamiętałeś/aś kolejność?</h3>
-             <p>Kliknij, aby przejść do siatki emoji i ułożyć je w kolejności.</p>`,
+  stimulus: `
+    <div style="min-height: 100vh; display: flex; flex-direction: column; justify-content: center; align-items: center;">
+      <h3>Zapamiętałeś/aś kolejność?</h3>
+      <p>Kliknij, aby przejść do siatki emoji i ułożyć je w kolejności.</p>
+    </div>`,
   choices: ["Pokaż siatkę emotek"],
   on_start: () => {
     window.scrollTo(0, 0);
@@ -753,6 +760,7 @@ jsPsych.pluginAPI.registerPreloadCallback(() => {
 
 </script>
 </html>
+
 
 
 
