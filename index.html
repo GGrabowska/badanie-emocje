@@ -33,11 +33,11 @@ html, body {
 }
 
 .jspsych-content-wrapper {
-  height: auto;
-  min-height: 100vh;
+  height: 100vh; /* zamiast auto */
   display: flex;
   flex-direction: column;
   justify-content: center;
+  align-items: center; /* też dodaj */
 }
 
 .jspsych-content {
@@ -47,6 +47,7 @@ html, body {
   text-align: center;
   margin: 0 auto;
   box-sizing: border-box;
+  flex-grow: 1; 
 }
 
 /* 🔹 Metryczka — poprawne formatowanie pól */
@@ -142,6 +143,14 @@ html, body {
   height: 2px;
 }
   
+.jspsych-html-button-response-stimulus {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+
 /* Zmiana: każda próba zajmuje cały ekran */
 #jspsych-target {
   min-height: 100vh;
@@ -553,11 +562,9 @@ document.getElementById("show-grid").addEventListener("click", () => {
   document.getElementById("grid").style.display = "grid";
   document.getElementById("slots").style.display = "flex";
   document.getElementById("finish").style.display = "block";
-});
 
-      // ⏱️ ZACZNIJ POMIAR CZASU
       startTime = performance.now();
-    });
+});
 
     document.querySelectorAll('.drop-slot').forEach(slot => {
       slot.addEventListener('dragover', e => e.preventDefault());
@@ -764,6 +771,7 @@ jsPsych.pluginAPI.registerPreloadCallback(() => {
 
 </script>
 </html>
+
 
 
 
