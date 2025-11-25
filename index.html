@@ -551,9 +551,11 @@ timeline.push({
 
     let drag;
 
-    document.querySelectorAll('.emoji-btn').forEach(btn =>
-      btn.addEventListener('dragstart', e => drag = e.target.textContent)
-    );
+document.querySelectorAll('.emoji-btn').forEach(btn => {
+  btn.addEventListener('dragstart', e => {
+    drag = e.target.textContent;
+  });
+});
 
     document.getElementById("finish").style.display = "none";
 
@@ -771,6 +773,7 @@ jsPsych.pluginAPI.registerPreloadCallback(() => {
 
 </script>
 </html>
+
 
 
 
