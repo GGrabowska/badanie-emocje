@@ -499,7 +499,7 @@ timeline.push({
     }
   ],
 timeline_variables: ["🧃", "🍀", "🎧", "🚴", "🛹"].map(e => ({ 
-  e: `<div style="font-size:70px; display:flex; justify-content:center; align-items:center; height:100vh; width:100vw;">${e}</div>` 
+e: `<div style="font-size:70px; display:flex; justify-content:center; align-items:center; height:100%; width:100%; margin:0;">${e}</div>`
   })),
   data: { phase: "probny_test_emoji" }
 });
@@ -527,9 +527,9 @@ timeline.push({
 stimulus: () => {
   let html = `
     <div id="emoji-container" style="min-height: 100vh; display: flex; flex-direction: column; justify-content: center; align-items: center;">
-      <div id="grid-interface">
-        <p>Ułóż emotki we właściwej kolejności:</p>
-        <button id="show-grid">Pokaż siatkę emotek</button>
+      <div id="grid-interface" style="text-align: center;">
+        <p style="margin-bottom: 16px;">Ułóż emotki we właściwej kolejności:</p>
+        <button id="show-grid" style="padding:10px 20px; font-size:18px;">Pokaż siatkę emotek</button>
       </div>
 
       <div id="grid" style="display:none; margin-top: 20px; grid-template-columns: repeat(5, 1fr); gap: 20px; justify-items: center;">
@@ -551,6 +551,7 @@ stimulus: () => {
   html += `</div><button id="finish" style="margin-top: 20px;">Zakończ</button><div id="result" style="margin-top: 20px;"></div></div>`;
   return html;
 },
+
   choices: "NO_KEYS", // 👈 nie ma automatycznego przycisku jsPsych
 on_load: () => {
   document.body.classList.add("lock-scroll");
@@ -778,6 +779,7 @@ jsPsych.pluginAPI.registerPreloadCallback(() => {
 
 </script>
 </html>
+
 
 
 
