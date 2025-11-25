@@ -489,39 +489,27 @@ timeline.push({
       type: jsPsychHtmlKeyboardResponse, 
       stimulus: jsPsych.timelineVariable('stimulus'), 
       choices: "NO_KEYS", 
-      trial_duration: 1000,
-      on_start: () => document.body.classList.add("lock-scroll"),
-      on_finish: () => document.body.classList.remove("lock-scroll")
+      trial_duration: 1000
     },
     { 
       type: jsPsychHtmlKeyboardResponse, 
       stimulus: "", 
       choices: "NO_KEYS", 
-      trial_duration: 300,
-      on_start: () => document.body.classList.add("lock-scroll"),
-      on_finish: () => document.body.classList.remove("lock-scroll")
+      trial_duration: 300
     }
   ],
   timeline_variables: ["🧃", "🍀", "🎧", "🚴", "🛹"].map(e => ({
     stimulus: `<div style="font-size:70px; display:flex; justify-content:center; align-items:center; height:100%; width:100%; margin:0;">${e}</div>`
-  })),
+  })),   // ⬅️ ZAMYKAMY MAP I NIE MA NIC WIĘCEJ
   data: { phase: "probny_test_emoji" }
 });
 
 // 🔹 Przycisk „Pokaż siatkę emotek” po ostatniej emoji
 timeline.push({
-  type: jsPsychHtmlKeyboardResponse,
-  stimulus: `
-    <div style="min-height: 100vh; display: flex; justify-content: center; align-items: center;">
-      <button id="manual-grid-btn" style="padding:14px 24px; font-size:20px;">Pokaż siatkę emotek</button>
-    </div>
-  `,
-  choices: "NO_KEYS",
-  on_load: () => {
-    document.getElementById("manual-grid-btn").addEventListener("click", () => {
-      jsPsych.finishTrial();
-    });
-  },
+  type: jsPsychHtmlButtonResponse,
+  stimulus: `<p></p>`,
+  choices: ["Pokaż siatkę emotek"],
+  button_html: `<button class="jspsych-btn" style="padding:14px 24px; font-size:20px;">%choice%</button>`,
   data: { phase: "pokaz_siatke_probna" }
 });
 
@@ -797,6 +785,7 @@ timeline.push({
 
 </script>
 </html>
+
 
 
 
