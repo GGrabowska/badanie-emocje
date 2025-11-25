@@ -525,7 +525,7 @@ timeline.push({
   data: { phase: "pokaz_siatke_probna" }
 });
 
-// 🔹 Zadanie drag&drop po teście próbnym
+// 🔹 Zadanie drag&drop po teście próbnym (NAPRAWIONE)
 timeline.push({
   type: jsPsychHtmlKeyboardResponse,
   stimulus: () => {
@@ -536,7 +536,7 @@ timeline.push({
           <button id="show-grid" style="padding:10px 20px; font-size:18px;">Pokaż siatkę emotek</button>
         </div>
 
-        <div id="grid" class="hide">
+        <div id="grid" class="hide" style="margin-top: 30px; display: grid; grid-template-columns: repeat(5, 1fr); gap: 20px; justify-items: center;">
     `;
 
     ["🧃", "🍀", "🎧", "🚴", "🛹", "🥑", "🎲", "🎨", "🧩", "📷"].forEach(e => {
@@ -545,7 +545,7 @@ timeline.push({
 
     html += `
         </div>
-        <div id="slots" class="hide">
+        <div id="slots" class="hide" style="margin-top: 30px; display: flex; gap: 24px; flex-wrap: wrap; justify-content: center;">
     `;
 
     for (let i = 0; i < 5; i++) {
@@ -558,7 +558,7 @@ timeline.push({
 
     html += `
         </div>
-        <button id="finish" class="hide">Zakończ</button>
+        <button id="finish" class="hide" style="margin-top: 20px;">Zakończ</button>
         <div id="result" style="margin-top: 20px;"></div>
       </div>
     `;
@@ -568,25 +568,35 @@ timeline.push({
   on_load: () => {
     document.body.classList.add("lock-scroll");
 
-    let drag;
+    let drag = null;
+    let startTime = null;
+
+    const showGridBtn = document.getElementById("show-grid");
+    const grid = document.getElementById("grid");
+    const slots = document.getElementById("slots");
     const finishBtn = document.getElementById("finish");
+    const resultBox = document.getElementById("result");
+
     finishBtn.classList.add("hide");
 
-    document.getElementById("show-grid").addEventListener("click", () => {
+    showGridBtn.addEventListener("click", () => {
       document.getElementById("grid-interface").style.display = "none";
-      document.getElementById("grid").classList.remove("hide");
-      document.getElementById("slots").classList.remove("hide");
+      grid.classList.remove("hide");
+      slots.classList.remove("hide");
       finishBtn.classList.remove("hide");
 
-      document.querySelectorAll('.emoji-btn').forEach(btn =>
+      // Obsługa przeciągania
+      document.querySelectorAll('.emoji-btn').forEach(btn => {
         btn.addEventListener('dragstart', e => {
           drag = e.target.textContent;
-        })
-      );
+        });
+      });
 
       document.querySelectorAll('.drop-slot').forEach(slot => {
         slot.addEventListener('dragover', e => e.preventDefault());
-        slot.addEventListener('drop', e => slot.textContent = drag);
+        slot.addEventListener('drop', e => {
+          slot.textContent = drag;
+        });
       });
 
       startTime = performance.now();
@@ -605,18 +615,20 @@ timeline.push({
         czas_s: rt
       });
 
-      document.getElementById("result").innerHTML =
-        `<p>Twoje odpowiedzi zostały zapisane.<br>Czas: <strong>${rt} s</strong></p>
-         <button id="next">Dalej</button>`;
+      resultBox.innerHTML = `
+        <p>Twoje odpowiedzi zostały zapisane.<br>Czas: <strong>${rt} s</strong></p>
+        <button id="next">Dalej</button>
+      `;
 
-      document.getElementById("next").onclick = () => {
+      document.getElementById("next").addEventListener("click", () => {
         document.body.classList.remove("lock-scroll");
         document.getElementById("jspsych-target").innerHTML = "";
         jsPsych.finishTrial();
-      };
+      });
     });
   }
 });
+
 
 timeline.push({
   type: jsPsychHtmlButtonResponse,
@@ -785,3 +797,4 @@ timeline.push({
 
 </script>
 </html>
+
