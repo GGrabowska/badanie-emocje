@@ -472,7 +472,9 @@ timeline.push({
       type: jsPsychHtmlKeyboardResponse, 
       stimulus: jsPsych.timelineVariable('e'), 
       choices: "NO_KEYS", 
-      trial_duration: 1000 
+      trial_duration: 1000,
+      on_start: () => document.body.classList.add("lock-scroll"),
+      on_finish: () => document.body.classList.remove("lock-scroll")
     },
     { 
       type: jsPsychHtmlKeyboardResponse, 
@@ -481,7 +483,6 @@ timeline.push({
       trial_duration: 300,
       on_start: () => document.body.classList.add("lock-scroll"),
       on_finish: () => document.body.classList.remove("lock-scroll")
-
     }
   ],
   timeline_variables: ["🧃", "🍀", "🎧", "🚴", "🛹"].map(e => ({ 
@@ -490,72 +491,93 @@ timeline.push({
   data: { phase: "probny_test_emoji" }
 });
 
+// 🔹 Przycisk „Pokaż siatkę emotek” po ostatniej emoji
+timeline.push({
+  type: jsPsychHtmlButtonResponse,
+  stimulus: `<h3>Zapamiętałeś/aś kolejność?</h3>
+             <p>Kliknij, aby przejść do siatki emoji i ułożyć je w kolejności.</p>`,
+  choices: ["Pokaż siatkę emotek"],
+  on_start: () => {
+    window.scrollTo(0, 0);
+    document.body.classList.add("lock-scroll");
+  },
+  on_finish: () => document.body.classList.remove("lock-scroll"),
+  data: { phase: "pokaz_siatke_probna" }
+});
+
 // 🔹 Zadanie drag&drop po teście próbnym
 timeline.push({
   type: jsPsychHtmlButtonResponse,
-stimulus: () => {
-  let html = `<p>Ułóż emotki we właściwej kolejności:</p>
-              <button id="show-grid">Pokaż siatkę emotek</button>
-              <div id="grid" style="display:none;">`;
+  stimulus: () => {
+    let html = `<p>Ułóż emotki we właściwej kolejności:</p>
+                <button id="show-grid">Pokaż siatkę emotek</button>
+                <div id="grid" style="display:none;">`;
     ["🧃", "🍀", "🎧", "🚴", "🛹", "🥑", "🎲", "🎨", "🧩", "📷"].forEach(e => {
       html += `<div class="emoji-btn" draggable="true">${e}</div>`;
     });
-html += `</div><div id="slots" style="display:none;">`;
-for (let i = 0; i < 5; i++) {
-  html += `<div class="slot-wrapper">
-             <span class="slot-number">${i + 1}</span>
-             <div class="drop-slot"></div>
-           </div>`;
-}
+    html += `</div><div id="slots" style="display:none;">`;
+    for (let i = 0; i < 5; i++) {
+      html += `<div class="slot-wrapper">
+                 <span class="slot-number">${i + 1}</span>
+                 <div class="drop-slot"></div>
+               </div>`;
+    }
     html += `</div><button id="finish">Zakończ</button><div id="result"></div>`;
     return html;
   },
   choices: [],
-on_load: () => {
-  let drag;
-  document.querySelectorAll('.emoji-btn').forEach(btn =>
-    btn.addEventListener('dragstart', e => drag = e.target.textContent)
-  );
+  on_load: () => {
+    // 🔒 ZABLOKUJ SCROLL
+    document.body.classList.add("lock-scroll");
 
-  document.getElementById("finish").style.display = "none";
+    let drag;
 
-  document.getElementById("show-grid").addEventListener("click", () => {
-    document.getElementById("grid").style.display = "grid";
-    document.getElementById("slots").style.display = "flex";
-    document.getElementById("finish").style.display = "block";
-    document.getElementById("show-grid").style.display = "none";
+    document.querySelectorAll('.emoji-btn').forEach(btn =>
+      btn.addEventListener('dragstart', e => drag = e.target.textContent)
+    );
 
-    startTime = performance.now(); // ✅ czas startuje dopiero po kliknięciu
-  });
+    document.getElementById("finish").style.display = "none";
 
-  document.querySelectorAll('.drop-slot').forEach(slot => {
-    slot.addEventListener('dragover', e => e.preventDefault());
-    slot.addEventListener('drop', e => slot.textContent = drag);
-  });
+    document.getElementById("show-grid").addEventListener("click", () => {
+      document.getElementById("grid").style.display = "grid";
+      document.getElementById("slots").style.display = "flex";
+      document.getElementById("finish").style.display = "block";
+      document.getElementById("show-grid").style.display = "none";
 
-  document.getElementById("finish").addEventListener("click", () => {
-    const rt = ((performance.now() - startTime) / 1000).toFixed(2);
-    const answers = [];
-    document.querySelectorAll(".drop-slot").forEach((slot) => {
-      answers.push(slot.textContent);
+      // ⏱️ ZACZNIJ POMIAR CZASU
+      startTime = performance.now();
     });
 
-    jsPsych.data.write({
-      phase: "wyniki_probny_test",
-      odpowiedzi: answers,
-      czas_s: rt
+    document.querySelectorAll('.drop-slot').forEach(slot => {
+      slot.addEventListener('dragover', e => e.preventDefault());
+      slot.addEventListener('drop', e => slot.textContent = drag);
     });
 
-    document.getElementById("result").innerHTML =
-      `<p>Twoje odpowiedzi zostały zapisane.<br>Czas: <strong>${rt} s</strong></p>
-       <button id="next">Dalej</button>`;
-    document.getElementById("next").onclick = () => {
-    document.getElementById("jspsych-target").innerHTML = ""; // ⬅️ Czyścimy DOM
-      jsPsych.finishTrial();
-};
+    document.getElementById("finish").addEventListener("click", () => {
+      const rt = ((performance.now() - startTime) / 1000).toFixed(2);
+      const answers = [];
+      document.querySelectorAll(".drop-slot").forEach((slot) => {
+        answers.push(slot.textContent);
+      });
 
-  });
-}
+      jsPsych.data.write({
+        phase: "wyniki_probny_test",
+        odpowiedzi: answers,
+        czas_s: rt
+      });
+
+      document.getElementById("result").innerHTML =
+        `<p>Twoje odpowiedzi zostały zapisane.<br>Czas: <strong>${rt} s</strong></p>
+         <button id="next">Dalej</button>`;
+
+      document.getElementById("next").onclick = () => {
+        // 🧹 WYCZYŚĆ DOM I ODBLOKUJ SCROLL
+        document.body.classList.remove("lock-scroll");
+        document.getElementById("jspsych-target").innerHTML = "";
+        jsPsych.finishTrial();
+      };
+    });
+  }
 });
 
 timeline.push({
@@ -731,6 +753,7 @@ jsPsych.pluginAPI.registerPreloadCallback(() => {
 
 </script>
 </html>
+
 
 
 
