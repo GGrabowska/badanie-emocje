@@ -498,9 +498,11 @@ timeline.push({
       trial_duration: 300
     }
   ],
-  timeline_variables: ["🧃", "🍀", "🎧", "🚴", "🛹"].map(e => ({
-    stimulus: `<div style="font-size:70px; display:flex; justify-content:center; align-items:center; height:100%; width:100%; margin:0;">${e}</div>`
-  })),   // ⬅️ ZAMYKAMY MAP I NIE MA NIC WIĘCEJ
+  timeline_variables: ["🧃", "🍀", "🎧", "🚴", "🛹"].map(e => {
+    return {
+      stimulus: `<div style="font-size:70px; display:flex; justify-content:center; align-items:center; height:100%; width:100%; margin:0;">${e}</div>`
+    };
+  }),
   data: { phase: "probny_test_emoji" }
 });
 
@@ -796,6 +798,7 @@ timeline.push({
 jsPsych.run(timeline);
 </script>
 </html>
+
 
 
 
