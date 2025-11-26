@@ -506,26 +506,6 @@ timeline.push({
   data: { phase: "probny_test_emoji" }
 });
 
-// 🔹 Przycisk „Pokaż siatkę emotek” po ostatniej emoji
-timeline.push({
-  type: jsPsychHtmlButtonResponse,
-  stimulus: `
-    <div style="max-width: 700px; margin: 0 auto; text-align: center;">
-      <h3>Zapamiętałeś/aś kolejność?</h3>
-      <p>Kliknij, aby przejść do siatki emoji i ułożyć je w kolejności.</p>
-      <button id="go-next" class="jspsych-btn" style="margin-top: 40px; padding:14px 24px; font-size:20px;">
-        Pokaż siatkę emotek
-      </button>
-    </div>
-  `,
-  choices: [], // ⬅️ wyłączamy domyślne przyciski
-  on_load: () => {
-    document.getElementById("go-next").addEventListener("click", () => {
-      jsPsych.finishTrial();
-    });
-  }
-});
-
 // 🔹 Zadanie drag&drop po teście próbnym — WERSJA POPRAWIONA
 timeline.push({
   type: jsPsychHtmlKeyboardResponse,
@@ -777,6 +757,7 @@ timeline.push({
 jsPsych.run(timeline);
 </script>
 </html>
+
 
 
 
