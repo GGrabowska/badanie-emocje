@@ -589,7 +589,12 @@ let html = `
 
 document.getElementById("next").addEventListener("click", () => {
   document.body.style.overflow = "";
-  document.getElementById("jspsych-target").innerHTML = ""; // CZYŚCIMY STARY EKRAN
+  
+  // 🧹 Wyczyść poprzedni ekran ręcznie
+  const container = document.getElementById("jspsych-target");
+  if (container) container.innerHTML = "";
+
+  // 🔁 Przejdź dalej
   jsPsych.finishTrial();
 });
     });
@@ -765,6 +770,7 @@ timeline.push({
 jsPsych.run(timeline);
 </script>
 </html>
+
 
 
 
