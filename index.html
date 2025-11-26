@@ -511,7 +511,7 @@ timeline.push({
   type: jsPsychHtmlKeyboardResponse,
   stimulus: () => {
     let html = `
-      <div id="emoji-container" style="min-height: 100vh; display: flex; flex-direction: column; justify-content: center; align-items: center; padding: 20px;">
+      <div id="emoji-container" style="min-height: 100vh; max-height: 100vh; overflow-y: auto; display: flex; flex-direction: column; justify-content: flex-start; align-items: center; padding: 20px;">
         <div style="text-align: center;">
           <p style="margin-bottom: 16px;">Ułóż emotki we właściwej kolejności:</p>
         </div>
@@ -757,6 +757,7 @@ timeline.push({
 jsPsych.run(timeline);
 </script>
 </html>
+
 
 
 
