@@ -587,11 +587,10 @@ let html = `
         document.getElementById("next").scrollIntoView({ behavior: "smooth", block: "center" });
       }, 100);
 
-      document.getElementById("next").addEventListener("click", () => {
-        document.body.style.overflow = "";
-        document.getElementById("jspsych-target").innerHTML = "";
-        jsPsych.finishTrial(); // ⬅️ teraz poprawnie przechodzi do kolejnego triala
-      });
+document.getElementById("next").addEventListener("click", () => {
+  document.body.style.overflow = "";
+  jsPsych.finishTrial();
+});
     });
   }
 });
@@ -762,6 +761,7 @@ timeline.push({
 jsPsych.run(timeline);
 </script>
 </html>
+
 
 
 
