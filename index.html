@@ -527,6 +527,7 @@ timeline.push({
 });
 
 // 🔹 Zadanie drag&drop po teście próbnym (NAPRAWIONE)
+// 🔹 Zadanie drag&drop po teście próbnym
 timeline.push({
   type: jsPsychHtmlKeyboardResponse,
   stimulus: () => {
@@ -534,20 +535,18 @@ timeline.push({
       <div id="emoji-container" style="min-height: 100vh; display: flex; flex-direction: column; justify-content: center; align-items: center; padding: 20px;">
         <div id="grid-interface" style="text-align: center;">
           <p style="margin-bottom: 16px;">Ułóż emotki we właściwej kolejności:</p>
+          <button id="show-grid" style="padding:10px 20px; font-size:18px;">Pokaż siatkę emotek</button>
         </div>
 
         <div id="grid" class="hide" style="margin-top: 30px; display: grid; grid-template-columns: repeat(5, 1fr); gap: 20px; justify-items: center;">
     `;
-
-    ["🧃", "🍀", "🎧", "🚴", "🛹", "🥑", "🎲", "🎨", "🧩", "📷"].forEach(e => {
+    ["🧃","🍀","🎧","🚴","🛹","🥑","🎲","🎨","🧩","📷"].forEach(e => {
       html += `<div class="emoji-btn" draggable="true">${e}</div>`;
     });
-
     html += `
         </div>
         <div id="slots" class="hide" style="margin-top: 30px; display: flex; gap: 24px; flex-wrap: wrap; justify-content: center;">
     `;
-
     for (let i = 0; i < 5; i++) {
       html += `
         <div class="slot-wrapper">
@@ -555,7 +554,6 @@ timeline.push({
           <div class="drop-slot"></div>
         </div>`;
     }
-
     html += `
         </div>
         <button id="finish" class="hide" style="margin-top: 20px;">Zakończ</button>
@@ -571,56 +569,54 @@ timeline.push({
     let drag = null;
     let startTime = null;
 
-const showGridBtn = document.getElementById("show-grid");
-const grid = document.getElementById("grid");
-const slots = document.getElementById("slots");
-const finishBtn = document.getElementById("finish");
-const resultBox = document.getElementById("result");
+    const showGridBtn = document.getElementById("show-grid");
+    const grid = document.getElementById("grid");
+    const slots = document.getElementById("slots");
+    const finishBtn = document.getElementById("finish");
+    const resultBox = document.getElementById("result");
 
-finishBtn.classList.add("hide");
+    showGridBtn.addEventListener("click", () => {
+      document.getElementById("grid-interface").style.display = "none";
+      grid.classList.remove("hide");
+      slots.classList.remove("hide");
+      finishBtn.classList.remove("hide");
+      document.body.classList.remove("lock-scroll");
+      startTime = performance.now();
+    });
 
-showGridBtn.addEventListener("click", () => {
-  document.getElementById("grid-interface").style.display = "none";
-  grid.classList.remove("hide");
-  slots.classList.remove("hide");
-  finishBtn.classList.remove("hide");
-  document.body.classList.remove("lock-scroll");
+    document.querySelectorAll('.emoji-btn').forEach(btn => {
+      btn.addEventListener('dragstart', e => drag = e.target.textContent);
+    });
+    document.querySelectorAll('.drop-slot').forEach(slot => {
+      slot.addEventListener('dragover', e => e.preventDefault());
+      slot.addEventListener('drop', () => slot.textContent = drag);
+    });
 
-  startTime = performance.now();
+    finishBtn.addEventListener("click", () => {
+      const rt = ((performance.now() - startTime) / 1000).toFixed(2);
+      const answers = [];
+      document.querySelectorAll(".drop-slot").forEach(slot => answers.push(slot.textContent));
+
+      jsPsych.data.write({
+        phase: "wyniki_probny_test",
+        odpowiedzi: answers,
+        czas_s: rt
+      });
+
+      resultBox.innerHTML = `
+        <p>Twoje odpowiedzi zostały zapisane.<br>Czas: <strong>${rt} s</strong></p>
+        <button id="next">Dalej</button>
+      `;
+
+      document.getElementById("next").addEventListener("click", () => {
+        document.body.classList.remove("lock-scroll");
+        document.getElementById("jspsych-target").innerHTML = "";
+        jsPsych.finishTrial();
+      });
+    });
+  }
 });
 
-// Obsługa przeciągania
-document.querySelectorAll('.emoji-btn').forEach(btn => {
-  btn.addEventListener('dragstart', e => drag = e.target.textContent);
-});
-
-document.querySelectorAll('.drop-slot').forEach(slot => {
-  slot.addEventListener('dragover', e => e.preventDefault());
-  slot.addEventListener('drop', e => slot.textContent = drag);
-});
-
-finishBtn.addEventListener("click", () => {
-  const rt = ((performance.now() - startTime) / 1000).toFixed(2);
-  const answers = [];
-  document.querySelectorAll(".drop-slot").forEach(slot => answers.push(slot.textContent));
-
-  jsPsych.data.write({
-    phase: "wyniki_probny_test",
-    odpowiedzi: answers,
-    czas_s: rt
-  });
-
-  resultBox.innerHTML = `
-    <p>Twoje odpowiedzi zostały zapisane.<br>Czas: <strong>${rt} s</strong></p>
-    <button id="next">Dalej</button>
-  `;
-
-  document.getElementById("next").addEventListener("click", () => {
-    document.body.classList.remove("lock-scroll");
-    document.getElementById("jspsych-target").innerHTML = "";
-    jsPsych.finishTrial();
-  });
-}
 
 timeline.push({
   type: jsPsychHtmlButtonResponse,
@@ -788,6 +784,7 @@ timeline.push({
 jsPsych.run(timeline);
 </script>
 </html>
+
 
 
 
