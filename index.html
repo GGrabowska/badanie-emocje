@@ -526,8 +526,7 @@ timeline.push({
   }
 });
 
-// 🔹 Zadanie drag&drop po teście próbnym (NAPRAWIONE)
-// 🔹 Zadanie drag&drop po teście próbnym
+// 🔹 Zadanie drag&drop po teście próbnym — WERSJA POPRAWIONA
 timeline.push({
   type: jsPsychHtmlKeyboardResponse,
   stimulus: () => {
@@ -540,13 +539,16 @@ timeline.push({
 
         <div id="grid" class="hide" style="margin-top: 30px; display: grid; grid-template-columns: repeat(5, 1fr); gap: 20px; justify-items: center;">
     `;
-    ["🧃","🍀","🎧","🚴","🛹","🥑","🎲","🎨","🧩","📷"].forEach(e => {
+
+    ["🧃", "🍀", "🎧", "🚴", "🛹", "🥑", "🎲", "🎨", "🧩", "📷"].forEach(e => {
       html += `<div class="emoji-btn" draggable="true">${e}</div>`;
     });
+
     html += `
         </div>
         <div id="slots" class="hide" style="margin-top: 30px; display: flex; gap: 24px; flex-wrap: wrap; justify-content: center;">
     `;
+
     for (let i = 0; i < 5; i++) {
       html += `
         <div class="slot-wrapper">
@@ -554,6 +556,7 @@ timeline.push({
           <div class="drop-slot"></div>
         </div>`;
     }
+
     html += `
         </div>
         <button id="finish" class="hide" style="margin-top: 20px;">Zakończ</button>
@@ -587,9 +590,10 @@ timeline.push({
     document.querySelectorAll('.emoji-btn').forEach(btn => {
       btn.addEventListener('dragstart', e => drag = e.target.textContent);
     });
+
     document.querySelectorAll('.drop-slot').forEach(slot => {
       slot.addEventListener('dragover', e => e.preventDefault());
-      slot.addEventListener('drop', () => slot.textContent = drag);
+      slot.addEventListener('drop', e => slot.textContent = drag);
     });
 
     finishBtn.addEventListener("click", () => {
@@ -616,7 +620,6 @@ timeline.push({
     });
   }
 });
-
 
 timeline.push({
   type: jsPsychHtmlButtonResponse,
@@ -784,6 +787,7 @@ timeline.push({
 jsPsych.run(timeline);
 </script>
 </html>
+
 
 
 
