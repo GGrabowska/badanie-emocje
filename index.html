@@ -668,8 +668,6 @@ const tests = [
   { type: "negatywne", msg: "negatywnymi", seq: ["😢","😠","😭","😩","😡"], grid: ["😢","😠","😭","😩","😡","😖","😞","😣","😤","😔"] }
 ];
 
-let startTime;
-
 tests.forEach(test => {
 
   // 1. Instrukcja dla konkretnego testu
@@ -790,6 +788,7 @@ timeline.push({
 jsPsych.run(timeline);
 </script>
 </html>
+
 
 
 
