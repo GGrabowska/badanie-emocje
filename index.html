@@ -546,7 +546,7 @@ timeline.push({
   },
   choices: "NO_KEYS",
   on_load: () => {
-    document.body.classList.add("lock-scroll");
+    document.body.style.overflow = "hidden";
 
     let drag = null;
     const startTime = performance.now();
@@ -583,7 +583,7 @@ timeline.push({
       `;
 
       document.getElementById("next").addEventListener("click", () => {
-        document.body.classList.remove("lock-scroll");
+        document.body.style.overflow = "";
         document.getElementById("jspsych-target").innerHTML = "";
         jsPsych.finishTrial(); // ⬅️ teraz poprawnie przechodzi do kolejnego triala
       });
@@ -757,6 +757,7 @@ timeline.push({
 jsPsych.run(timeline);
 </script>
 </html>
+
 
 
 
