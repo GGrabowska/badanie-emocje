@@ -532,12 +532,11 @@ timeline.push({
   stimulus: () => {
     let html = `
       <div id="emoji-container" style="min-height: 100vh; display: flex; flex-direction: column; justify-content: center; align-items: center; padding: 20px;">
-        <div id="grid-interface" style="text-align: center;">
+        <div style="text-align: center;">
           <p style="margin-bottom: 16px;">Ułóż emotki we właściwej kolejności:</p>
-          <button id="show-grid" style="padding:10px 20px; font-size:18px;">Pokaż siatkę emotek</button>
         </div>
 
-        <div id="grid" class="hide" style="margin-top: 30px; display: grid; grid-template-columns: repeat(5, 1fr); gap: 20px; justify-items: center;">
+        <div id="grid" style="margin-top: 30px; display: grid; grid-template-columns: repeat(5, 1fr); gap: 20px; justify-items: center;">
     `;
 
     ["🧃", "🍀", "🎧", "🚴", "🛹", "🥑", "🎲", "🎨", "🧩", "📷"].forEach(e => {
@@ -546,7 +545,7 @@ timeline.push({
 
     html += `
         </div>
-        <div id="slots" class="hide" style="margin-top: 30px; display: flex; gap: 24px; flex-wrap: wrap; justify-content: center;">
+        <div id="slots" style="margin-top: 30px; display: flex; gap: 24px; flex-wrap: wrap; justify-content: center;">
     `;
 
     for (let i = 0; i < 5; i++) {
@@ -559,7 +558,7 @@ timeline.push({
 
     html += `
         </div>
-        <button id="finish" class="hide" style="margin-top: 20px;">Zakończ</button>
+        <button id="finish" style="margin-top: 20px;">Zakończ</button>
         <div id="result" style="margin-top: 20px;"></div>
       </div>
     `;
@@ -570,23 +569,14 @@ timeline.push({
     document.body.classList.add("lock-scroll");
 
     let drag = null;
-    let startTime = null;
+    const startTime = performance.now();
 
-    const showGridBtn = document.getElementById("show-grid");
     const grid = document.getElementById("grid");
     const slots = document.getElementById("slots");
     const finishBtn = document.getElementById("finish");
     const resultBox = document.getElementById("result");
 
-    showGridBtn.addEventListener("click", () => {
-      document.getElementById("grid-interface").style.display = "none";
-      grid.classList.remove("hide");
-      slots.classList.remove("hide");
-      finishBtn.classList.remove("hide");
-      document.body.classList.remove("lock-scroll");
-      startTime = performance.now();
-    });
-
+    // Obsługa przeciągania
     document.querySelectorAll('.emoji-btn').forEach(btn => {
       btn.addEventListener('dragstart', e => drag = e.target.textContent);
     });
@@ -615,7 +605,7 @@ timeline.push({
       document.getElementById("next").addEventListener("click", () => {
         document.body.classList.remove("lock-scroll");
         document.getElementById("jspsych-target").innerHTML = "";
-        jsPsych.finishTrial();
+        jsPsych.finishTrial(); // ⬅️ teraz poprawnie przechodzi do kolejnego triala
       });
     });
   }
@@ -787,6 +777,7 @@ timeline.push({
 jsPsych.run(timeline);
 </script>
 </html>
+
 
 
 
