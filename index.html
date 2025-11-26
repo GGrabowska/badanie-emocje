@@ -511,7 +511,7 @@ timeline.push({
   type: jsPsychHtmlKeyboardResponse,
   stimulus: () => {
 let html = `
-<div id="emoji-container" style="max-height: 100vh; overflow-y: auto; padding: 20px; box-sizing: border-box;">
+<div id="emoji-container" style="min-height: 100vh; padding: 20px; box-sizing: border-box;">
         <div style="text-align: center;">
           <p style="margin-bottom: 16px;">Ułóż emotki we właściwej kolejności:</p>
         </div>
@@ -582,6 +582,10 @@ let html = `
         <p>Twoje odpowiedzi zostały zapisane.<br>Czas: <strong>${rt} s</strong></p>
         <button id="next">Dalej</button>
       `;
+
+      setTimeout(() => {
+        document.getElementById("next").scrollIntoView({ behavior: "smooth", block: "center" });
+      }, 100);
 
       document.getElementById("next").addEventListener("click", () => {
         document.body.style.overflow = "";
@@ -758,6 +762,7 @@ timeline.push({
 jsPsych.run(timeline);
 </script>
 </html>
+
 
 
 
