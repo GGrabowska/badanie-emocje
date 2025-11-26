@@ -534,7 +534,6 @@ timeline.push({
       <div id="emoji-container" style="min-height: 100vh; display: flex; flex-direction: column; justify-content: center; align-items: center; padding: 20px;">
         <div id="grid-interface" style="text-align: center;">
           <p style="margin-bottom: 16px;">Ułóż emotki we właściwej kolejności:</p>
-          <button id="show-grid" style="padding:10px 20px; font-size:18px;">Pokaż siatkę emotek</button>
         </div>
 
         <div id="grid" class="hide" style="margin-top: 30px; display: grid; grid-template-columns: repeat(5, 1fr); gap: 20px; justify-items: center;">
@@ -580,11 +579,15 @@ timeline.push({
 
     finishBtn.classList.add("hide");
 
-    showGridBtn.addEventListener("click", () => {
-      document.getElementById("grid-interface").style.display = "none";
-      grid.classList.remove("hide");
-      slots.classList.remove("hide");
-      finishBtn.classList.remove("hide");
+showGridBtn.addEventListener("click", () => {
+  document.getElementById("grid-interface").style.display = "none";
+  grid.classList.remove("hide");
+  slots.classList.remove("hide");
+  finishBtn.classList.remove("hide");
+  document.body.classList.remove("lock-scroll"); // ⬅ WYŁĄCZA BLOKADĘ SCROLLA
+
+  startTime = performance.now();
+});
 
       // Obsługa przeciągania
       document.querySelectorAll('.emoji-btn').forEach(btn => {
@@ -799,6 +802,7 @@ timeline.push({
 jsPsych.run(timeline);
 </script>
 </html>
+
 
 
 
